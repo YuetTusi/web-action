@@ -1,0 +1,5 @@
+
+interface RootPanelProp {
+
+}
+export { RootPanelProp };
