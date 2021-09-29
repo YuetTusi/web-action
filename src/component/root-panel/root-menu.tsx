@@ -2,15 +2,21 @@ import styled from 'styled-components';
 import React, { FC } from 'react';
 import { routerRedux, useDispatch } from 'dva';
 import Menu from 'antd/lib/menu';
-import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
+import AimOutlined from '@ant-design/icons/AimOutlined';
+import FileSearchOutlined from '@ant-design/icons/FileSearchOutlined';
+import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
+import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
 const { Item } = Menu;
 
 const MenuBox = styled.div`
-	width: 256px;
+	width: 240px;
 	height: 100%;
 	padding: 10px 0;
 	background-color: #001529;
+	span.ant-menu-title-content {
+		color: #fff;
+	}
 `;
 
 const RootMenu: FC<{}> = () => {
@@ -23,7 +29,7 @@ const RootMenu: FC<{}> = () => {
 					onClick={() => {
 						dispatch(routerRedux.push('/index'));
 					}}
-					icon={<AppstoreOutlined />}
+					icon={<AimOutlined />}
 					key="M_0">
 					目标查询
 				</Item>
@@ -31,7 +37,7 @@ const RootMenu: FC<{}> = () => {
 					onClick={() => {
 						dispatch(routerRedux.push('/batch'));
 					}}
-					icon={<AppstoreOutlined />}
+					icon={<FileSearchOutlined />}
 					key="M_1">
 					批量查询
 				</Item>
@@ -39,7 +45,7 @@ const RootMenu: FC<{}> = () => {
 					onClick={() => {
 						dispatch(routerRedux.push('/log-manage'));
 					}}
-					icon={<AppstoreOutlined />}
+					icon={<HistoryOutlined />}
 					key="M_2">
 					日志管理
 				</Item>
@@ -47,7 +53,7 @@ const RootMenu: FC<{}> = () => {
 					onClick={() => {
 						dispatch(routerRedux.push('/manage-center'));
 					}}
-					icon={<AppstoreOutlined />}
+					icon={<SettingOutlined />}
 					key="M_3">
 					管理中心
 				</Item>

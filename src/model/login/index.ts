@@ -6,13 +6,18 @@ interface LoginState {
     /**
      * 用户名
      */
-    username: string | null
+    username: string | null,
+    /**
+     * 登录中
+     */
+    loading: boolean
 }
 
 let model: Model = {
     namespace: 'login',
     state: {
-        username: null
+        username: null,
+        loading: false
     },
     reducers,
     effects

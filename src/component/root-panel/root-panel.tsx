@@ -1,9 +1,10 @@
-import React, { PropsWithChildren, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useDispatch } from 'react-redux';
 import { routerRedux } from 'dva/router';
 import RootMenu from './root-menu';
 import { WebHeader } from '../layout';
 import ContentBox from '../layout/styled/content-box';
+import InnerBox from '../layout/styled/inner-box';
 import { RootPanelProp } from './props';
 
 /**
@@ -19,10 +20,10 @@ const RootPanel = (props: PropsWithChildren<RootPanelProp>) => {
 
 	return (
 		<div style={{ height: '100%', backgroundColor: '#bbc8cb' }}>
-			<WebHeader />
+			<WebHeader username={username!} />
 			<ContentBox>
 				<RootMenu />
-				{props.children}
+				<InnerBox>{props.children}</InnerBox>
 			</ContentBox>
 		</div>
 	);

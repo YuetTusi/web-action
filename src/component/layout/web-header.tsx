@@ -1,55 +1,7 @@
-import styled from 'styled-components';
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, memo } from 'react';
 import { useDispatch } from 'react-redux';
 import { routerRedux, useLocation } from 'dva';
-import AppstoreOutlined from '@ant-design/icons/AppstoreOutlined';
-
-const HeaderBox = styled.div`
-	display: flex;
-	flex-direction: row;
-	height: 64px;
-	background-color: #fff;
-
-	.caption {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		background-color: #1890ff;
-		color: #fff;
-		font-size: 1.4rem;
-		width: 256px;
-		text-align: center;
-	}
-	.fn {
-		flex: 1;
-		display: flex;
-		flex-direction: row;
-		justify-content: space-between;
-		align-items: center;
-	}
-	.brd {
-		font-size: 1.2rem;
-		padding-left: 1rem;
-		& > span {
-			margin-left: 4px;
-		}
-	}
-	.info {
-		label {
-			&:after {
-				content: '：';
-			}
-		}
-		span {
-			color: #1890ff;
-			font-weight: bold;
-			margin-right: 10px;
-		}
-		a {
-			margin-right: 10px;
-		}
-	}
-`;
+import { HeaderBox } from './styled/header-box';
 
 const getTitle = (pathname: string) => {
 	switch (pathname) {
@@ -67,7 +19,7 @@ const getTitle = (pathname: string) => {
 	}
 };
 
-const WebHeader: FC<{}> = () => {
+const WebHeader: FC<{ username: string }> = memo(({ username }) => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 
@@ -92,11 +44,12 @@ const WebHeader: FC<{}> = () => {
 					<span>6</span>
 					<label htmlFor="span">有效期</label>
 					<span>2021-01-01</span>
-					<a onClick={logoutClick}>退出</a>
+					<label>当前用户</label>
+					<a onClick={logoutClick}>{username}</a>
 				</div>
 			</div>
 		</HeaderBox>
 	);
-};
+});
 
 export { WebHeader };

@@ -1,17 +1,19 @@
 import React, { FC, MouseEvent } from 'react';
 import { LoginBg, LoginBox } from './styled/login-style';
+import { useDispatch, useSelector } from 'react-redux';
+import KeyOutlined from '@ant-design/icons/KeyOutlined';
+import LoadingOutlined from '@ant-design/icons/LoadingOutlined';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
-import { useDispatch, useSelector } from 'react-redux';
-import { routerRedux } from 'dva';
+import { LoginState } from '@/model/login';
+// import { getDb } from '@/utility/db';
 
 const { Password } = Input;
 const { Item, useForm } = Form;
 
 const Login: FC<{}> = () => {
-	const login = useSelector((state: any) => state.login);
-	console.log(login);
+	const { loading } = useSelector<any, LoginState>((state: any) => state.login);
 	const dispatch = useDispatch();
 	const [fromRef] = useForm();
 
@@ -45,8 +47,9 @@ const Login: FC<{}> = () => {
 					</Item>
 				</Form>
 				<div className="btn-box">
-					<Button onClick={submitClick} type="primary">
-						登录
+					<Button disabled={loading} onClick={submitClick} type="primary">
+						{loading ? <LoadingOutlined /> : <KeyOutlined />}
+						<span>登录</span>
 					</Button>
 				</div>
 			</LoginBox>
