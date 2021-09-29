@@ -11,10 +11,10 @@ const formatLog = printf(({ level, message, timestamp }) => {
 
 if (process.env.NODE_ENV === 'development') {
     //NOTE: 开发
-    loggerPath = path.resolve('.', './logs');
+    loggerPath = path.resolve('.', './logs/log.txt');
 } else {
     //NOTE: 生产
-    loggerPath = path.resolve(process.cwd(), './logs');
+    loggerPath = path.resolve(process.cwd(), './logs/log.txt');
 }
 
 const logger = createLogger({

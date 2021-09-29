@@ -13,6 +13,7 @@ app.on('ready', () => {
         minHeight: 600,
         minWidth: 800,
         backgroundColor: '#222',
+        autoHideMenuBar: true,
         show: true,
         webPreferences: {
             nodeIntegration: true,
@@ -27,11 +28,11 @@ app.on('ready', () => {
     }
     // #生产模式屏蔽快捷键（发布把注释放开）
     if (mode !== 'development') {
-        globalShortcut.register('Control+R', () => { });
-        globalShortcut.register('Control+Shift+R', () => { });
-        globalShortcut.register('CommandOrControl+Shift+I', () => { });
+        // globalShortcut.register('Control+R', () => { });
+        // globalShortcut.register('Control+Shift+R', () => { });
+        // globalShortcut.register('CommandOrControl+Shift+I', () => { });
     }
-    Menu.setApplicationMenu(null);
+    // mainWindow.removeMenu();
 });
 
 app.on('window-all-closed', () => {

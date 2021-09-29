@@ -20,9 +20,7 @@ const Login: FC<{}> = () => {
 		event.preventDefault();
 		try {
 			const values = await validateFields();
-			console.log(values);
-			sessionStorage.setItem('username', values.username);
-			dispatch(routerRedux.push('/index'));
+			dispatch({ type: 'login/login', payload: values });
 		} catch (error) {
 			console.log(error);
 		}

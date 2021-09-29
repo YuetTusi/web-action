@@ -42,9 +42,7 @@ const createRouter = (api?: RouterAPI) => {
 						<Route
 							path="/login"
 							render={() => {
-								const Next = lazy<FC<any>>(
-									() => import('@/view/index/login')
-								);
+								const Next = lazy<FC<any>>(() => import('@/view/index/login'));
 								return (
 									<Suspense fallback={<Loading />}>
 										<Next />
@@ -58,6 +56,39 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(
 									() => import('@/view/index/index/index')
 								);
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/batch"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/batch'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/log-manage"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/log-manage'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/manage-center"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/manage-center'));
 								return (
 									<Suspense fallback={<Loading />}>
 										<Next />

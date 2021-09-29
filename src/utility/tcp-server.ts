@@ -2,6 +2,7 @@ import { createServer, Socket } from 'net';
 import { stick as StickPackage } from 'stickpackage';
 import logger from '@/utility/log';
 import { helper } from '@/utility/helper';
+import { SocketType } from '@/schema/socket';
 
 const pool = new Map<string, SocketMark>();
 const server = createServer();
@@ -10,7 +11,7 @@ let stack = new StickPackage(1024).setReadIntBE(32);
 /**
  * Socket对象标识
  */
- interface SocketMark {
+interface SocketMark {
     /**
      * Socket端口
      */
@@ -42,7 +43,7 @@ server.on('connection', (socket: Socket) => {
         removeSocketByPort(pool, socket.remotePort!);
         logger.error(`${type}_socket断开(port:${socket.remotePort}), 错误消息: ${err.message}`);
         if (type !== null) {
-            server.emit('socket_error', socket.remotePort, type);
+            server.emit(SocketType.Error, socket.remotePort, type);
         }
     });
 });

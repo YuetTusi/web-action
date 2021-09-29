@@ -5,6 +5,7 @@ import dva from 'dva';
 import immer from 'dva-immer';
 import createRouter from '@/router/index';
 import server from '@/utility/tcp-server';
+import receiveModel from '@/model/receive';
 import loginModel from '@/model/login';
 import 'antd/dist/antd.less';
 
@@ -17,6 +18,7 @@ server.listen(65000, () => {
 const app = dva({ history: createHistory() });
 
 app.use(immer());
+app.model(receiveModel);
 app.model(loginModel);
 app.router(createRouter);
 app.start('#root');

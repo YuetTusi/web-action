@@ -1,7 +1,9 @@
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { routerRedux } from 'dva/router';
+import RootMenu from './root-menu';
 import { WebHeader } from '../layout';
+import ContentBox from '../layout/styled/content-box';
 import { RootPanelProp } from './props';
 
 /**
@@ -17,8 +19,11 @@ const RootPanel = (props: PropsWithChildren<RootPanelProp>) => {
 
 	return (
 		<div style={{ height: '100%', backgroundColor: '#bbc8cb' }}>
-			<WebHeader title="目标查询" />
-			{props.children}
+			<WebHeader />
+			<ContentBox>
+				<RootMenu />
+				{props.children}
+			</ContentBox>
 		</div>
 	);
 };
