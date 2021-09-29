@@ -25,18 +25,42 @@ const createRouter = (api?: RouterAPI) => {
 			<ThemeProvider theme={theme}>
 				<Router history={history}>
 					<Switch>
-						<Route path="/" exact={true} component={Index} />
 						<Route
-							path="/login"
+							path="/"
+							exact={true}
 							render={() => {
 								const Next = lazy<FC<any>>(
 									() => import('@/view/index/login/login')
 								);
 								return (
 									<Suspense fallback={<Loading />}>
-										<RootPanel>
-											<Next />
-										</RootPanel>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/login"
+							render={() => {
+								const Next = lazy<FC<any>>(
+									() => import('@/view/index/login')
+								);
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/index"
+							render={() => {
+								const Next = lazy<FC<any>>(
+									() => import('@/view/index/index/index')
+								);
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
 									</Suspense>
 								);
 							}}

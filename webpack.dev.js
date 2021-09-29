@@ -12,7 +12,7 @@ let config = {
 		filename: '[name].js',
 		path: path.join(__dirname, './dist/renderer')
 	},
-	target: 'web',
+	target: 'electron-preload',
 	resolve: {
 		alias: {
 			'@': path.resolve(__dirname, './src')

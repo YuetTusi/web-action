@@ -1,15 +1,15 @@
 import React, { FC } from 'react';
 import { routerRedux, useDispatch } from 'dva';
+import RootPanel from '@/component/root-panel';
 
 const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
-	const hasLogin = sessionStorage.getItem('login');
 
-	if (hasLogin === null) {
-		dispatch(routerRedux.push('/login'));
-	}
-
-	return <div>Index</div>;
+	return (
+		<RootPanel>
+			<div>Index</div>
+		</RootPanel>
+	);
 };
 
 export default Index;
