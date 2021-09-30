@@ -1,12 +1,13 @@
 import { createServer, Socket } from 'net';
 import { stick as StickPackage } from 'stickpackage';
 import logger from '@/utility/log';
-import { helper } from '@/utility/helper';
 import { SocketType } from '@/schema/socket';
 
 const pool = new Map<string, SocketMark>();
 const server = createServer();
 let stack = new StickPackage(1024).setReadIntBE(32);
+
+stack.onData(stackDataHandle);
 
 /**
  * Socket对象标识
@@ -32,8 +33,20 @@ server.on('connection', (socket: Socket) => {
     console.log(`Socket接入, 端口号: ${socket.remotePort}`);
     logger.info(`Socket接入, 端口号: ${socket.remotePort}`);
 
+    if (!pool.has(SocketType.Fetch)) {
+        //若map中没有名为type的socket，存入map
+        pool.set(SocketType.Fetch, {
+            // type: data.type,
+            type: SocketType.Fetch, //目前只有一个Socket，固定写死
+            port: socket.remotePort!,
+            socket
+        });
+        logger.info(`SocketType:${SocketType.Fetch}, Port:${socket.remotePort}`);
+    }
+
 
     socket.on('data', (chunk: Buffer) => {
+        // console.log('on data:', chunk);
         stack.__socket__ = socket;
         stack.putData(chunk);
     });
@@ -56,13 +69,15 @@ server.on('error', (err) => {
     logger.info(`TCP服务出错,错误消息: ${err.message}`);
 });
 
-stack.onData(stackDataHandle);
-
 /**
  * 粘包回调Handle
  * @param chunk Buffer数据
  */
 function stackDataHandle(chunk: Buffer) {
+
+    console.log('stackDataHandle:');
+    console.log(chunk);
+
     // 拷贝4个字节的长度
     const head = Buffer.alloc(4);
     chunk.copy(head, 0, 0, 4);
@@ -75,27 +90,12 @@ function stackDataHandle(chunk: Buffer) {
         data = JSON.parse(body.toString());
         let socket = stack.__socket__;
 
-        if (helper.isNullOrUndefined(data.type)) {
-            //? 非首次发消息
-            let type = getSocketTypeByPort(pool, socket.remotePort!); //从map中找到socket的type
-            if (type === null) {
-                console.log(`未找到端口号为${socket.remotePort}的socket`);
-                logger.error(`未找到端口号为${socket.remotePort}的socket`);
-            } else {
-                server.emit(type, data);
-            }
+        let type = getSocketTypeByPort(pool, socket.remotePort!); //从map中找到socket的type
+        if (type === null) {
+            console.log(`未找到端口号为${socket.remotePort}的socket`);
+            logger.error(`未找到端口号为${socket.remotePort}的socket`);
         } else {
-            //? 首次发消息，是新socket
-            if (!pool.has(data.type)) {
-                //若map中没有名为type的socket，存入map
-                pool.set(data.type, {
-                    type: data.type,
-                    port: socket.remotePort!,
-                    socket
-                });
-                logger.info(`SocketType:${data.type}, Port:${socket.remotePort}`);
-            }
-            server.emit(data.type, data);
+            server.emit(type, data);
         }
     } catch (error: any) {
         console.log(`解析JSON数据出错，错误消息：${error.message}`);
@@ -118,8 +118,9 @@ function send(type: string, data: Record<string, any>) {
     head.writeUInt32BE(body.byteLength, 0);
     let current = pool.get(type);
     if (current) {
-        current.socket.write(head);
-        current.socket.write(body);
+        // current.socket.write(head);
+        // current.socket.write(body);
+        current.socket.write(Buffer.concat([head, body]));
     } else {
         console.warn(`${type} socket为空`);
     }

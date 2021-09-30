@@ -25,7 +25,7 @@ const Login: FC<{}> = () => {
 			dispatch({ type: 'login/login', payload: values });
 			setTimeout(() => {
 				dispatch({ type: 'login/setLoading', payload: false });
-			}, 3000);
+			}, 500);
 		} catch (error) {
 			console.log(error);
 		}
