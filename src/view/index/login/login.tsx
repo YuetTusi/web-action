@@ -23,6 +23,9 @@ const Login: FC<{}> = () => {
 		try {
 			const values = await validateFields();
 			dispatch({ type: 'login/login', payload: values });
+			setTimeout(() => {
+				dispatch({ type: 'login/setLoading', payload: false });
+			}, 3000);
 		} catch (error) {
 			console.log(error);
 		}

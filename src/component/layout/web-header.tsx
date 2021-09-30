@@ -19,7 +19,7 @@ const getTitle = (pathname: string) => {
 	}
 };
 
-const WebHeader: FC<{ username: string }> = memo(({ username }) => {
+const WebHeader: FC<{}> = memo(() => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
 
@@ -44,8 +44,6 @@ const WebHeader: FC<{ username: string }> = memo(({ username }) => {
 					<span>6</span>
 					<label htmlFor="span">有效期</label>
 					<span>2021-01-01</span>
-					<label>当前用户</label>
-					<a onClick={logoutClick}>{username}</a>
 				</div>
 			</div>
 		</HeaderBox>

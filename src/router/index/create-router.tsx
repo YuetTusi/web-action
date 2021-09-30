@@ -30,7 +30,7 @@ const createRouter = (api?: RouterAPI) => {
 							exact={true}
 							render={() => {
 								const Next = lazy<FC<any>>(
-									() => import('@/view/index/login/login')
+									() => import('@/view/index/index/index')
 								);
 								return (
 									<Suspense fallback={<Loading />}>

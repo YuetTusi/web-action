@@ -3,6 +3,7 @@ import 'dayjs/locale/zh-cn';
 import { createHashHistory as createHistory } from 'history';
 import dva from 'dva';
 import immer from 'dva-immer';
+import readingModel from '@/model/component/reading';
 import createRouter from '@/router/index';
 import server from '@/utility/tcp-server';
 import receiveModel from '@/model/receive';
@@ -18,6 +19,7 @@ server.listen(65000, () => {
 const app = dva({ history: createHistory() });
 
 app.use(immer());
+app.model(readingModel);
 app.model(receiveModel);
 app.model(loginModel);
 app.router(createRouter);
