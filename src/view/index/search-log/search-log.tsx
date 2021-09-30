@@ -2,14 +2,17 @@ import React, { FC } from 'react';
 import { routerRedux, useDispatch } from 'dva';
 import RootPanel from '@/component/root';
 
-const LogManage: FC<{}> = () => {
+/**
+ * 查询日志
+ */
+const SearchLog: FC<{}> = () => {
 	const dispatch = useDispatch();
 
 	return (
 		<RootPanel>
-			<div>LogManage</div>
+			<div>SearchLog</div>
 		</RootPanel>
 	);
 };
 
-export default LogManage;
+export default SearchLog;

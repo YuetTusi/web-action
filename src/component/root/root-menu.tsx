@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import React, { FC } from 'react';
-import { routerRedux, useDispatch } from 'dva';
+import React, { FC, Key, useEffect, useState } from 'react';
+import { routerRedux, useDispatch, useLocation } from 'dva';
 import Menu from 'antd/lib/menu';
 import AimOutlined from '@ant-design/icons/AimOutlined';
 import FileSearchOutlined from '@ant-design/icons/FileSearchOutlined';
 import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
-const { Item } = Menu;
+const { Item, SubMenu } = Menu;
 
 const MenuBox = styled.div`
 	width: 240px;
@@ -21,16 +21,26 @@ const MenuBox = styled.div`
 
 const RootMenu: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const { pathname } = useLocation();
+	const [selectKeys, setSelectKeys] = useState<string[]>([]);
+
+	useEffect(() => {
+		setSelectKeys([pathname]);
+	}, [pathname]);
 
 	return (
 		<MenuBox>
-			<Menu mode="inline" theme="dark">
+			<Menu
+				defaultOpenKeys={['log']}
+				selectedKeys={selectKeys}
+				mode="inline"
+				theme="dark">
 				<Item
 					onClick={() => {
 						dispatch(routerRedux.push('/index'));
 					}}
 					icon={<AimOutlined />}
-					key="M_0">
+					key="/index">
 					目标查询
 				</Item>
 				<Item
@@ -38,23 +48,31 @@ const RootMenu: FC<{}> = () => {
 						dispatch(routerRedux.push('/batch'));
 					}}
 					icon={<FileSearchOutlined />}
-					key="M_1">
+					key="/batch">
 					批量查询
 				</Item>
-				<Item
-					onClick={() => {
-						dispatch(routerRedux.push('/log-manage'));
-					}}
-					icon={<HistoryOutlined />}
-					key="M_2">
-					日志管理
-				</Item>
+				<SubMenu title="日志管理" icon={<HistoryOutlined />} key="log">
+					<Item
+						onClick={() => {
+							dispatch(routerRedux.push('/search-log'));
+						}}
+						key="/search-log">
+						查询日志
+					</Item>
+					<Item
+						onClick={() => {
+							dispatch(routerRedux.push('/op-log'));
+						}}
+						key="/op-log">
+						操作日志
+					</Item>
+				</SubMenu>
 				<Item
 					onClick={() => {
 						dispatch(routerRedux.push('/manage-center'));
 					}}
 					icon={<SettingOutlined />}
-					key="M_3">
+					key="/manage-center">
 					管理中心
 				</Item>
 			</Menu>

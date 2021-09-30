@@ -14,6 +14,10 @@ const getTitle = (pathname: string) => {
 			return '日志管理';
 		case '/manage-center':
 			return '管理中心';
+		case '/search-log':
+			return '查询日志';
+		case '/op-log':
+			return '操作日志';
 		default:
 			return '';
 	}

@@ -2,14 +2,17 @@ import React, { FC } from 'react';
 import { routerRedux, useDispatch } from 'dva';
 import RootPanel from '@/component/root';
 
-const LogManage: FC<{}> = () => {
+/**
+ * 操作日志
+ */
+const OpLog: FC<{}> = () => {
 	const dispatch = useDispatch();
 
 	return (
 		<RootPanel>
-			<div>LogManage</div>
+			<div>OpLog</div>
 		</RootPanel>
 	);
 };
 
-export default LogManage;
+export default OpLog;

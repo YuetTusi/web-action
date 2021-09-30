@@ -1,5 +1,5 @@
 import path from 'path';
-import { app, BrowserWindow, globalShortcut, Menu } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu, OpenDialogReturnValue } from 'electron';
 const mode = process.env['NODE_ENV'];
 
 let mainWindow = null;
@@ -34,6 +34,18 @@ app.on('ready', () => {
     }
     // mainWindow.removeMenu();
 });
+
+ipcMain.handle('select-file', async (event, args) => {
+
+    const val: OpenDialogReturnValue = await dialog
+        .showOpenDialog({
+            title: '选择txt文件',
+            properties: ['openFile'],
+            filters: [{ name: '文本文档', extensions: ['txt'] }]
+        });
+
+    return val;
+})
 
 app.on('window-all-closed', () => {
     app.exit(0);

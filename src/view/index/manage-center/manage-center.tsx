@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { routerRedux, useDispatch } from 'dva';
-import RootPanel from '@/component/root-panel';
+import RootPanel from '@/component/root';
 
 const ManageCenter: FC<{}> = () => {
 	const dispatch = useDispatch();

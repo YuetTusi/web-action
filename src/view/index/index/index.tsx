@@ -8,7 +8,7 @@ import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Badge from 'antd/lib/badge';
 import Card from 'antd/lib/card';
-import RootPanel from '@/component/root-panel';
+import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { CardTitle } from './styled/card-title';
 import { CardItemList } from './styled/card-item';

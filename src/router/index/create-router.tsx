@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import React, { FC, lazy, Suspense } from 'react';
 import { RouterAPI } from 'dva';
 import { Router, Route, Switch } from 'dva/router';
-import RootPanel from '@/component/root-panel';
+import RootPanel from '@/component/root';
 import Loading from '@/component/loading';
 import Index from '@/view/index/index';
 // import { NotFound } from '@/view/warn';
@@ -75,9 +75,20 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/log-manage"
+							path="/search-log"
 							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/log-manage'));
+								const Next = lazy<FC<any>>(() => import('@/view/index/search-log'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/op-log"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/op-log'));
 								return (
 									<Suspense fallback={<Loading />}>
 										<Next />
