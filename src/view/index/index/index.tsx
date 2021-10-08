@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react';
-import { routerRedux, useDispatch } from 'dva';
+import { useDispatch } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
@@ -12,27 +12,43 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { CardTitle } from './styled/card-title';
 import { CardItemList } from './styled/card-item';
+import { MobileNumber } from '@/utility/regex';
+import { message } from 'antd';
+import { send } from '@/utility/tcp-server';
+import { CommandType, SocketType } from '@/schema/socket';
 
-const { Item } = Form;
+const { Item, useForm } = Form;
 const { Ribbon } = Badge;
 
 const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const [formRef] = useForm();
 
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
-		dispatch({ type: 'reading/setReading', payload: true });
-		setTimeout(() => {
-			dispatch({ type: 'reading/setReading', payload: false });
-		}, 1000);
+		const { getFieldValue } = formRef;
+
+		const value = getFieldValue('mobile');
+
+		if (!MobileNumber.test(value)) {
+			message.destroy();
+			message.warn('请输入正确的手机号');
+			return;
+		} else {
+			dispatch({ type: 'reading/setReading', payload: true });
+			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { mobile: value } });
+			setTimeout(() => {
+				dispatch({ type: 'reading/setReading', payload: false });
+			}, 1000);
+		}
 	};
 
 	return (
 		<RootPanel>
 			<PadBox>
-				<Form layout="inline">
-					<Item label="目标手机号">
+				<Form form={formRef} layout="inline">
+					<Item name="mobile" label="目标手机号">
 						<Input />
 					</Item>
 					<Item>

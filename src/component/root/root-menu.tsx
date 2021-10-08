@@ -8,6 +8,7 @@ import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
 const { Item, SubMenu } = Menu;
+let defaultOpenKeys: string[] = [];
 
 const MenuBox = styled.div`
 	width: 240px;
@@ -28,10 +29,13 @@ const RootMenu: FC<{}> = () => {
 		setSelectKeys([pathname]);
 	}, [pathname]);
 
+	const menuOpenChange = (keys: Key[]) => (defaultOpenKeys = keys.map((i) => i.toString()));
+
 	return (
 		<MenuBox>
 			<Menu
-				defaultOpenKeys={['log']}
+				onOpenChange={menuOpenChange}
+				defaultOpenKeys={defaultOpenKeys}
 				selectedKeys={selectKeys}
 				mode="inline"
 				theme="dark">

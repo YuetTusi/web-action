@@ -1,10 +1,23 @@
+/**
+ * Socket分类
+ */
 enum SocketType {
     Fetch = 'fetch',
     Error = 'socket_error'
 }
 
+/**
+ * 命令类型
+ */
 enum CommandType {
-    Login = 'login'
+    /**
+     * 登录
+     */
+    Login = 'login',
+    /**
+     * 目标手机查询
+     */
+    GetSingle = 'get-single'
 }
 
 /**

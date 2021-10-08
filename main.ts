@@ -1,8 +1,9 @@
 import path from 'path';
-import { app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu, OpenDialogReturnValue } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
 const mode = process.env['NODE_ENV'];
+const cwd = process.cwd();
 
-let mainWindow = null;
+let mainWindow: BrowserWindow | null = null;
 
 app.on('ready', () => {
 
@@ -45,7 +46,18 @@ ipcMain.handle('select-file', async (event, args) => {
         });
 
     return val;
-})
+});
+
+ipcMain.handle('save-temp-file', async (event, args) => {
+    const val: SaveDialogReturnValue = await dialog
+        .showSaveDialog(mainWindow!, {
+            title: '下载批量查询模板',
+            properties: ['createDirectory'],
+            defaultPath: cwd,
+            filters: [{ name: '模板文件', extensions: ['txt'] }]
+        });
+    return val;
+});
 
 app.on('window-all-closed', () => {
     app.exit(0);

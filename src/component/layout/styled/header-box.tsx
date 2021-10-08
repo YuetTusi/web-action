@@ -39,7 +39,7 @@ const HeaderBox = styled.div`
 		span {
 			color: #1890ff;
 			font-weight: bold;
-			margin-right: 10px;
+			margin-right: 20px;
 		}
 		a {
 			color: #1890ff;
