@@ -1,0 +1,6 @@
+interface BatchProp {
+
+}
+
+export { BatchProp };
+

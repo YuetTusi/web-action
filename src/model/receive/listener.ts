@@ -1,6 +1,7 @@
 import { Dispatch, routerRedux } from "dva";
 import message from 'antd/lib/message';
-import { Command } from "@/schema/socket";
+import { Command, Result } from "@/schema/socket";
+import { SingleDataSource } from "../single";
 
 /**
  * 登录结果
@@ -18,3 +19,16 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
         message.error('登录失败');
     }
 }
+
+/**
+ * 目标查询结果
+ */
+export function getSingleResult(dispatch: Dispatch, { msg }: Command<Result<SingleDataSource[]>>) {
+
+    if (msg.ret === 0) {
+        dispatch({ type: 'single/setData', payload: msg.data });
+    }
+    // dispatch({ type: 'single/setData', payload: msg });
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+

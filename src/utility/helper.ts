@@ -1,3 +1,5 @@
+const PAGESIZE = 10;
+
 //封装工具函数
 const helper = {
     /**
@@ -14,4 +16,4 @@ const helper = {
     }
 };
 
-export { helper };
+export { helper, PAGESIZE };

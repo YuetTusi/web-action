@@ -9,6 +9,7 @@ import Select from 'antd/lib/select';
 import Table from 'antd/lib/table';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
+import { CaseSort } from '@/schema/common';
 
 const { Item } = Form;
 const { Option } = Select;
@@ -33,9 +34,9 @@ const SearchLog: FC<{}> = () => {
 					</Item>
 					<Item label="专题类型">
 						<Select mode="multiple" style={{ width: '200px' }}>
-							<Option value="1">涉黄</Option>
-							<Option value="2">传销</Option>
-							<Option value="3">涉赌</Option>
+							<Option value={CaseSort.Porn}>涉黄</Option>
+							<Option value={CaseSort.PyramidSales}>传销</Option>
+							<Option value={CaseSort.Bet}>涉赌</Option>
 						</Select>
 					</Item>
 					<Item>

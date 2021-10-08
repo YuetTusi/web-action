@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react';
-import { useDispatch } from 'dva';
+import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
@@ -16,19 +16,23 @@ import { MobileNumber } from '@/utility/regex';
 import { message } from 'antd';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
+import { SingleState } from '@/model/single';
 
 const { Item, useForm } = Form;
 const { Ribbon } = Badge;
 
+/**
+ * 目标查询
+ */
 const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const { data } = useSelector<any, SingleState>((state) => state.single);
 	const [formRef] = useForm();
 
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
 		const { getFieldValue } = formRef;
-
 		const value = getFieldValue('mobile');
 
 		if (!MobileNumber.test(value)) {

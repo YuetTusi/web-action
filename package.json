@@ -35,6 +35,12 @@
 			"icon.png",
 			"packages.json"
 		],
+		"extraResources": [
+			{
+				"from": "asset",
+				"to": "asset"
+			}
+		],
 		"win": {
 			"target": [
 				"nsis",

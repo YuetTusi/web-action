@@ -8,6 +8,8 @@ import createRouter from '@/router/index';
 import server from '@/utility/tcp-server';
 import receiveModel from '@/model/receive';
 import loginModel from '@/model/login';
+import singleModel from '@/model/single';
+import batchModel from '@/model/batch';
 import 'antd/dist/antd.less';
 
 dayjs.locale('zh-cn');
@@ -22,5 +24,7 @@ app.use(immer());
 app.model(readingModel);
 app.model(receiveModel);
 app.model(loginModel);
+app.model(singleModel);
+app.model(batchModel);
 app.router(createRouter);
 app.start('#root');

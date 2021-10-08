@@ -17,17 +17,17 @@ enum CommandType {
     /**
      * 目标手机查询
      */
-    GetSingle = 'get-single'
+    GetSingle = 'get-single',
+    /**
+     * 目标手机查询结果
+     */
+    GetSingleResult = 'get-single-result'
 }
 
 /**
  * 命令格式
  */
 interface Command<T = any> {
-    /**
-     * Socket类型
-     */
-    type: SocketType;
     /**
      * 命令
      */
@@ -38,4 +38,13 @@ interface Command<T = any> {
     msg: T;
 }
 
-export { SocketType, CommandType, Command };
+/**
+ * 后端返回结果
+ */
+interface Result<T = any> {
+    ret: number,
+    message: string,
+    data: T,
+}
+
+export { SocketType, CommandType, Command, Result };

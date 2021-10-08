@@ -1,7 +1,7 @@
 import { createServer, Socket } from 'net';
 import { stick as StickPackage } from 'stickpackage';
 import logger from '@/utility/log';
-import { CommandType, SocketType } from '@/schema/socket';
+import { Command, CommandType, SocketType } from '@/schema/socket';
 
 const pool = new Map<string, SocketMark>();
 const server = createServer();
@@ -111,7 +111,7 @@ function stackDataHandle(chunk: Buffer) {
  * @param type 消息类型
  * @param data 数据(JSON类型)
  */
-function send(type: string, data: { cmd: string | CommandType, msg: Record<string, any> }) {
+function send<T = any>(type: string, data: Command<T>) {
     const body = Buffer.from(JSON.stringify(data));
     // 写入包头, 也就是4字节大小, 该大小指向后面的json数据的长度, 也就是这里的body
     const head = Buffer.alloc(4);
