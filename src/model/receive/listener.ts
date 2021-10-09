@@ -2,6 +2,7 @@ import { Dispatch, routerRedux } from "dva";
 import message from 'antd/lib/message';
 import { Command, Result } from "@/schema/socket";
 import { SingleDataSource } from "../single";
+import { UserInfoState } from "../user-info";
 
 /**
  * 登录结果
@@ -21,9 +22,26 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
 }
 
 /**
+ * 查询用户信息
+ */
+export function findUserInfo(dispatch: Dispatch, cmd: Command<Result<UserInfoState>>) {
+
+    console.log(cmd);
+    const { msg } = cmd;
+
+    if (msg.ret === 0) {
+        dispatch({ type: 'userInfo/setData', payload: msg.data });
+    }
+}
+
+/**
  * 目标查询结果
  */
-export function getSingleResult(dispatch: Dispatch, { msg }: Command<Result<SingleDataSource[]>>) {
+export function getSingleResult(dispatch: Dispatch, cmd: Command<Result<SingleDataSource[]>>) {
+
+    console.log(cmd);
+
+    const { msg } = cmd;
 
     if (msg.ret === 0) {
         dispatch({ type: 'single/setData', payload: msg.data });

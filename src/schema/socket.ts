@@ -11,6 +11,10 @@ enum SocketType {
  */
 enum CommandType {
     /**
+     * 查询用户信息
+     */
+    FindUserInfo = 'find-user-info',
+    /**
      * 登录
      */
     Login = 'login',

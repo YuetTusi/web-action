@@ -122,7 +122,7 @@ function send<T = any>(type: string, data: Command<T>) {
         // current.socket.write(body);
         current.socket.write(Buffer.concat([head, body]));
     } else {
-        console.warn(`${type} socket为空`);
+        console.warn('Socket is null');
     }
 }
 

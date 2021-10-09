@@ -75,6 +75,28 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
+							path="/bank"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/bank'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/bank-batch"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/bank-batch'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
 							path="/search-log"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/search-log'));
@@ -99,7 +121,9 @@ const createRouter = (api?: RouterAPI) => {
 						<Route
 							path="/manage-center"
 							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/manage-center'));
+								const Next = lazy<FC<any>>(
+									() => import('@/view/index/manage-center')
+								);
 								return (
 									<Suspense fallback={<Loading />}>
 										<Next />

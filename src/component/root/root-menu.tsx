@@ -4,6 +4,7 @@ import { routerRedux, useDispatch, useLocation } from 'dva';
 import Menu from 'antd/lib/menu';
 import AimOutlined from '@ant-design/icons/AimOutlined';
 import FileSearchOutlined from '@ant-design/icons/FileSearchOutlined';
+import CreditCardOutlined from '@ant-design/icons/CreditCardOutlined';
 import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
 
@@ -20,6 +21,9 @@ const MenuBox = styled.div`
 	}
 `;
 
+/**
+ * 菜单
+ */
 const RootMenu: FC<{}> = () => {
 	const dispatch = useDispatch();
 	const { pathname } = useLocation();
@@ -53,7 +57,23 @@ const RootMenu: FC<{}> = () => {
 					}}
 					icon={<FileSearchOutlined />}
 					key="/batch">
-					批量查询
+					目标批量查询
+				</Item>
+				<Item
+					onClick={() => {
+						dispatch(routerRedux.push('/bank'));
+					}}
+					icon={<CreditCardOutlined />}
+					key="/bank">
+					银行卡查询
+				</Item>
+				<Item
+					onClick={() => {
+						dispatch(routerRedux.push('/bank-batch'));
+					}}
+					icon={<FileSearchOutlined />}
+					key="/bank-batch">
+					银行卡批量查询
 				</Item>
 				<SubMenu title="日志管理" icon={<HistoryOutlined />} key="log">
 					<Item

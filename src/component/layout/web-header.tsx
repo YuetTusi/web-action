@@ -1,7 +1,7 @@
-import React, { FC, MouseEvent, memo } from 'react';
-import { useDispatch } from 'react-redux';
-import { routerRedux, useLocation } from 'dva';
+import React, { FC, memo } from 'react';
+import { useLocation, useSelector } from 'dva';
 import { HeaderBox } from './styled/header-box';
+import { UserInfoState } from '@/model/user-info';
 
 const getTitle = (pathname: string) => {
 	switch (pathname) {
@@ -9,7 +9,11 @@ const getTitle = (pathname: string) => {
 		case '/index':
 			return '目标查询';
 		case '/batch':
-			return '批量查询';
+			return '目标批量查询';
+		case '/bank':
+			return '银行卡查询';
+		case '/bank-batch':
+			return '银行卡批量查询';
 		case '/log-manage':
 			return '日志管理';
 		case '/manage-center':
@@ -24,17 +28,19 @@ const getTitle = (pathname: string) => {
 };
 
 const WebHeader: FC<{}> = memo(() => {
-	const dispatch = useDispatch();
+	const { frequency_limit, validate } = useSelector<any, UserInfoState>(
+		(state) => state.userInfo
+	);
 	const { pathname } = useLocation();
 
 	/**
 	 * 登出Click
 	 */
-	const logoutClick = (event: MouseEvent<HTMLAnchorElement>) => {
-		event.preventDefault();
-		sessionStorage.clear();
-		dispatch(routerRedux.push('/login'));
-	};
+	// const logoutClick = (event: MouseEvent<HTMLAnchorElement>) => {
+	// 	event.preventDefault();
+	// 	sessionStorage.clear();
+	// 	dispatch(routerRedux.push('/login'));
+	// };
 
 	return (
 		<HeaderBox>
@@ -45,9 +51,9 @@ const WebHeader: FC<{}> = memo(() => {
 				</div>
 				<div className="info">
 					<label htmlFor="span">可用次数</label>
-					<span>6</span>
+					<span>{frequency_limit}</span>
 					<label htmlFor="span">有效期</label>
-					<span>2021-01-01</span>
+					<span>{validate}</span>
 				</div>
 			</div>
 		</HeaderBox>

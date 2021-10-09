@@ -14,17 +14,20 @@ import message from 'antd/lib/message';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { helper, PAGESIZE } from '@/utility/helper';
+import { CaseSort } from '@/schema/common';
 import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
 import { ActionPanel } from './styled/batch-style';
 import CategoryModal from './category-modal';
 import { BatchProp } from './prop';
-import { CaseSort } from '@/schema/common';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Item, useForm } = Form;
 const { Column } = Table;
 
+/**
+ * 批量查询
+ */
 const Batch: FC<BatchProp> = () => {
 	const dispatch = useDispatch();
 	const { data, pageIndex, loading } = useSelector<any, BatchState>((state) => state.batch);
@@ -149,13 +152,17 @@ const Batch: FC<BatchProp> = () => {
 						onChange: onPageChange
 					}}
 					loading={loading}
+					
 					rowKey={'mobile'}>
 					<Column
 						title="序号"
 						dataIndex="no"
 						key="no"
 						width="50"
-						render={(value, record, index) => (pageIndex - 1) * PAGESIZE + index + 1}
+						ellipsis={true}
+						render={(value, record, index) => (
+							<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>{(pageIndex - 1) * PAGESIZE + index + 1}</div>
+						)}
 					/>
 					<Column title="查询时间" dataIndex="gmt_create" key="gmt_create" />
 					<Column title="目标帐号" dataIndex="mobile" key="mobile" />
