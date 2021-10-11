@@ -2,11 +2,11 @@ import { Model } from 'dva';
 import reducers from './reducers';
 import { PAGESIZE } from '@/utility/helper';
 
-interface SearchLogState {
+interface OpLogState {
     /**
      * 数据
      */
-    data: SearchLogData[],
+    data: OpLogData[],
     /**
      * 当前页
      */
@@ -25,19 +25,27 @@ interface SearchLogState {
     loading: boolean
 }
 
-interface SearchLogData {
+interface OpLogData {
     /**
      * ID
      */
-    query_id: string,
+    log_id: string,
     /**
-     * 目标手机号
+     * ID
      */
-    phone_num: string,
+    user_id: string,
     /**
-     * 查询类型
+     * 操作人
      */
-    query_type: number,
+    username: string,
+    /**
+     * 操作内容
+     */
+    operation_name: number,
+    /**
+     * 状态
+     */
+    status: number,
     /**
      * 查询时间
      */
@@ -45,7 +53,7 @@ interface SearchLogData {
 }
 
 let model: Model = {
-    namespace: 'searchLog',
+    namespace: 'opLog',
     state: {
         pageIndex: 1,
         pageSize: PAGESIZE,
@@ -56,5 +64,5 @@ let model: Model = {
     reducers
 }
 
-export { SearchLogState, SearchLogData };
+export { OpLogState, OpLogData };
 export default model;

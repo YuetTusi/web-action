@@ -2,7 +2,7 @@ import { SubscriptionAPI } from 'dva';
 import server from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
-import { findUserInfo, getSingleResult, queryLogResult } from './listener';
+import { findUserInfo, getSingleResult, operationLogResult, queryLogResult } from './listener';
 
 export default {
 
@@ -25,8 +25,12 @@ export default {
                 case CommandType.QueryLogResult:
                     queryLogResult(dispatch, command);
                     break;
+                case CommandType.OperationLogResult:
+                    operationLogResult(dispatch, command);
+                    break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
+                    log.warn(`Not known command: ${command.cmd}`);
                     break;
             }
         });

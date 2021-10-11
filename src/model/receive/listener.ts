@@ -4,6 +4,7 @@ import { Command, Result } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
+import { OpLogData } from "../op-log";
 
 /**
  * 登录结果
@@ -69,6 +70,34 @@ export function queryLogResult(dispatch: Dispatch, cmd: Command<Result<{
         });
         dispatch({
             type: 'searchLog/setData',
+            payload: data.rows
+        });
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 操作日志
+ */
+export function operationLogResult(dispatch: Dispatch, cmd: Command<Result<{
+    pageIndex: number,
+    pageSize: number,
+    totalPage: number,
+    totalCount: number,
+    rows: OpLogData[]
+}>>) {
+    const { ret, data } = cmd.msg;
+    if (ret === 0) {
+        dispatch({
+            type: 'opLog/setPage',
+            payload: {
+                pageIndex: data.pageIndex,
+                pageSize: data.pageSize,
+                total: data.totalCount
+            }
+        });
+        dispatch({
+            type: 'opLog/setData',
             payload: data.rows
         });
     }

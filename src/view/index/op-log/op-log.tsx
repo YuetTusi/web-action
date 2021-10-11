@@ -1,35 +1,77 @@
 import React, { FC, MouseEvent } from 'react';
-import { useDispatch } from 'dva';
+import { useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import SyncOutlined from '@ant-design/icons/SyncOutlined';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
-import Select from 'antd/lib/select';
 import Table from 'antd/lib/table';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
+import { OpLogData, OpLogState } from '@/model/op-log';
+import { CommandType, SocketType } from '@/schema/socket';
+import { PAGESIZE } from '@/utility/helper';
+import { send } from '@/utility/tcp-server';
+import { getColumn } from './column';
 
-const { Item } = Form;
-const { Option } = Select;
-const { Column } = Table;
+const { Item, useForm } = Form;
 
 /**
  * 操作日志
  */
 const OpLog: FC<{}> = () => {
-	const dispatch = useDispatch();
+	const { data, pageIndex, pageSize, total } = useSelector<any, OpLogState>(
+		(state) => state.opLog
+	);
+	const [formRef] = useForm<{ keyword: string }>();
 
-	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {};
+	/**
+	 * 查询Click
+	 */
+	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
+		const { getFieldsValue } = formRef;
+		const { keyword } = getFieldsValue();
+		// dispatch({ type: 'reading/setReading', payload: true });
+		send(SocketType.Fetch, {
+			cmd: CommandType.OperationLog,
+			msg: {
+				keyword: keyword ?? '',
+				pageIndex,
+				pageSize: pageSize ?? PAGESIZE
+			}
+		});
+	};
 
+	/**
+	 * 重置Click
+	 */
 	const resetClick = (event: MouseEvent<HTMLButtonElement>) => {};
+
+	/**
+	 * 翻页Change
+	 * @param pageIndex 当前页
+	 * @param pageSize 页尺寸
+	 */
+	const onPageChange = (pageIndex: number, pageSize?: number) => {
+		const { getFieldsValue } = formRef;
+		const { keyword } = getFieldsValue();
+		// dispatch({ type: 'reading/setReading', payload: true });
+		send(SocketType.Fetch, {
+			cmd: CommandType.OperationLog,
+			msg: {
+				keyword: keyword ?? '',
+				pageIndex,
+				pageSize: pageSize ?? PAGESIZE
+			}
+		});
+	};
 
 	return (
 		<RootPanel>
 			<PadBox>
-				<Form layout="inline">
-					<Item label="过滤项">
-						<Input onClick={() => {}} />
+				<Form form={formRef} layout="inline">
+					<Item name="keyword" label="过滤项">
+						<Input />
 					</Item>
 					<Item>
 						<Button onClick={searchClick} type="primary">
@@ -46,13 +88,17 @@ const OpLog: FC<{}> = () => {
 				</Form>
 			</PadBox>
 			<div>
-				<Table<any>>
-					<Column title="日志序号" dataIndex="0" key="0" />
-					<Column title="操作内容" dataIndex="1" key="1" />
-					<Column title="操作人" dataIndex="2" key="2" />
-					<Column title="操作状态" dataIndex="3" key="3" />
-					<Column title="操作时间" dataIndex="4" key="4" />
-				</Table>
+				<Table<OpLogData>
+					pagination={{
+						current: pageIndex,
+						pageSize,
+						total,
+						onChange: onPageChange
+					}}
+					columns={getColumn()}
+					dataSource={data}
+					rowKey="log_id"
+				/>
 			</div>
 		</RootPanel>
 	);
