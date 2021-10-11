@@ -1,4 +1,4 @@
-const PAGESIZE = 10;
+const PAGESIZE = 1;
 
 //封装工具函数
 const helper = {

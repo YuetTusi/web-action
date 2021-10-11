@@ -1,16 +1,12 @@
-import localeCN from 'antd/es/locale/zh_CN';
-import ConfigProvider from 'antd/lib/config-provider';
-import { ThemeProvider } from 'styled-components';
 import React, { FC, lazy, Suspense } from 'react';
 import { RouterAPI } from 'dva';
 import { Router, Route, Switch } from 'dva/router';
-import RootPanel from '@/component/root';
+import localeCN from 'antd/es/locale/zh_CN';
+import ConfigProvider from 'antd/lib/config-provider';
+import { ThemeProvider } from 'styled-components';
 import Loading from '@/component/loading';
-import Index from '@/view/index/index';
-// import { NotFound } from '@/view/warn';
 import { theme } from '@/styled/theme';
 import { GlobalStyle } from '@/styled/global-style';
-// import { GlobalStyle } from '@/component/styled/global-style';
 
 /**
  * 路由配置
@@ -140,4 +136,33 @@ const createRouter = (api?: RouterAPI) => {
 	);
 };
 
-export { createRouter };
+/**
+ * 返回路由页面标题
+ * @param pathname 路由地址
+ * @returns 标题
+ */
+const routeCaption = (pathname: string) => {
+	switch (pathname) {
+		case '/':
+		case '/index':
+			return '目标查询';
+		case '/batch':
+			return '目标批量查询';
+		case '/bank':
+			return '银行卡查询';
+		case '/bank-batch':
+			return '银行卡批量查询';
+		case '/log-manage':
+			return '日志管理';
+		case '/manage-center':
+			return '管理中心';
+		case '/search-log':
+			return '查询日志';
+		case '/op-log':
+			return '操作日志';
+		default:
+			return '';
+	}
+};
+
+export { createRouter, routeCaption };

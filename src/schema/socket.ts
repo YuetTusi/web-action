@@ -25,7 +25,23 @@ enum CommandType {
     /**
      * 目标手机查询结果
      */
-    GetSingleResult = 'get-single-result'
+    GetSingleResult = 'get-single-result',
+    /**
+     * 查询日志
+     */
+    QueryLog = 'query-log',
+    /**
+     * 查询日志结果
+     */
+    QueryLogResult = 'query-log-result',
+    /**
+     * 操作日志
+     */
+    OperationLog = 'operation-log',
+    /**
+     * 操作日志结果
+     */
+    OperationLogResult = 'operation-log-result'
 }
 
 /**

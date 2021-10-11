@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent } from 'react';
-import { useDispatch } from 'dva';
+import { useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import SyncOutlined from '@ant-design/icons/SyncOutlined';
 import Form from 'antd/lib/form';
@@ -10,29 +10,71 @@ import Table from 'antd/lib/table';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { CaseSort } from '@/schema/common';
+import { SearchLogData, SearchLogState } from '@/model/search-log';
+import { helper, PAGESIZE } from '@/utility/helper';
+import { getColumn } from './column';
+import { FormValue, SearchLogProp } from './props';
+import { send } from '@/utility/tcp-server';
+import { CommandType, SocketType } from '@/schema/socket';
 
-const { Item } = Form;
+const { Item, useForm } = Form;
 const { Option } = Select;
-const { Column } = Table;
 
 /**
  * 查询日志
  */
-const SearchLog: FC<{}> = () => {
-	const dispatch = useDispatch();
+const SearchLog: FC<SearchLogProp> = () => {
 
-	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {};
+	const { data, pageIndex, pageSize, total, loading } = useSelector<any, SearchLogState>(
+		(state) => state.searchLog
+	);
+	const [formRef] = useForm<FormValue>();
+
+	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
+		const { getFieldsValue } = formRef;
+		const { keyword, special_type } = getFieldsValue();
+		// dispatch({ type: 'reading/setReading', payload: true });
+		send(SocketType.Fetch, {
+			cmd: CommandType.QueryLog,
+			msg: {
+				keyword: keyword ?? '',
+				special_type: helper.isNullOrUndefined(special_type) ? '' : special_type.join(','),
+				pageIndex,
+				pageSize
+			}
+		});
+	};
 
 	const resetClick = (event: MouseEvent<HTMLButtonElement>) => {};
+
+	/**
+	 * 翻页Change
+	 * @param pageIndex 当前页
+	 * @param pageSize 页尺寸
+	 */
+	const onPageChange = (pageIndex: number, pageSize?: number) => {
+		const { getFieldsValue } = formRef;
+		const { keyword, special_type } = getFieldsValue();
+		// dispatch({ type: 'reading/setReading', payload: true });
+		send(SocketType.Fetch, {
+			cmd: CommandType.QueryLog,
+			msg: {
+				keyword: keyword ?? '',
+				special_type: helper.isNullOrUndefined(special_type) ? '' : special_type.join(','),
+				pageIndex,
+				pageSize: pageSize ?? PAGESIZE
+			}
+		});
+	};
 
 	return (
 		<RootPanel>
 			<PadBox>
-				<Form layout="inline">
-					<Item label="过滤项">
+				<Form form={formRef} layout="inline">
+					<Item name="keyword" label="过滤项">
 						<Input onClick={() => {}} />
 					</Item>
-					<Item label="专题类型">
+					<Item name="special_type" label="专题类型">
 						<Select mode="multiple" style={{ width: '200px' }}>
 							<Option value={CaseSort.Porn}>涉黄</Option>
 							<Option value={CaseSort.PyramidSales}>传销</Option>
@@ -54,13 +96,18 @@ const SearchLog: FC<{}> = () => {
 				</Form>
 			</PadBox>
 			<div>
-				<Table<any>>
-					<Column title="日志序号" dataIndex="0" key="0" />
-					<Column title="查询时间" dataIndex="1" key="1" />
-					<Column title="查询类型" dataIndex="2" key="2" />
-					<Column title="目标账号" dataIndex="3" key="3" />
-					<Column title="查询结果" dataIndex="4" key="4" />
-				</Table>
+				<Table<SearchLogData>
+					pagination={{
+						current: pageIndex,
+						pageSize,
+						total,
+						onChange: onPageChange
+					}}
+					columns={getColumn()}
+					dataSource={data}
+					loading={loading}
+					rowKey="query_id"
+				/>
 			</div>
 		</RootPanel>
 	);

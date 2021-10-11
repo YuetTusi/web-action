@@ -13,6 +13,7 @@ import singleModel from '@/model/single';
 import batchModel from '@/model/batch';
 import bankModel from '@/model/bank';
 import bankBatchModel from '@/model/bank-batch';
+import searchLogModel from '@/model/search-log';
 import 'antd/dist/antd.less';
 
 dayjs.locale('zh-cn');
@@ -32,5 +33,6 @@ app.model(singleModel);
 app.model(batchModel);
 app.model(bankModel);
 app.model(bankBatchModel);
+app.model(searchLogModel);
 app.router(createRouter);
 app.start('#root');
