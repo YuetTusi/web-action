@@ -4,6 +4,7 @@ import { createHashHistory as createHistory } from 'history';
 import dva from 'dva';
 import immer from 'dva-immer';
 import readingModel from '@/model/component/reading';
+import webMenuModel from '@/model/component/web-menu';
 import userInfoModel from '@/model/user-info';
 import createRouter from '@/router/index';
 import server from '@/utility/tcp-server';
@@ -30,6 +31,7 @@ const app = dva({ history: createHistory() });
 
 app.use(immer());
 app.model(readingModel);
+app.model(webMenuModel);
 app.model(userInfoModel);
 app.model(receiveModel);
 app.model(loginModel);

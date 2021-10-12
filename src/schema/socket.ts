@@ -15,6 +15,10 @@ enum CommandType {
      */
     UIStart = 'ui-start',
     /**
+     * 接收菜单
+     */
+    MenuResult = 'menu-result',
+    /**
      * 查询用户信息
      */
     FindUserInfo = 'find-user-info',

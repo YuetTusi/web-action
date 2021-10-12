@@ -6,6 +6,7 @@ import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
 import { OpLogData } from "../op-log";
 import { RoleData } from "../role";
+import { MenuNode } from "../component/web-menu";
 
 /**
  * 登录结果
@@ -21,6 +22,17 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
         dispatch(routerRedux.push('/index'));
     } else {
         message.error('登录失败');
+    }
+}
+
+/**
+ * 查询菜单数据
+ */
+export function menuResult(dispatch: Dispatch, cmd: Command<Result<MenuNode[]>>) {
+    const { msg } = cmd;
+
+    if (msg.ret === 0) {
+        dispatch({ type: 'webMenu/setData', payload: msg.data });
     }
 }
 

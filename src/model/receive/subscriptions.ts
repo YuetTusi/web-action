@@ -2,7 +2,10 @@ import { SubscriptionAPI } from 'dva';
 import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
-import { findUserInfo, getSingleResult, operationLogResult, queryLogResult, queryRoleResult } from './listener';
+import {
+    findUserInfo, getSingleResult, menuResult, operationLogResult,
+    queryLogResult, queryRoleResult
+} from './listener';
 
 const { Fetch } = SocketType;
 
@@ -18,6 +21,9 @@ export default {
             log.info(`Receive command (${command.cmd}): ,msg: ${JSON.stringify(command.msg)}`);
 
             switch (command.cmd) {
+                case CommandType.MenuResult:
+                    menuResult(dispatch, command);
+                    break;
                 case CommandType.FindUserInfo:
                     findUserInfo(dispatch, command);
                     break;

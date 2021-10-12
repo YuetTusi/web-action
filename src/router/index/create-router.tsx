@@ -47,7 +47,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/index"
+							path="/targetInquire"
 							render={() => {
 								const Next = lazy<FC<any>>(
 									() => import('@/view/index/index/index')
@@ -60,7 +60,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/batch"
+							path="/batchInquire"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/batch'));
 								return (
@@ -93,7 +93,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/search-log"
+							path="/inquireJournal"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/search-log'));
 								return (
@@ -104,7 +104,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/op-log"
+							path="/operateJournal"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/op-log'));
 								return (
@@ -115,7 +115,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/department"
+							path="/deptmanage"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/department'));
 								return (
@@ -126,7 +126,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/role"
+							path="/rolemanage"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/role'));
 								return (
@@ -137,7 +137,7 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/user"
+							path="/usermanage"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/user'));
 								return (
@@ -164,27 +164,27 @@ const createRouter = (api?: RouterAPI) => {
 const routeCaption = (pathname: string) => {
 	switch (pathname) {
 		case '/':
-		case '/index':
+		case '/targetInquire':
 			return '目标查询';
-		case '/batch':
+		case '/batchInquire':
 			return '目标批量查询';
 		case '/bank':
 			return '银行卡查询';
 		case '/bank-batch':
 			return '银行卡批量查询';
-		case '/log-manage':
+		case '/journalManage':
 			return '日志管理';
-		case '/search-log':
+		case '/inquireJournal':
 			return '查询日志';
-		case '/op-log':
+		case '/operateJournal':
 			return '操作日志';
-		case '/manage-center':
+		case '/systemsetup':
 			return '管理中心';
-		case '/department':
+		case '/deptmanage':
 			return '部门管理';
-		case '/role':
+		case '/rolemanage':
 			return '角色管理';
-		case '/user':
+		case '/usermanage':
 			return '帐户管理';
 		default:
 			return '';
