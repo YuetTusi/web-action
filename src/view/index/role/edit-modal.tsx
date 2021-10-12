@@ -1,21 +1,35 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import Modal from 'antd/lib/modal';
 import Button from 'antd/lib/button';
 import Tree from 'antd/lib/tree';
+import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined';
+import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
 import { EditModalProp } from './prop';
+import { Key } from 'antd/es/table/interface';
 
 /**
  * 编辑框
  */
 const EditModal: FC<EditModalProp> = ({ visible, data, checkedKeys, onCancel, onOk }) => {
+	const keys = useRef<string[]>([]);
+	useEffect(() => {
+		keys.current = checkedKeys ?? [];
+	}, [checkedKeys]);
+
+	const onTreeCheck = (checked: Key[] | { checked: Key[]; halfChecked: Key[] }) => {
+		keys.current = checked as string[];
+	};
+
 	return (
 		<Modal
 			footer={[
-				<Button onClick={() => onCancel()} type="default">
-					取消
+				<Button onClick={() => onCancel()} type="default" key="B_0">
+					<CloseCircleOutlined />
+					<span>取消</span>
 				</Button>,
-				<Button onClick={() => onOk()} type="primary">
-					确定
+				<Button onClick={() => onOk(keys.current)} type="primary" key="B_1">
+					<CheckCircleOutlined />
+					<span>确定</span>
 				</Button>
 			]}
 			onCancel={onCancel}
@@ -24,8 +38,9 @@ const EditModal: FC<EditModalProp> = ({ visible, data, checkedKeys, onCancel, on
 			maskClosable={false}
 			destroyOnClose={true}>
 			<Tree
+				onCheck={onTreeCheck}
 				treeData={data}
-				checkedKeys={checkedKeys}
+				defaultCheckedKeys={checkedKeys}
 				checkable={true}
 				defaultExpandAll={true}
 			/>

@@ -2,40 +2,6 @@ import React from 'react';
 import { Dispatch } from 'dva';
 import { ColumnsType } from 'antd/lib/table';
 import { RoleData } from '@/model/role';
-import { DataNode } from 'antd/lib/tree';
-
-/**
- * 返回树结构数据
- * @param menuCode 结点编码数组
- * @param menuName 结点名称数组
- * @returns Antd树形数据
- */
-const getTree = (menuCode: string[], menuName: string[]) => {
-	if (menuCode.length !== menuName.length) {
-		throw new Error('树形数据错误');
-	}
-
-	let nodes: DataNode[] = [];
-
-	for (let i = 0; i < menuCode.length; i++) {
-		if (menuCode[i].length === 3) {
-			nodes.push({
-				title: menuName[i],
-				key: menuCode[i],
-				children: menuCode.reduce((ac: DataNode[], current, index) => {
-					if (current.length !== 3 && current.startsWith(menuCode[i])) {
-						ac.push({
-							title: menuName[index],
-							key: current
-						});
-					}
-					return ac;
-				}, [])
-			});
-		}
-	}
-	return nodes;
-};
 
 /**
  * 表头
@@ -86,13 +52,18 @@ const getColumn = (dispatch: Dispatch): ColumnsType<RoleData> => {
 			key: 'role_id',
 			align: 'center',
 			width: 60,
-			render(value: string, { menuName, menu_code }) {
+			fixed: 'right',
+			render(value: string, { menu_code }) {
 				return (
 					<a
 						onClick={() => {
+							dispatch({ type: 'role/setRoleId', payload: value });
 							dispatch({
-								type: 'role/setTree',
-								payload: getTree(menu_code, menuName)
+								type: 'role/setCheckedKeys',
+								payload: menu_code
+							});
+							dispatch({
+								type: 'role/fetchMenu'
 							});
 						}}>
 						编辑

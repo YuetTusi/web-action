@@ -1,6 +1,7 @@
 import { Model } from 'dva';
 import { DataNode } from 'antd/lib/tree';
 import reducers from './reducers';
+import effects from './effects';
 import { PAGESIZE } from '@/utility/helper';
 
 interface RoleState {
@@ -27,7 +28,15 @@ interface RoleState {
     /**
      * 编辑树数据
      */
-    tree: DataNode[]
+    tree: DataNode[],
+    /**
+     * 选中key值
+     */
+    checkedKeys: string[],
+    /**
+     * 编辑角色id
+     */
+    roleId: string
 }
 
 /**
@@ -91,7 +100,6 @@ let model: Model = {
         pageSize: PAGESIZE,
         total: 0,
         loading: false,
-        tree: [],
         data: [
             {
                 "role_id": "5836601805ba8b41b0b4ebb778b30677",
@@ -127,9 +135,13 @@ let model: Model = {
                     "日志管理"
                 ]
             },
-        ]
+        ],
+        tree: [],
+        checkedKeys: [],
+        roleId: ''
     },
-    reducers
+    reducers,
+    effects
 }
 
 export { RoleState, RoleData };

@@ -31,7 +31,7 @@ interface EditModalProp {
     /**
      * 确定
      */
-    onOk: () => void,
+    onOk: (checkedKeys: string[]) => void,
     /**
      * 取消
      */

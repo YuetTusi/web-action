@@ -58,6 +58,14 @@ enum CommandType {
      * 查询角色结果
      */
     QueryRoleResult = 'query-role-result',
+    /**
+     * 更新角色菜单
+     */
+    UpdateRoleMenu = 'update-role-menu',
+    /**
+     * 更新角色菜单结果
+     */
+    UpdateRoleMenuResult = 'update-role-menu-result'
 }
 
 /**

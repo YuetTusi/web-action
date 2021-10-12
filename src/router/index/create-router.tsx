@@ -167,7 +167,7 @@ const routeCaption = (pathname: string) => {
 		case '/targetInquire':
 			return '目标查询';
 		case '/batchInquire':
-			return '目标批量查询';
+			return '批量查询';
 		case '/bank':
 			return '银行卡查询';
 		case '/bank-batch':
