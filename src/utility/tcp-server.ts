@@ -1,7 +1,7 @@
 import { createServer, Socket } from 'net';
 import { stick as StickPackage } from 'stickpackage';
 import logger from '@/utility/log';
-import { Command, CommandType, SocketType } from '@/schema/socket';
+import { Command, SocketType } from '@/schema/socket';
 
 const pool = new Map<string, SocketMark>();
 const server = createServer();

@@ -5,6 +5,7 @@ import { SingleDataSource } from "../single";
 import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
 import { OpLogData } from "../op-log";
+import { RoleData } from "../role";
 
 /**
  * 登录结果
@@ -98,6 +99,34 @@ export function operationLogResult(dispatch: Dispatch, cmd: Command<Result<{
         });
         dispatch({
             type: 'opLog/setData',
+            payload: data.rows
+        });
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 角色查询
+ */
+export function queryRoleResult(dispatch: Dispatch, cmd: Command<Result<{
+    pageIndex: number,
+    pageSize: number,
+    totalPage: number,
+    totalCount: number,
+    rows: RoleData[]
+}>>) {
+    const { ret, data } = cmd.msg;
+    if (ret === 0) {
+        dispatch({
+            type: 'role/setPage',
+            payload: {
+                pageIndex: data.pageIndex,
+                pageSize: data.pageSize,
+                total: data.totalCount
+            }
+        });
+        dispatch({
+            type: 'role/setData',
             payload: data.rows
         });
     }

@@ -11,6 +11,10 @@ enum SocketType {
  */
 enum CommandType {
     /**
+     * 
+     */
+    UIStart = 'ui-start',
+    /**
      * 查询用户信息
      */
     FindUserInfo = 'find-user-info',
@@ -41,7 +45,15 @@ enum CommandType {
     /**
      * 操作日志结果
      */
-    OperationLogResult = 'operation-log-result'
+    OperationLogResult = 'operation-log-result',
+    /**
+     * 查询角色
+     */
+    QueryRole = 'query-role',
+    /**
+     * 查询角色结果
+     */
+    QueryRoleResult = 'query-role-result',
 }
 
 /**

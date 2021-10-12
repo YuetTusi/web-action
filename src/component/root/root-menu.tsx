@@ -91,14 +91,37 @@ const RootMenu: FC<{}> = () => {
 						操作日志
 					</Item>
 				</SubMenu>
-				<Item
+				{/* <Item
 					onClick={() => {
 						dispatch(routerRedux.push('/manage-center'));
 					}}
 					icon={<SettingOutlined />}
 					key="/manage-center">
 					管理中心
-				</Item>
+				</Item> */}
+				<SubMenu title="管理中心" icon={<SettingOutlined />} key="center">
+					<Item
+						onClick={() => {
+							dispatch(routerRedux.push('/department'));
+						}}
+						key="/department">
+						部门管理
+					</Item>
+					<Item
+						onClick={() => {
+							dispatch(routerRedux.push('/role'));
+						}}
+						key="/role">
+						角色管理
+					</Item>
+					<Item
+						onClick={() => {
+							dispatch(routerRedux.push('/user'));
+						}}
+						key="/user">
+						帐户管理
+					</Item>
+				</SubMenu>
 			</Menu>
 		</MenuBox>
 	);

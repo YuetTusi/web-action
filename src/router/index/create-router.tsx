@@ -115,11 +115,31 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
-							path="/manage-center"
+							path="/department"
 							render={() => {
-								const Next = lazy<FC<any>>(
-									() => import('@/view/index/manage-center')
+								const Next = lazy<FC<any>>(() => import('@/view/index/department'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
 								);
+							}}
+						/>
+						<Route
+							path="/role"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/role'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<Next />
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/user"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/user'));
 								return (
 									<Suspense fallback={<Loading />}>
 										<Next />
@@ -154,12 +174,18 @@ const routeCaption = (pathname: string) => {
 			return '银行卡批量查询';
 		case '/log-manage':
 			return '日志管理';
-		case '/manage-center':
-			return '管理中心';
 		case '/search-log':
 			return '查询日志';
 		case '/op-log':
 			return '操作日志';
+		case '/manage-center':
+			return '管理中心';
+		case '/department':
+			return '部门管理';
+		case '/role':
+			return '角色管理';
+		case '/user':
+			return '帐户管理';
 		default:
 			return '';
 	}

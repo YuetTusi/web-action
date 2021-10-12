@@ -57,7 +57,7 @@ let model: Model = {
     state: {
         pageIndex: 1,
         pageSize: PAGESIZE,
-        total: 3,
+        total: 0,
         loading: false,
         data: []
     },

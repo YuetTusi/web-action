@@ -1,8 +1,10 @@
 import { SubscriptionAPI } from 'dva';
-import server from '@/utility/tcp-server';
+import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
-import { findUserInfo, getSingleResult, operationLogResult, queryLogResult } from './listener';
+import { findUserInfo, getSingleResult, operationLogResult, queryLogResult, queryRoleResult } from './listener';
+
+const { Fetch } = SocketType;
 
 export default {
 
@@ -10,7 +12,7 @@ export default {
      * 接收Socket消息
      */
     receiveFetch({ dispatch }: SubscriptionAPI) {
-        server.on(SocketType.Fetch, (command: Command) => {
+        server.on(Fetch, (command: Command) => {
 
             console.log(`接收命令: ${command.cmd}, 参数: ${JSON.stringify(command.msg)}`);
             log.info(`Receive command (${command.cmd}): ,msg: ${JSON.stringify(command.msg)}`);
@@ -28,6 +30,9 @@ export default {
                 case CommandType.OperationLogResult:
                     operationLogResult(dispatch, command);
                     break;
+                case CommandType.QueryRoleResult:
+                    queryRoleResult(dispatch, command);
+                    break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
                     log.warn(`Not known command: ${command.cmd}`);
@@ -35,8 +40,14 @@ export default {
             }
         });
     },
-
+    /**
+     * UI启动
+     */
+    uiStart() {
+        send(Fetch, { cmd: CommandType.UIStart, msg: null });
+    },
     consoleClear({ }: SubscriptionAPI) {
+
         setTimeout(() => {
             console.clear();
         }, 1200);

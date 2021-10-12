@@ -15,12 +15,15 @@ import bankModel from '@/model/bank';
 import bankBatchModel from '@/model/bank-batch';
 import searchLogModel from '@/model/search-log';
 import opLogModel from '@/model/op-log';
+import roleModel from '@/model/role';
 import 'antd/dist/antd.less';
+
+const port = 65000;
 
 dayjs.locale('zh-cn');
 
-server.listen(65000, () => {
-	console.log(`TCP服务已启动在端口${65000}`);
+server.listen(port, () => {
+	console.log(`TCP服务已启动在端口${port}`);
 });
 
 const app = dva({ history: createHistory() });
@@ -36,5 +39,6 @@ app.model(bankModel);
 app.model(bankBatchModel);
 app.model(searchLogModel);
 app.model(opLogModel);
+app.model(roleModel);
 app.router(createRouter);
 app.start('#root');
