@@ -7,23 +7,20 @@ import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
-import Tag from 'antd/lib/tag';
 import Button from 'antd/lib/button';
 import Table from 'antd/lib/table';
 import message from 'antd/lib/message';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { helper, PAGESIZE } from '@/utility/helper';
-import { CaseSort } from '@/schema/common';
 import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
-import { ActionPanel } from './styled/batch-style';
 import CategoryModal from './category-modal';
 import { BatchProp } from './prop';
+import { getColumn } from './column';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Item, useForm } = Form;
-const { Column } = Table;
 
 /**
  * 批量查询
@@ -98,9 +95,8 @@ const Batch: FC<BatchProp> = () => {
 	 * @param type 分类
 	 * @param data 数据
 	 */
-	const actionClick = (type: number, data: SpecialData[]) => {
-		setCurrentSpecialData(data.find((i) => i.special_type === type));
-		console.log(data);
+	const onSortClick = (data?: SpecialData) => {
+		setCurrentSpecialData(data);
 	};
 
 	/**
@@ -142,57 +138,18 @@ const Batch: FC<BatchProp> = () => {
 					</Item>
 				</Form>
 			</PadBox>
-			<div>
-				<Table<BatchDataSource>
-					dataSource={[]}
-					pagination={{
-						total: data.length,
-						pageSize: PAGESIZE,
-						current: pageIndex,
-						onChange: onPageChange
-					}}
-					loading={loading}
-					
-					rowKey={'mobile'}>
-					<Column
-						title="序号"
-						dataIndex="no"
-						key="no"
-						width="50"
-						ellipsis={true}
-						render={(value, record, index) => (
-							<div style={{ wordWrap: 'break-word', wordBreak: 'break-word' }}>{(pageIndex - 1) * PAGESIZE + index + 1}</div>
-						)}
-					/>
-					<Column title="查询时间" dataIndex="gmt_create" key="gmt_create" />
-					<Column title="目标帐号" dataIndex="mobile" key="mobile" />
-					<Column
-						title="查询结果"
-						dataIndex="detail"
-						key="detail"
-						width="200"
-						render={(value, { special_data }: BatchDataSource) => (
-							<ActionPanel>
-								<Tag
-									onClick={() => actionClick(CaseSort.Bet, special_data)}
-									color="#1d39c4">
-									涉赌
-								</Tag>
-								<Tag
-									onClick={() => actionClick(CaseSort.Porn, special_data)}
-									color="#faad14">
-									涉黄
-								</Tag>
-								<Tag
-									onClick={() => actionClick(CaseSort.PyramidSales, special_data)}
-									color="#389e0d">
-									传销
-								</Tag>
-							</ActionPanel>
-						)}
-					/>
-				</Table>
-			</div>
+			<Table<BatchDataSource>
+				dataSource={data}
+				columns={getColumn(dispatch, onSortClick)}
+				pagination={{
+					total: data.length,
+					pageSize: PAGESIZE,
+					current: pageIndex,
+					onChange: onPageChange
+				}}
+				loading={loading}
+				rowKey={'mobile'}
+			/>
 			<CategoryModal onCancel={categoryCancel} specialData={currentSpecialData} />
 		</RootPanel>
 	);
