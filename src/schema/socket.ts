@@ -65,7 +65,47 @@ enum CommandType {
     /**
      * 更新角色菜单结果
      */
-    UpdateRoleMenuResult = 'update-role-menu-result'
+    UpdateRoleMenuResult = 'update-role-menu-result',
+    /**
+     * 查询部门树
+     */
+    QueryDeptByParent = 'query-dept-by-parent',
+    /**
+     * 查询部门树结果
+     */
+    QueryDeptByParentResult = 'query-dept-by-parent-result',
+    /**
+     * 地区
+     */
+    Region = 'region',
+    /**
+     * 地区结果
+     */
+    RegionResult = 'region-result',
+    /**
+     * 添加部门
+     */
+    AddDept = 'add-dept',
+    /**
+     * 添加部门结果
+     */
+    AddDeptResult = 'add-dept-result',
+    /**
+     * 更新部门
+     */
+    UpdateDept = 'update-dept',
+    /**
+     * 更新部门结果
+     */
+    UpdateDeptResult = 'update-dept-result',
+    /**
+     * 删除部门
+     */
+    DelDept = 'del-dept',
+    /**
+     * 删除部门结果
+     */
+    DelDeptResult = 'del-dept-result',
 }
 
 /**

@@ -1,12 +1,16 @@
 import { Dispatch, routerRedux } from "dva";
-import message from 'antd/lib/message';
-import { Command, Result } from "@/schema/socket";
+import msgBox from 'antd/lib/message';
+import { SocketType, Command, CommandType, Result } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
 import { OpLogData } from "../op-log";
 import { RoleData } from "../role";
 import { MenuNode } from "../component/web-menu";
+import { DeptNode, RegionNode } from "../department";
+import { send } from "@/utility/tcp-server";
+
+const { Fetch } = SocketType;
 
 /**
  * 登录结果
@@ -15,13 +19,13 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
 
     const { username, success } = cmd.msg;
     dispatch({ type: 'login/setLoading', payload: false });
-    message.destroy();
+    msgBox.destroy();
     if (success) {
-        message.success('登录成功');
+        msgBox.success('登录成功');
         sessionStorage.setItem('username', username);
         dispatch(routerRedux.push('/index'));
     } else {
-        message.error('登录失败');
+        msgBox.error('登录失败');
     }
 }
 
@@ -143,4 +147,70 @@ export function queryRoleResult(dispatch: Dispatch, cmd: Command<Result<{
         });
     }
     dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 部门树
+ */
+export function queryDeptByParentResult(dispatch: Dispatch, cmd: Command<Result<DeptNode[]>>) {
+
+    const { ret, data } = cmd.msg;
+    if (ret === 0) {
+        dispatch({ type: 'department/setTree', payload: data });
+    }
+}
+
+/**
+ * 地区树
+ */
+export function regionResult(dispatch: Dispatch, cmd: Command<Result<RegionNode[]>>) {
+
+    const { ret, data } = cmd.msg;
+    if (ret === 0) {
+        dispatch({ type: 'department/setRegion', payload: data });
+    }
+}
+
+/**
+ * 添加部门结果
+ */
+export function addDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
+
+    const { ret, message } = cmd.msg;
+    if (ret === 0) {
+        msgBox.info(message);
+        send(Fetch, { cmd: CommandType.QueryDeptByParent, msg: null });
+    } else {
+        msgBox.warn(message);
+    }
+}
+
+
+/**
+ * 更新部门结果
+ */
+export function updateDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
+
+    const { ret, message } = cmd.msg;
+    if (ret === 0) {
+        msgBox.info(message);
+        send(Fetch, { cmd: CommandType.QueryDeptByParent, msg: null });
+    } else {
+        msgBox.warn(message);
+    }
+}
+
+
+/**
+ * 删除部门结果
+ */
+export function delDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
+
+    const { ret, message } = cmd.msg;
+    if (ret === 0) {
+        msgBox.info(message);
+        send(Fetch, { cmd: CommandType.QueryDeptByParent, msg: null });
+    } else {
+        msgBox.warn(message);
+    }
 }

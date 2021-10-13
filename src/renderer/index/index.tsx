@@ -17,6 +17,7 @@ import bankBatchModel from '@/model/bank-batch';
 import searchLogModel from '@/model/search-log';
 import opLogModel from '@/model/op-log';
 import roleModel from '@/model/role';
+import departmentModel from '@/model/department';
 import 'antd/dist/antd.less';
 
 const port = 65000;
@@ -42,5 +43,6 @@ app.model(bankBatchModel);
 app.model(searchLogModel);
 app.model(opLogModel);
 app.model(roleModel);
+app.model(departmentModel);
 app.router(createRouter);
 app.start('#root');

@@ -3,8 +3,11 @@ import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
+    addDeptResult,
+    delDeptResult,
     findUserInfo, getSingleResult, menuResult, operationLogResult,
-    queryLogResult, queryRoleResult
+    queryDeptByParentResult,
+    queryLogResult, queryRoleResult, regionResult, updateDeptResult
 } from './listener';
 
 const { Fetch } = SocketType;
@@ -39,6 +42,21 @@ export default {
                 case CommandType.QueryRoleResult:
                     queryRoleResult(dispatch, command);
                     break;
+                case CommandType.QueryDeptByParentResult:
+                    queryDeptByParentResult(dispatch, command);
+                    break;
+                case CommandType.RegionResult:
+                    regionResult(dispatch, command);
+                    break;
+                case CommandType.AddDeptResult:
+                    addDeptResult(dispatch, command);
+                    break;
+                case CommandType.UpdateDeptResult:
+                    updateDeptResult(dispatch, command);
+                    break;
+                case CommandType.DelDeptResult:
+                    delDeptResult(dispatch, command);
+                    break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
                     log.warn(`Not known command: ${command.cmd}`);
@@ -55,7 +73,7 @@ export default {
     consoleClear({ }: SubscriptionAPI) {
 
         setTimeout(() => {
-            console.clear();
+            // console.clear();
         }, 1200);
     }
 };
