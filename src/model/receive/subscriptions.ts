@@ -1,4 +1,6 @@
+import { ipcRenderer, IpcRendererEvent } from 'electron';
 import { SubscriptionAPI } from 'dva';
+import Modal from 'antd/lib/modal';
 import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
@@ -69,6 +71,22 @@ export default {
      */
     uiStart() {
         send(Fetch, { cmd: CommandType.UIStart, msg: null });
+    },
+    exitApp() {
+        ipcRenderer.on('will-close', (event: IpcRendererEvent) => {
+            Modal.destroyAll();
+            Modal.confirm({
+                title: '退出',
+                content: '确定退出？',
+                okText: '是',
+                cancelText: '否',
+                zIndex: 9000,
+                onOk() {
+                    ipcRenderer.send('do-close', true);
+                }
+            });
+        });
+
     },
     consoleClear({ }: SubscriptionAPI) {
 

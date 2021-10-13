@@ -5,6 +5,38 @@ const cwd = process.cwd();
 
 let mainWindow: BrowserWindow | null = null;
 
+/**
+ * 销毁所有窗口
+ */
+function destroyAllWindow() {
+    if (mainWindow !== null) {
+        mainWindow.destroy();
+        mainWindow = null;
+    }
+}
+
+
+/**
+ * 退出应用
+ */
+function exitApp(platform: string) {
+    if (platform !== 'darwin') {
+        globalShortcut.unregisterAll();
+        destroyAllWindow();
+        app.exit(0);
+    }
+}
+
+app.on('before-quit', () => {
+    //移除mainWindow上的listeners
+    if (mainWindow !== null) {
+        mainWindow.removeAllListeners('close');
+    }
+});
+app.on('window-all-closed', () => {
+    app.exit(0);
+});
+
 app.on('ready', () => {
 
     mainWindow = new BrowserWindow({
@@ -21,6 +53,13 @@ app.on('ready', () => {
             contextIsolation: false
         }
     });
+    mainWindow.webContents.addListener('new-window', (event) => event.preventDefault());
+    mainWindow.on('close', (event) => {
+        //关闭事件到mainWindow中去处理
+        event.preventDefault();
+        mainWindow!.webContents.send('will-close');
+    });
+
     if (mode === 'development') {
         mainWindow.webContents.openDevTools();
         mainWindow.loadURL('http://localhost:8084/index.html');
@@ -59,6 +98,8 @@ ipcMain.handle('save-temp-file', async (event, args) => {
     return val;
 });
 
-app.on('window-all-closed', () => {
-    app.exit(0);
+//退出应用
+ipcMain.on('do-close', (event) => {
+    //mainWindow通知退出程序
+    exitApp(process.platform);
 });
