@@ -9,6 +9,7 @@ import { RoleData } from "../role";
 import { MenuNode } from "../component/web-menu";
 import { DeptNode, RegionNode } from "../department";
 import { send } from "@/utility/tcp-server";
+import { PAGESIZE } from "@/utility/helper";
 
 const { Fetch } = SocketType;
 
@@ -198,6 +199,7 @@ export function updateDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) 
     } else {
         msgBox.warn(message);
     }
+    dispatch({ type: 'reading/setReading', payload: false });
 }
 
 
@@ -213,4 +215,27 @@ export function delDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
     } else {
         msgBox.warn(message);
     }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 帐号动作结果
+ * # 共用此方法反馈的操作有：充值，启用/禁用，重置密码，添加，编辑，删除
+ */
+export function userActionResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
+    const { ret, message } = cmd.msg;
+    if (ret === 0) {
+        msgBox.info(message);
+        send(Fetch, {
+            cmd: CommandType.QueryUserByDept, msg: {
+                keyword: '',
+                fil_deptId: '',
+                pageIndex: 1,
+                pageSize: PAGESIZE
+            }
+        });
+    } else {
+        msgBox.warn(message);
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
 }

@@ -18,6 +18,7 @@ import searchLogModel from '@/model/search-log';
 import opLogModel from '@/model/op-log';
 import roleModel from '@/model/role';
 import departmentModel from '@/model/department';
+import userModel from '@/model/user';
 import 'antd/dist/antd.less';
 
 const port = 65000;
@@ -44,5 +45,6 @@ app.model(searchLogModel);
 app.model(opLogModel);
 app.model(roleModel);
 app.model(departmentModel);
+app.model(userModel);
 app.router(createRouter);
 app.start('#root');

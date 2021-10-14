@@ -5,11 +5,9 @@ import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    addDeptResult,
-    delDeptResult,
-    findUserInfo, getSingleResult, menuResult, operationLogResult,
-    queryDeptByParentResult,
-    queryLogResult, queryRoleResult, regionResult, updateDeptResult
+    addDeptResult, delDeptResult, findUserInfo, getSingleResult, menuResult,
+    operationLogResult, queryDeptByParentResult, queryLogResult, queryRoleResult,
+    regionResult, updateDeptResult, userActionResult
 } from './listener';
 
 const { Fetch } = SocketType;
@@ -58,6 +56,14 @@ export default {
                     break;
                 case CommandType.DelDeptResult:
                     delDeptResult(dispatch, command);
+                    break;
+                case CommandType.RechargeResult:
+                case CommandType.UserIsEnableResult:
+                case CommandType.ResetPasswordResult:
+                case CommandType.AddUserResult:
+                case CommandType.UpdateUserResult:
+                case CommandType.DelUserResult:
+                    userActionResult(dispatch, command);
                     break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
