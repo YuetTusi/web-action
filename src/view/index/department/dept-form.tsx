@@ -1,4 +1,5 @@
 import React, { FC, useEffect } from 'react';
+import { useSelector } from 'dva';
 import Button from 'antd/lib/button';
 import Input from 'antd/lib/input';
 import TreeSelect from 'antd/lib/tree-select';
@@ -8,6 +9,8 @@ import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import RollbackOutlined from '@ant-design/icons/RollbackOutlined';
 import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined';
 import { TopFormProp, TopFormValue } from './prop';
+import { DeptTreeState } from '@/model/dept-tree';
+import { helper } from '@/utility/helper';
 
 const { TextArea } = Input;
 const { Group } = Button;
@@ -19,12 +22,12 @@ const { Item, useForm } = Form;
 const DeptForm: FC<TopFormProp> = ({
 	isEdit,
 	isTop,
-	deptTree,
 	regionTree,
 	data,
 	onValid,
 	onDel
 }) => {
+	const { treeData } = useSelector<any, DeptTreeState>((state) => state.deptTree);
 	const [formRef] = useForm<TopFormValue>();
 
 	useEffect(() => {
@@ -103,7 +106,7 @@ const DeptForm: FC<TopFormProp> = ({
 					]}
 					name="parent_id"
 					label="上级部门">
-					<TreeSelect treeData={deptTree} />
+					<TreeSelect treeData={helper.getDeptTree(treeData)} />
 				</Item>
 			)}
 			<Item

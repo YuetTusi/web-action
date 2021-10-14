@@ -10,8 +10,9 @@ import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
 import { FormBox, FullPanel, LeftBox, MainBox, TopBox, TreeBox } from './styled/full-panel';
 import DeptForm from './dept-form';
-import { getDeptTree, getRegionTree } from './helper';
+import { getRegionTree } from './helper';
 import { DepartmentProp, TopFormValue } from './prop';
+import { DeptTreeState } from '@/model/dept-tree';
 
 const { Fetch } = SocketType;
 const { Group } = Button;
@@ -23,12 +24,12 @@ const Department: FC<DepartmentProp> = () => {
 	const dispatch = useDispatch();
 	const [isEdit, setIsEdit] = useState(false);
 	const [isTop, setIsTop] = useState(true);
-	const { tree, region, editDept } = useSelector<any, DepartmentState>(
+	const { region, editDept } = useSelector<any, DepartmentState>(
 		(state) => state.department
 	);
+	const { treeData } = useSelector<any, DeptTreeState>((state) => state.deptTree);
 
 	useEffect(() => {
-		send(Fetch, { cmd: CommandType.QueryDeptByParent, msg: null });
 		send(Fetch, { cmd: CommandType.Region, msg: null });
 	}, []);
 
@@ -112,7 +113,7 @@ const Department: FC<DepartmentProp> = () => {
 					<TreeBox>
 						<Tree
 							onSelect={onTreeSelect}
-							treeData={getDeptTree(tree)}
+							treeData={helper.getDeptTree(treeData)}
 							defaultExpandAll={true}
 						/>
 					</TreeBox>
@@ -126,7 +127,6 @@ const Department: FC<DepartmentProp> = () => {
 							isEdit={isEdit}
 							isTop={isTop}
 							data={editDept}
-							deptTree={getDeptTree(tree)}
 							regionTree={getRegionTree(region)}
 						/>
 					</FormBox>

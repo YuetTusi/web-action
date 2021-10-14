@@ -11,13 +11,6 @@ export default {
         return state;
     },
     /**
-     * 部门树
-     */
-    setTree(state: DepartmentState, { payload }: AnyAction) {
-        state.tree = payload;
-        return state;
-    },
-    /**
      * 地区树
      */
      setRegion(state: DepartmentState, { payload }: AnyAction) {

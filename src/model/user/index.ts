@@ -9,10 +9,6 @@ interface UserState {
      */
     data: UserData[],
     /**
-     * 部门树
-     */
-    tree: DeptNode[],
-    /**
      * 当前页
      */
     pageIndex: number,
@@ -99,7 +95,6 @@ let model: Model = {
                 "remark": "zhangchuanjieyanshi"
             }
         ],
-        tree: [],
         pageIndex: 1,
         pageSize: PAGESIZE,
         total: 1,

@@ -1,3 +1,4 @@
+import { DeptNode } from "@/model/department";
 import { UserData } from "@/model/user";
 
 interface UserProp { };
@@ -72,7 +73,6 @@ interface EditModalProp {
      * 用户数据(null为添加操作)
      */
     data: UserData | null,
-
     /**
      * 确定
      */

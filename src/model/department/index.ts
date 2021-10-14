@@ -3,10 +3,6 @@ import reducers from './reducers';
 
 interface DepartmentState {
     /**
-     * 部门树
-     */
-    tree: DeptNode[],
-    /**
      * 地区
      */
     region: RegionNode[],
@@ -45,113 +41,6 @@ let model: Model = {
     namespace: 'department',
     state: {
         editDept: null,
-        tree: [
-            // {
-            //     "dept_id": "-1",
-            //     "dept_name": "部门",
-            //     "parent_id": null,
-            //     "description": "部门地区无法选择",
-            //     "city_code": "100000",
-            //     "parent_city_code": null,
-            //     "create_id": null,
-            //     "gmt_create": null,
-            //     "gmt_modified": null,
-            //     "childDeptInfos": [
-            //         {
-            //             "dept_id": "001",
-            //             "dept_name": "测试",
-            //             "parent_id": "-1",
-            //             "description": "",
-            //             "city_code": "420000",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null,
-            //             "childDeptInfos": [
-            //                 {
-            //                     "dept_id": "001001",
-            //                     "dept_name": "测试123",
-            //                     "parent_id": "001",
-            //                     "description": "测试部的测试小组1",
-            //                     "city_code": "110100",
-            //                     "parent_city_code": "420000",
-            //                     "create_id": null,
-            //                     "gmt_create": null,
-            //                     "gmt_modified": null,
-            //                     "childDeptInfos": [
-            //                         {
-            //                             "dept_id": "001001001",
-            //                             "dept_name": "测试子部门",
-            //                             "parent_id": "001001",
-            //                             "description": null,
-            //                             "city_code": "110116",
-            //                             "parent_city_code": "110100",
-            //                             "create_id": null,
-            //                             "gmt_create": null,
-            //                             "gmt_modified": null
-            //                         }
-            //                     ]
-            //                 }
-            //             ]
-            //         },
-            //         {
-            //             "dept_id": "002",
-            //             "dept_name": "武汉演示",
-            //             "parent_id": "-1",
-            //             "description": "",
-            //             "city_code": "420100",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null
-            //         },
-            //         {
-            //             "dept_id": "003",
-            //             "dept_name": "开发",
-            //             "parent_id": "-1",
-            //             "description": "开发",
-            //             "city_code": "110000",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null
-            //         },
-            //         {
-            //             "dept_id": "004",
-            //             "dept_name": "河北",
-            //             "parent_id": "-1",
-            //             "description": null,
-            //             "city_code": "130000",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null
-            //         },
-            //         {
-            //             "dept_id": "005",
-            //             "dept_name": "河南",
-            //             "parent_id": "-1",
-            //             "description": null,
-            //             "city_code": "410000",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null
-            //         },
-            //         {
-            //             "dept_id": "006",
-            //             "dept_name": "haha",
-            //             "parent_id": "-1",
-            //             "description": null,
-            //             "city_code": "120000",
-            //             "parent_city_code": "100000",
-            //             "create_id": null,
-            //             "gmt_create": null,
-            //             "gmt_modified": null
-            //         }
-            //     ]
-            // }
-        ],
         region: [
             // {
             //     "city_code": "100000",

@@ -157,7 +157,7 @@ export function queryDeptByParentResult(dispatch: Dispatch, cmd: Command<Result<
 
     const { ret, data } = cmd.msg;
     if (ret === 0) {
-        dispatch({ type: 'department/setTree', payload: data });
+        dispatch({ type: 'deptTree/setTreeData', payload: data });
     }
 }
 

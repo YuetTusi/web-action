@@ -13,8 +13,9 @@ import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
+import { DeptTreeState } from '@/model/dept-tree';
 import { UserData, UserState } from '@/model/user';
-import { PAGESIZE } from '@/utility/helper';
+import { helper, PAGESIZE } from '@/utility/helper';
 import RechargeModal from './recharge-modal';
 import EditModal from './edit-modal';
 import { ActionType, SearchFormValue, UserProp } from './prop';
@@ -36,6 +37,7 @@ const User: FC<UserProp> = () => {
 	const { data, pageIndex, pageSize, total, loading } = useSelector<any, UserState>(
 		(state) => state.user
 	);
+	const { treeData } = useSelector<any, DeptTreeState>((state) => state.deptTree);
 
 	/**
 	 * 查询Click
@@ -183,7 +185,7 @@ const User: FC<UserProp> = () => {
 						<Input />
 					</Item>
 					<Item name="fil_deptId" label="部门" style={{ width: '200px' }}>
-						<TreeSelect treeData={[]} />
+						<TreeSelect treeData={helper.getDeptTree(treeData)} treeDefaultExpandAll={true} />
 					</Item>
 					<Item>
 						<Button onClick={searchClick} type="primary">

@@ -10,10 +10,6 @@ interface TopFormProp {
      */
     data: DeptNode | null,
     /**
-     * 部门树
-     */
-    deptTree: DataNode[],
-    /**
      * 地区树
      */
     regionTree: DataNode[],

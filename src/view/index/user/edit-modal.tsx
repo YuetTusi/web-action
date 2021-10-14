@@ -1,4 +1,5 @@
 import React, { FC, MouseEvent, useEffect } from 'react';
+import { useSelector } from 'dva';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
 import Button from 'antd/lib/button';
@@ -14,10 +15,8 @@ import dayjs from 'dayjs';
 import { EditFormValue, EditModalProp } from './prop';
 import { ChineseIdNumber, MobileNumber, PoliceNumber } from '@/utility/regex';
 import { helper } from '@/utility/helper';
-import { send } from '@/utility/tcp-server';
-import { CommandType, SocketType } from '@/schema/socket';
+import { DeptTreeState } from '@/model/dept-tree';
 
-const { Fetch } = SocketType;
 const { Item, useForm } = Form;
 const { Password, TextArea } = Input;
 const { Option } = Select;
@@ -26,6 +25,7 @@ const { Option } = Select;
  * 用户添加/编辑
  */
 const EditModal: FC<EditModalProp> = ({ visible, data, onCancel, onOk }) => {
+	const { treeData } = useSelector<any, DeptTreeState>((state) => state.deptTree);
 	const [formRef] = useForm<EditFormValue>();
 
 	useEffect(() => {
@@ -211,7 +211,7 @@ const EditModal: FC<EditModalProp> = ({ visible, data, onCancel, onOk }) => {
 							rules={[{ required: true, message: '请选择部门' }]}
 							name="dept_id"
 							label="部门">
-							<TreeSelect treeData={[]} />
+							<TreeSelect treeData={helper.getDeptTree(treeData)} treeDefaultExpandAll={true} />
 						</Item>
 					</Col>
 					<Col span={12}>

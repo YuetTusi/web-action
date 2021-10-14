@@ -24,12 +24,5 @@ export default {
     setData(state: UserState, { payload }: AnyAction) {
         state.data = payload;
         return state;
-    },
-    /**
-     * 部门树
-     */
-    setTree(state: UserState, { payload }: AnyAction) {
-        state.tree = payload;
-        return state;
-    },
+    }
 };
