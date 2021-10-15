@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useState, useRef } from 'react';
+import React, { FC, MouseEvent, useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import debounce from 'lodash/debounce';
 import Form from 'antd/lib/form';
@@ -38,6 +38,18 @@ const User: FC<UserProp> = () => {
 		(state) => state.user
 	);
 	const { treeData } = useSelector<any, DeptTreeState>((state) => state.deptTree);
+
+	useEffect(() => {
+		send(Fetch, {
+			cmd: CommandType.QueryUserByDept,
+			msg: {
+				keyword: '',
+				fil_deptId: '',
+				pageIndex: 1,
+				pageSize: PAGESIZE
+			}
+		});
+	}, []);
 
 	/**
 	 * 查询Click
@@ -185,7 +197,10 @@ const User: FC<UserProp> = () => {
 						<Input />
 					</Item>
 					<Item name="fil_deptId" label="部门" style={{ width: '200px' }}>
-						<TreeSelect treeData={helper.getDeptTree(treeData)} treeDefaultExpandAll={true} />
+						<TreeSelect
+							treeData={helper.getDeptTree(treeData)}
+							treeDefaultExpandAll={true}
+						/>
 					</Item>
 					<Item>
 						<Button onClick={searchClick} type="primary">

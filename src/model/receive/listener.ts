@@ -1,15 +1,17 @@
 import { Dispatch, routerRedux } from "dva";
 import msgBox from 'antd/lib/message';
+import { send } from "@/utility/tcp-server";
+import { PAGESIZE } from "@/utility/helper";
 import { SocketType, Command, CommandType, Result } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
+import { UserData } from '../user';
 import { OpLogData } from "../op-log";
 import { RoleData } from "../role";
 import { MenuNode } from "../component/web-menu";
 import { DeptNode, RegionNode } from "../department";
-import { send } from "@/utility/tcp-server";
-import { PAGESIZE } from "@/utility/helper";
+import { BatchDataSource } from "../batch";
 
 const { Fetch } = SocketType;
 
@@ -63,6 +65,19 @@ export function getSingleResult(dispatch: Dispatch, cmd: Command<Result<SingleDa
         dispatch({ type: 'single/setData', payload: msg.data });
     }
     // dispatch({ type: 'single/setData', payload: msg });
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 批量查询结果
+ */
+export function getMultipleResult(dispatch: Dispatch, cmd: Command<Result<BatchDataSource[]>>) {
+
+    const { msg } = cmd;
+
+    if (msg.ret === 0) {
+        dispatch({ type: 'batch/setData', payload: msg.data });
+    }
     dispatch({ type: 'reading/setReading', payload: false });
 }
 
@@ -214,6 +229,35 @@ export function delDeptResult(dispatch: Dispatch, cmd: Command<Result<any>>) {
         send(Fetch, { cmd: CommandType.QueryDeptByParent, msg: null });
     } else {
         msgBox.warn(message);
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 帐户数据
+ */
+export function queryUserByDeptResult(dispatch: Dispatch, cmd: Command<Result<{
+    pageIndex: number,
+    pageSize: number,
+    totalPage: number,
+    totalCount: number,
+    rows: UserData[]
+}>>) {
+
+    const { ret, data } = cmd.msg;
+    if (ret === 0) {
+        dispatch({
+            type: 'user/setPage',
+            payload: {
+                pageIndex: data.pageIndex,
+                pageSize: data.pageSize,
+                total: data.totalCount
+            }
+        });
+        dispatch({
+            type: 'user/setData',
+            payload: data.rows
+        });
     }
     dispatch({ type: 'reading/setReading', payload: false });
 }

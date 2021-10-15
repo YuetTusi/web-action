@@ -17,10 +17,11 @@ const helper = {
             return false;
         }
     },
-    getDeptTree(data: DeptNode[]): DataNode[] {
+    getDeptTree(data: DeptNode[], disableId: string[] = []): DataNode[] {
         if (data && data.length > 0) {
             return data.map((item) => {
                 return {
+                    disabled: disableId.some(i => i === item.dept_id),
                     title: item.dept_name,
                     key: item.dept_id,
                     dept_id: item.dept_id,

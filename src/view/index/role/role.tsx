@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
@@ -28,6 +28,10 @@ const Role: FC<RoleProp> = () => {
 		RoleState
 	>((state) => state.role);
 	const [formRef] = useForm<SearchFormValue>();
+
+	useEffect(() => {
+		query('', 1);
+	}, []);
 
 	/**
 	 * 查询

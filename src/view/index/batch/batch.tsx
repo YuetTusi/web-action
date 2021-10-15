@@ -17,9 +17,12 @@ import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
 import CategoryModal from './category-modal';
 import { BatchProp } from './prop';
 import { getColumn } from './column';
+import { send } from '@/utility/tcp-server';
+import { CommandType, SocketType } from '@/schema/socket';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
+const { Fetch } = SocketType;
 const { Item, useForm } = Form;
 
 /**
@@ -44,7 +47,7 @@ const Batch: FC<BatchProp> = () => {
 				message.warn('请选择模板文件');
 			} else {
 				const chunk = await fs.promises.readFile(tempFilePath);
-				console.log(chunk);
+				send(Fetch, { cmd: CommandType.GetMultiple, msg: chunk });
 			}
 		} catch (error) {
 			console.log(error);

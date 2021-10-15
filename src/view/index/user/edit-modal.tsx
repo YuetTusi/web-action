@@ -211,7 +211,10 @@ const EditModal: FC<EditModalProp> = ({ visible, data, onCancel, onOk }) => {
 							rules={[{ required: true, message: '请选择部门' }]}
 							name="dept_id"
 							label="部门">
-							<TreeSelect treeData={helper.getDeptTree(treeData)} treeDefaultExpandAll={true} />
+							<TreeSelect
+								treeData={helper.getDeptTree(treeData, ['-1'])}
+								treeDefaultExpandAll={true}
+							/>
 						</Item>
 					</Col>
 					<Col span={12}>

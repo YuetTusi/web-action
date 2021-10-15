@@ -11,7 +11,7 @@ enum SocketType {
  */
 enum CommandType {
     /**
-     * 
+     * UI启动
      */
     UIStart = 'ui-start',
     /**
@@ -34,6 +34,14 @@ enum CommandType {
      * 目标手机查询结果
      */
     GetSingleResult = 'get-single-result',
+    /**
+     * 批量查询
+     */
+    GetMultiple = 'get-multiple',
+    /**
+     * 批量查询结果
+     */
+    GetMultipleResult = 'get-multiple-result',
     /**
      * 查询日志
      */
