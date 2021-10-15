@@ -2,7 +2,7 @@ import { Dispatch, routerRedux } from "dva";
 import msgBox from 'antd/lib/message';
 import { send } from "@/utility/tcp-server";
 import { PAGESIZE } from "@/utility/helper";
-import { SocketType, Command, CommandType, Result } from "@/schema/socket";
+import { SocketType, Command, CommandType, Result, Res } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { UserInfoState } from "../user-info";
 import { SearchLogData } from "../search-log";
@@ -12,6 +12,8 @@ import { RoleData } from "../role";
 import { MenuNode } from "../component/web-menu";
 import { DeptNode, RegionNode } from "../department";
 import { BatchDataSource } from "../batch";
+import { BankBatchState } from "../bank-batch";
+import { BankState } from "../bank";
 
 const { Fetch } = SocketType;
 
@@ -46,23 +48,27 @@ export function menuResult(dispatch: Dispatch, cmd: Command<Result<MenuNode[]>>)
 /**
  * 查询用户信息
  */
-export function findUserInfo(dispatch: Dispatch, cmd: Command<Result<UserInfoState>>) {
-    const { msg } = cmd;
+export function findUserInfo(dispatch: Dispatch, cmd: Command<Res<UserInfoState>>) {
+    const { code, message, data } = cmd.msg;
 
-    if (msg.ret === 0) {
-        dispatch({ type: 'userInfo/setData', payload: msg.data });
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'userInfo/setData', payload: data });
+    } else {
+        console.log(message);
     }
 }
 
 /**
  * 目标查询结果
  */
-export function getSingleResult(dispatch: Dispatch, cmd: Command<Result<SingleDataSource[]>>) {
+export function getSingleResult(dispatch: Dispatch, cmd: Command<Res<SingleDataSource[]>>) {
 
-    const { msg } = cmd;
+    const { message, code, data } = cmd.msg;
 
-    if (msg.ret === 0) {
-        dispatch({ type: 'single/setData', payload: msg.data });
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'single/setData', payload: data });
+    } else {
+        msgBox.warn(message);
     }
     // dispatch({ type: 'single/setData', payload: msg });
     dispatch({ type: 'reading/setReading', payload: false });
@@ -71,12 +77,42 @@ export function getSingleResult(dispatch: Dispatch, cmd: Command<Result<SingleDa
 /**
  * 批量查询结果
  */
-export function getMultipleResult(dispatch: Dispatch, cmd: Command<Result<BatchDataSource[]>>) {
+export function getMultipleResult(dispatch: Dispatch, cmd: Command<Res<BatchDataSource[]>>) {
 
-    const { msg } = cmd;
+    const { code, message, data } = cmd.msg;
 
-    if (msg.ret === 0) {
-        dispatch({ type: 'batch/setData', payload: msg.data });
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'batch/setData', payload: data });
+    } else {
+        msgBox.warn(message);
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 银行卡查询结果
+ */
+export function bankResult(dispatch: Dispatch, cmd: Command<Res<BankState>>) {
+    const { code, data, message } = cmd.msg;
+
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'bank', payload: data });
+    } else {
+        msgBox.warn(message);
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 银行卡批量查询结果
+ */
+export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchState>>) {
+    const { code, data, message } = cmd.msg;
+
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'bankBatch', payload: data });
+    } else {
+        msgBox.warn(message);
     }
     dispatch({ type: 'reading/setReading', payload: false });
 }

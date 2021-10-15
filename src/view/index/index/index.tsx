@@ -36,6 +36,7 @@ const Index: FC<{}> = () => {
 			return;
 		} else {
 			dispatch({ type: 'reading/setReading', payload: true });
+			console.log({ cmd: CommandType.GetSingle, msg: { mobile: value } });
 			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { mobile: value } });
 			setTimeout(() => {
 				dispatch({ type: 'reading/setReading', payload: false });

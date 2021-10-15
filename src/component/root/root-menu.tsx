@@ -4,6 +4,7 @@ import { routerRedux, useDispatch, useLocation, useSelector } from 'dva';
 import Menu from 'antd/lib/menu';
 import AimOutlined from '@ant-design/icons/AimOutlined';
 import FileSearchOutlined from '@ant-design/icons/FileSearchOutlined';
+import CreditCardOutlined from '@ant-design/icons/CreditCardOutlined';
 import BorderOutlined from '@ant-design/icons/BorderOutlined';
 import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
@@ -34,10 +35,10 @@ const menuIcon = (url: string) => {
 			return <AimOutlined />;
 		case '/batchInquire':
 			return <FileSearchOutlined />;
-		// case '/bank':
-		// 	return '银行卡查询';
-		// case '/bank-batch':
-		// 	return '银行卡批量查询';
+		case '/bank':
+			return <CreditCardOutlined />;
+		case '/bank-batch':
+			return <FileSearchOutlined />;
 		case '/journalManage':
 			return <HistoryOutlined />;
 		case '/systemsetup':

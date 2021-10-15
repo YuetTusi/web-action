@@ -37,17 +37,17 @@ const Batch: FC<BatchProp> = () => {
 	/**
 	 * 查询Click
 	 */
-	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
+	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;
 		try {
-			const { tempFilePath } = await getFieldsValue();
+			const { tempFilePath } = getFieldsValue();
 			if (helper.isNullOrUndefined(tempFilePath)) {
 				message.destroy();
 				message.warn('请选择模板文件');
 			} else {
-				const chunk = await fs.promises.readFile(tempFilePath);
-				send(Fetch, { cmd: CommandType.GetMultiple, msg: chunk });
+				console.log({ cmd: CommandType.GetMultiple, msg: { path: tempFilePath } });
+				send(Fetch, { cmd: CommandType.GetMultiple, msg: { path: tempFilePath } });
 			}
 		} catch (error) {
 			console.log(error);

@@ -43,33 +43,6 @@ const Bank: FC<{}> = () => {
 	const [formRef] = useForm();
 	const card = getCard(result);
 
-	// useEffect(() => {
-	// 	//legacy: 测试数据
-	// 	dispatch({
-	// 		type: 'bank/setData',
-	// 		payload: {
-	// 			hits: 2,
-	// 			hit_gambling: 1,
-	// 			hit_pyramid: 1,
-	// 			result: {
-	// 				'6213363479902259472': {
-	// 					gambling: {
-	// 						hit: 1,
-	// 						reg_count: 3,
-	// 						balance: 0,
-	// 						login_time: 2,
-	// 						reg_time: 0,
-	// 						is_agent: 1
-	// 					},
-	// 					pyramid: {
-	// 						hit: 1
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	});
-	// }, []);
-
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
@@ -82,7 +55,8 @@ const Bank: FC<{}> = () => {
 			return;
 		} else {
 			dispatch({ type: 'reading/setReading', payload: true });
-			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { mobile: value } });
+			console.log({ cmd: CommandType.Bank, msg: { accounts: [value] } });
+			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { accounts: [value] } });
 			setTimeout(() => {
 				dispatch({ type: 'reading/setReading', payload: false });
 			}, 1000);
@@ -93,7 +67,7 @@ const Bank: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="mobile" label="卡号">
+					<Item name="mobile" label="卡号" initialValue={'6213363479902259472'}>
 						<Input />
 					</Item>
 					<Item>

@@ -43,6 +43,22 @@ enum CommandType {
      */
     GetMultipleResult = 'get-multiple-result',
     /**
+     * 银行卡查询
+     */
+    Bank = 'bank',
+    /**
+     * 银行卡查询结果
+     */
+    BankResult = 'bank-result',
+    /**
+     * 银行卡批量查询
+     */
+    BankBatch = 'bank-batch',
+    /**
+     * 银行卡批量查询结果
+     */
+    BankBatchResult = 'bank-batch-result',
+    /**
      * 查询日志
      */
     QueryLog = 'query-log',
@@ -195,4 +211,22 @@ interface Result<T = any> {
     data: T,
 }
 
-export { SocketType, CommandType, Command, Result };
+/**
+ * 接口响应结果
+ */
+interface Res<T = any> {
+    /**
+     * HTTP状态码
+     */
+    code: number,
+    /**
+     * 消息
+     */
+    message: string,
+    /**
+     * 数据
+     */
+    data: T
+}
+
+export { SocketType, CommandType, Command, Result, Res };

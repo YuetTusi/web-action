@@ -5,7 +5,7 @@ import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    addDeptResult, delDeptResult, findUserInfo, getMultipleResult, getSingleResult, menuResult,
+    addDeptResult, bankBatchResult, bankResult, delDeptResult, findUserInfo, getMultipleResult, getSingleResult, menuResult,
     operationLogResult, queryDeptByParentResult, queryLogResult, queryRoleResult,
     regionResult, updateDeptResult, userActionResult
 } from './listener';
@@ -35,6 +35,12 @@ export default {
                     break;
                 case CommandType.GetMultipleResult:
                     getMultipleResult(dispatch, command);
+                    break;
+                case CommandType.BankResult:
+                    bankResult(dispatch, command);
+                    break;
+                case CommandType.BankBatchResult:
+                    bankBatchResult(dispatch, command);
                     break;
                 case CommandType.QueryLogResult:
                     queryLogResult(dispatch, command);

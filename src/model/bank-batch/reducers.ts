@@ -1,12 +1,12 @@
 import { AnyAction } from 'redux';
-import { BankState } from '../bank';
+import { BankBatchState } from '.';
 
 export default {
-    setData(state: BankState, { payload }: AnyAction) {
-        state.hits = payload.hits;
-        state.hit_gambling = payload.gambling;
-        state.hit_pyramid = payload.pyramid;
-        state.result = payload.result;
+    setData(state: BankBatchState, { payload }: AnyAction) {
+        state.hits = payload.hits ?? 0;
+        state.hit_gambling = payload.gambling ?? 0;
+        state.hit_pyramid = payload.pyramid ?? 0;
+        state.result = payload.result ?? {};
         return state;
     },
 };
