@@ -27,6 +27,10 @@ enum CommandType {
      */
     Login = 'login',
     /**
+     * 登录结果
+     */
+    LoginResult = 'login-result',
+    /**
      * 目标手机查询
      */
     GetSingle = 'get-single',

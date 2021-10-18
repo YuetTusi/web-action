@@ -5,6 +5,7 @@ import React, { FC, MouseEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
+import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
@@ -13,12 +14,13 @@ import message from 'antd/lib/message';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { helper, PAGESIZE } from '@/utility/helper';
-import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
-import CategoryModal from './category-modal';
-import { BatchProp } from './prop';
-import { getColumn } from './column';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
+import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
+import CategoryModal from './category-modal';
+import ChartModal from './chart-modal';
+import { getColumn } from './column';
+import { BatchProp } from './prop';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
@@ -32,6 +34,7 @@ const Batch: FC<BatchProp> = () => {
 	const dispatch = useDispatch();
 	const { data, pageIndex, loading } = useSelector<any, BatchState>((state) => state.batch);
 	const [currentSpecialData, setCurrentSpecialData] = useState<SpecialData>();
+	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
 	const [formRef] = useForm<{ tempFilePath: string }>();
 
 	/**
@@ -52,6 +55,14 @@ const Batch: FC<BatchProp> = () => {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	/**
+	 * 图表Click
+	 */
+	const chartClick = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		setChartModalVisible(true);
 	};
 
 	/**
@@ -139,21 +150,33 @@ const Batch: FC<BatchProp> = () => {
 							<span>下载模板</span>
 						</Button>
 					</Item>
+					<Item>
+						<Button onClick={chartClick} disabled={data.length === 0} type="default">
+							<PieChartOutlined />
+							<span>占比统计</span>
+						</Button>
+					</Item>
 				</Form>
 			</PadBox>
 			<Table<BatchDataSource>
 				dataSource={data}
 				columns={getColumn(dispatch, onSortClick)}
-				pagination={{
-					total: data.length,
-					pageSize: PAGESIZE,
-					current: pageIndex,
-					onChange: onPageChange
-				}}
+				pagination={false}
+				// pagination={{
+				// 	total: data.length,
+				// 	pageSize: PAGESIZE,
+				// 	current: pageIndex,
+				// 	onChange: onPageChange
+				// }}
 				loading={loading}
 				rowKey={'mobile'}
 			/>
 			<CategoryModal onCancel={categoryCancel} specialData={currentSpecialData} />
+			<ChartModal
+				data={[]}
+				visible={chartModalVisible}
+				onCancel={() => setChartModalVisible(false)}
+			/>
 		</RootPanel>
 	);
 };

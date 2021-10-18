@@ -26,7 +26,7 @@ const createRouter = (api?: RouterAPI) => {
 							exact={true}
 							render={() => {
 								const Next = lazy<FC<any>>(
-									() => import('@/view/index/index/index')
+									() => import('@/view/index/login')
 								);
 								return (
 									<Suspense fallback={<Loading />}>

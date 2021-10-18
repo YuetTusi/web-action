@@ -36,14 +36,6 @@ const getColumn = (
 					<ActionPanel>
 						<Tag
 							onClick={() => {
-								const next = value.find((i) => i.special_type === CaseSort.Bet);
-								onSortClick(next);
-							}}
-							color="#1d39c4">
-							涉赌
-						</Tag>
-						<Tag
-							onClick={() => {
 								const next = value.find((i) => i.special_type === CaseSort.Porn);
 								onSortClick(next);
 							}}
@@ -59,6 +51,14 @@ const getColumn = (
 							}}
 							color="#389e0d">
 							传销
+						</Tag>
+						<Tag
+							onClick={() => {
+								const next = value.find((i) => i.special_type === CaseSort.Bet);
+								onSortClick(next);
+							}}
+							color="#1d39c4">
+							涉赌
 						</Tag>
 					</ActionPanel>
 				);

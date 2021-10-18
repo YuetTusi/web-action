@@ -4,6 +4,8 @@ import { PieChart } from 'echarts/charts';
 import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import React, { FC, useEffect } from 'react';
+import Empty from 'antd/lib/empty';
+import { helper } from '@/utility/helper';
 
 echarts.use([
 	TitleComponent,
@@ -51,7 +53,7 @@ const HitChart: FC<{ data: Array<{ name: string; value: number }> }> = ({ data }
 	useEffect(() => {
 		const $chartRoot = document.getElementById('chart-root');
 		console.log(data);
-		if ($chartRoot !== null) {
+		if ($chartRoot !== null && !helper.isNullOrUndefined(data) && data.length > 0) {
 			const chart = echarts.init($chartRoot);
 			if (data.length === 2) {
 				colors.shift();
@@ -62,7 +64,11 @@ const HitChart: FC<{ data: Array<{ name: string; value: number }> }> = ({ data }
 		}
 	}, [data]);
 
-	return <div id="chart-root" style={{ width: '800px', height: '460px' }}></div>;
+	return (
+		<div id="chart-root" style={{ width: '800px', height: '460px' }}>
+			<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ paddingTop: '200px' }} description="暂无统计数据" />
+		</div>
+	);
 };
 
 export default HitChart;

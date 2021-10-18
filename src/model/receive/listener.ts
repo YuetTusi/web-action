@@ -21,18 +21,17 @@ const { Fetch } = SocketType;
 /**
  * 登录结果
  */
-export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean, username: string }>) {
+export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean }>) {
 
-    const { username, success } = cmd.msg;
-    dispatch({ type: 'login/setLoading', payload: false });
+    const { success } = cmd.msg;
     msgBox.destroy();
     if (success) {
         msgBox.success('登录成功');
-        sessionStorage.setItem('username', username);
-        dispatch(routerRedux.push('/index'));
+        dispatch(routerRedux.push('/targetInquire'));
     } else {
         msgBox.error('登录失败');
     }
+    dispatch({ type: 'login/setLoading', payload: false });
 }
 
 /**

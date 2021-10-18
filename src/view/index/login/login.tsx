@@ -23,11 +23,12 @@ const Login: FC<{}> = () => {
 		try {
 			const values = await validateFields();
 			dispatch({ type: 'login/login', payload: values });
+		} catch (error) {
+			console.log(error);
+		} finally {
 			setTimeout(() => {
 				dispatch({ type: 'login/setLoading', payload: false });
 			}, 500);
-		} catch (error) {
-			console.log(error);
 		}
 	};
 

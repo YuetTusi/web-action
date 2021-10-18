@@ -5,12 +5,13 @@ import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    addDeptResult, bankBatchResult, bankResult, delDeptResult, findUserInfo, getMultipleResult, getSingleResult, menuResult,
+    addDeptResult, bankBatchResult, bankResult, delDeptResult, findUserInfo,
+    getMultipleResult, getSingleResult, loginResult, menuResult,
     operationLogResult, queryDeptByParentResult, queryLogResult, queryRoleResult,
     regionResult, updateDeptResult, userActionResult
 } from './listener';
 
-const { Fetch } = SocketType;
+const { Fetch, Error } = SocketType;
 
 export default {
 
@@ -24,6 +25,9 @@ export default {
             log.info(`Receive command (${command.cmd}): ,msg: ${JSON.stringify(command.msg)}`);
 
             switch (command.cmd) {
+                case CommandType.LoginResult:
+                    loginResult(dispatch, command);
+                    break;
                 case CommandType.MenuResult:
                     menuResult(dispatch, command);
                     break;
@@ -82,6 +86,26 @@ export default {
                     log.warn(`Not known command: ${command.cmd}`);
                     break;
             }
+        });
+    },
+    /**
+     * Socket出错
+     */
+    onSocketError({ dispatch }: SubscriptionAPI) {
+        server.on(Error, (port: number, type: string) => {
+
+            dispatch({ type: 'login/setLoading', payload: false });
+            dispatch({ type: 'reading/setReading', payload: false });
+            Modal.destroyAll();
+            Modal.warn({
+                title: '服务中断',
+                content: '服务通讯中断，软件将退出',
+                okText: '是',
+                zIndex: 9000,
+                onOk() {
+                    ipcRenderer.send('do-close', true);
+                }
+            });
         });
     },
     /**

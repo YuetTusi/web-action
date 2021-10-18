@@ -4,6 +4,8 @@ import message from 'antd/lib/message';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
 
+const { Fetch } = SocketType;
+
 export default {
 
     /**
@@ -12,11 +14,15 @@ export default {
     *login({ payload }: AnyAction, { fork, put }: EffectsCommandMap) {
 
         const { username, password } = payload;
-        console.log({ username, password });
         yield put({ type: 'setLoading', payload: true });
         try {
-            yield fork(send, SocketType.Fetch, {
-                type: SocketType.Fetch,
+            console.log({
+                cmd: CommandType.Login,
+                msg: {
+                    username, password
+                }
+            });
+            yield fork(send, Fetch, {
                 cmd: CommandType.Login,
                 msg: {
                     username, password
