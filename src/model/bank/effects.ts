@@ -10,11 +10,11 @@ export default {
      */
     *insertHistory({ payload }: AnyAction, { fork }: EffectsCommandMap) {
 
-        const db = new Db(Document.AimBatch);
+        const db = new Db(Document.Bank);
         try {
             yield fork([db, 'insert'], payload);
         } catch (error: any) {
-            log.error(`目标批量查询入库失败 @model/batch/insertHistory:${error.message}`);
+            log.error(`银行卡查询入库失败 @model/bank/insertHistory:${error.message}`);
         }
     }
 };

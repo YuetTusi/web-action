@@ -1,6 +1,7 @@
 import { Model } from 'dva';
 import { Gambling, Pyramid } from '../bank';
 import reducers from './reducers';
+import effects from './effects';
 
 /**
  * 银行卡查询
@@ -48,7 +49,8 @@ let model: Model = {
         hit_pyramid: 0,
         result: {}
     },
-    reducers
+    reducers,
+    effects
 };
 
 export { BankBatchState };

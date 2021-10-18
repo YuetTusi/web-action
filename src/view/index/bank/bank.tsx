@@ -43,6 +43,62 @@ const Bank: FC<{}> = () => {
 	const [formRef] = useForm();
 	const card = getCard(result);
 
+	useEffect(() => {
+		//legacy: 测试数据
+		dispatch({
+			type: 'bank/setData',
+			payload: {
+				hits: 0,
+				hit_gambling: 0,
+				hit_pyramid: 0,
+				result: {
+					//银行卡号
+					'6213363479902259472': {
+						//赌博数据
+						gambling: {
+							hit: 1,
+							reg_count: 3,
+							balance: 0,
+							login_time: 2,
+							reg_time: 0,
+							is_agent: 1
+						},
+						//传销数据
+						pyramid: {
+							hit: 0
+						}
+					},
+					'6222032106001274118': {
+						gambling: {
+							hit: 0
+						},
+						pyramid: {
+							hit: 1,
+							reg_count: 1,
+							balance: 1,
+							login_time: 0,
+							reg_time: 0,
+							is_agent: 0
+						}
+					},
+					'6222032106001274115': {
+						gambling: {
+							hit: 0
+						},
+						pyramid: {
+							hit: 1,
+							reg_count: 1,
+							balance: 1,
+							login_time: 0,
+							reg_time: 0,
+							is_agent: 0
+						}
+					}
+				}
+			}
+		});
+	}, []);
+
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
@@ -80,6 +136,38 @@ const Bank: FC<{}> = () => {
 			</PadBox>
 			<Row gutter={[16, 24]}>
 				<Col span={12}>
+					<Ribbon text="传销" placement="start" color="green">
+						<Card title={<CardTitle>目标结果</CardTitle>} size="small">
+							<CardItemList>
+								<li>
+									<label>命中数量</label>
+									<span>{card[0]?.pyramid?.hit ?? '--'}</span>
+								</li>
+								<li>
+									<label>注册数量</label>
+									<span>--</span>
+								</li>
+								<li>
+									<label>注册时间</label>
+									<span>--</span>
+								</li>
+								<li>
+									<label>登录时间</label>
+									<span>--</span>
+								</li>
+								<li>
+									<label>余额</label>
+									<span>--</span>
+								</li>
+								<li>
+									<label>是否代理</label>
+									<span>--</span>
+								</li>
+							</CardItemList>
+						</Card>
+					</Ribbon>
+				</Col>
+				<Col span={12}>
 					<Ribbon text="涉赌" placement="start" color="geekblue">
 						<Card title={<CardTitle>目标结果</CardTitle>} size="small">
 							<CardItemList>
@@ -112,38 +200,6 @@ const Bank: FC<{}> = () => {
 											? '否'
 											: '是'}
 									</span>
-								</li>
-							</CardItemList>
-						</Card>
-					</Ribbon>
-				</Col>
-				<Col span={12}>
-					<Ribbon text="传销" placement="start" color="green">
-						<Card title={<CardTitle>目标结果</CardTitle>} size="small">
-							<CardItemList>
-								<li>
-									<label>命中数量</label>
-									<span>{card[0]?.pyramid?.hit ?? '--'}</span>
-								</li>
-								<li>
-									<label>注册数量</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>注册时间</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>登录时间</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>余额</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>是否代理</label>
-									<span>--</span>
 								</li>
 							</CardItemList>
 						</Card>

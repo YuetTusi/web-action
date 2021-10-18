@@ -1,3 +1,4 @@
+import { v4, V4Options } from 'uuid';
 import { DeptNode } from "@/model/dept-tree";
 import { DataNode } from "antd/lib/tree";
 
@@ -16,6 +17,12 @@ const helper = {
         } else {
             return false;
         }
+    },
+    /**
+     * 生成id
+     */
+    newId(option?: V4Options) {
+        return v4(option);
     },
     getDeptTree(data: DeptNode[], disableId: string[] = []): DataNode[] {
         if (data && data.length > 0) {

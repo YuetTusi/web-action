@@ -94,6 +94,7 @@
 		"dayjs": "^1.10.7",
 		"dva": "^2.6.0-beta.22",
 		"dva-immer": "^1.0.0",
+		"echarts": "^5.2.1",
 		"lodash": "^4.17.21",
 		"nedb": "^1.8.0",
 		"styled-components": "^5.3.1",

@@ -1,108 +1,138 @@
 import fs from 'fs';
 import path from 'path';
-import React, { FC, MouseEvent, useEffect } from 'react';
+import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
-import Col from 'antd/lib/col';
-import Row from 'antd/lib/row';
-import Divider from 'antd/lib/divider';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
 import Input from 'antd/lib/input';
+import Table from 'antd/lib/table';
 import message from 'antd/lib/message';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
+import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
-import { Gambling, Pyramid } from '@/model/bank';
-import Ribbon from 'antd/lib/badge/Ribbon';
-import Card from 'antd/lib/card';
-import { CardTitle } from '../index/styled/card-title';
-import { CardItemList } from '../index/styled/card-item';
-import { BankBatchState } from '@/model/bank-batch';
-import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import { helper } from '@/utility/helper';
+import { CaseSort } from '@/schema/common';
 import { CommandType, SocketType } from '@/schema/socket';
+import { CardResult, Gambling, Pyramid } from '@/model/bank';
+import { BankBatchState } from '@/model/bank-batch';
+import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import CategoryModal from './category-modal';
+import { getColumn, RowType } from './column';
+import ChartModal from './chart-modal';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Item, useForm } = Form;
 
-const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }>) => {
-	const next = Object.entries(result);
-	if (next.length === 0) {
-		return [];
-	} else {
-		let cards: Array<{ cardNo: string; gambling: Gambling; pyramid: Pyramid }> = [];
-		for (let [k, v] of next) {
-			cards.push({ cardNo: k, ...v });
-		}
-		return cards;
-	}
-};
+/**
+ * 银行卡对象数据转为表格数据
+ */
+const mapToTableData = (data: CardResult) =>
+	Object.entries(data).map(([k, v]) => ({
+		mobile: k,
+		...v
+	}));
 
+/**
+ * 汇总各分类下的命中数据
+ */
+const totalHitData = (data: CardResult) =>
+	Object.entries(data).reduce(
+		(acc, [, v]) => {
+			acc[0].value += v?.pyramid?.hit ?? 0;
+			acc[1].value += v?.gambling?.hit ?? 0;
+			return acc;
+		},
+		[
+			{ name: '传销', value: 0 },
+			{ name: '涉赌', value: 0 }
+		]
+	);
+
+/**
+ * 银行卡批量查询
+ */
 const BankBatch: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
+	const [specialData, setSpecialData] = useState<Gambling | Pyramid>();
 	const { hit_gambling, hit_pyramid, hits, result } = useSelector<any, BankBatchState>(
 		(state) => state.bankBatch
 	);
-	// useEffect(() => {
-	// 	//legacy: 测试数据
-	// 	dispatch({
-	// 		type: 'bankBatch/setData',
-	// 		payload: {
-	// 			hits: 0,
-	// 			hit_gambling: 0,
-	// 			hit_pyramid: 0,
-	// 			result: {
-	// 				//银行卡号
-	// 				'6213363479902259472': {
-	// 					//赌博数据
-	// 					gambling: {
-	// 						hit: 1,
-	// 						reg_count: 3,
-	// 						balance: 0,
-	// 						login_time: 2,
-	// 						reg_time: 0,
-	// 						is_agent: 1
-	// 					},
-	// 					//传销数据
-	// 					pyramid: {
-	// 						hit: 0
-	// 					}
-	// 				},
-	// 				'6222032106001274118': {
-	// 					gambling: {
-	// 						hit: 0
-	// 					},
-	// 					pyramid: {
-	// 						hit: 1,
-	// 						reg_count: 1,
-	// 						balance: 1,
-	// 						login_time: 0,
-	// 						reg_time: 0,
-	// 						is_agent: 0
-	// 					}
-	// 				},
-	// 				'6222032106001274115': {
-	// 					gambling: {
-	// 						hit: 0
-	// 					},
-	// 					pyramid: {
-	// 						hit: 1,
-	// 						reg_count: 1,
-	// 						balance: 1,
-	// 						login_time: 0,
-	// 						reg_time: 0,
-	// 						is_agent: 0
-	// 					}
-	// 				}
-	// 			}
-	// 		}
-	// 	});
-	// }, []);
+	useEffect(() => {
+		//legacy: 测试数据
+		dispatch({
+			type: 'bankBatch/setData',
+			payload: {
+				hits: 0,
+				hit_gambling: 0,
+				hit_pyramid: 0,
+				result: {
+					//银行卡号
+					'6213363479902259472': {
+						//赌博数据
+						gambling: {
+							hit: 3,
+							reg_count: 3,
+							balance: 0,
+							login_time: 2,
+							reg_time: 0,
+							is_agent: 1
+						},
+						//传销数据
+						pyramid: {
+							hit: 0
+						}
+					},
+					'6222032106001274118': {
+						gambling: {
+							hit: 0
+						},
+						pyramid: {
+							hit: 1,
+							reg_count: 1,
+							balance: 1,
+							login_time: 0,
+							reg_time: 0,
+							is_agent: 0
+						}
+					},
+					'6222032106001274115': {
+						gambling: {
+							hit: 0
+						},
+						pyramid: {
+							hit: 1,
+							reg_count: 1,
+							balance: 1,
+							login_time: 0,
+							reg_time: 0,
+							is_agent: 0
+						}
+					}
+				}
+			}
+		});
+	}, []);
 
 	const [formRef] = useForm();
+
+	/**
+	 * 点击分类handle
+	 */
+	const actionHandle = (type: CaseSort, data: RowType) => {
+		switch (type) {
+			case CaseSort.Bet:
+				setSpecialData(data.gambling);
+				break;
+			case CaseSort.PyramidSales:
+				setSpecialData(data.pyramid);
+				break;
+		}
+	};
 
 	/**
 	 * 下载模板Click
@@ -163,91 +193,6 @@ const BankBatch: FC<{}> = () => {
 		}
 	};
 
-	/**
-	 * 渲染结果
-	 */
-	const renderCards = () => {
-		return getCard(result).map((item, index) => {
-			return (
-				<>
-					<Divider orientation="left">{`卡号：${item.cardNo}`}</Divider>
-					<Row gutter={[16, 24]} key={`${item.cardNo}_${index}`}>
-						<Col span={12}>
-							<Ribbon text="涉赌" placement="start" color="geekblue">
-								<Card title={<CardTitle>目标结果</CardTitle>} size="small">
-									<CardItemList>
-										<li>
-											<label>命中数量</label>
-											<span>{item?.gambling?.hit ?? '--'}</span>
-										</li>
-										<li>
-											<label>注册数量</label>
-											<span>{item?.gambling?.reg_count ?? '--'}</span>
-										</li>
-										<li>
-											<label>注册时间</label>
-											<span>{item?.gambling?.reg_time ?? '--'}</span>
-										</li>
-										<li>
-											<label>登录时间</label>
-											<span>{item?.gambling?.login_time ?? '--'}</span>
-										</li>
-										<li>
-											<label>余额</label>
-											<span>{item?.gambling?.balance ?? '--'}</span>
-										</li>
-										<li>
-											<label>是否代理</label>
-											<span>
-												{helper.isNullOrUndefined(item?.gambling?.is_agent)
-													? '--'
-													: item?.gambling?.is_agent === 0
-													? '否'
-													: '是'}
-											</span>
-										</li>
-									</CardItemList>
-								</Card>
-							</Ribbon>
-						</Col>
-						<Col span={12}>
-							<Ribbon text="传销" placement="start" color="green">
-								<Card title={<CardTitle>目标结果</CardTitle>} size="small">
-									<CardItemList>
-										<li>
-											<label>命中数量</label>
-											<span>{item?.pyramid?.hit ?? '--'}</span>
-										</li>
-										<li>
-											<label>注册数量</label>
-											<span>--</span>
-										</li>
-										<li>
-											<label>注册时间</label>
-											<span>--</span>
-										</li>
-										<li>
-											<label>登录时间</label>
-											<span>--</span>
-										</li>
-										<li>
-											<label>余额</label>
-											<span>--</span>
-										</li>
-										<li>
-											<label>是否代理</label>
-											<span>--</span>
-										</li>
-									</CardItemList>
-								</Card>
-							</Ribbon>
-						</Col>
-					</Row>
-				</>
-			);
-		});
-	};
-
 	return (
 		<RootPanel>
 			<PadBox>
@@ -271,9 +216,30 @@ const BankBatch: FC<{}> = () => {
 							<span>下载模板</span>
 						</Button>
 					</Item>
+					<Item>
+						<Button
+							disabled={Object.entries(result).length === 0}
+							onClick={() => setChartModalVisible(true)}
+							type="default">
+							<PieChartOutlined />
+							<span>占比统计</span>
+						</Button>
+					</Item>
 				</Form>
 			</PadBox>
-			{renderCards()}
+			<Table<RowType>
+				dataSource={mapToTableData(result)}
+				columns={getColumn(dispatch, actionHandle)}
+				pagination={false}
+				rowKey="mobile"
+			/>
+			<ChartModal
+				data={totalHitData(result)}
+				visible={chartModalVisible}
+				onCancel={() => setChartModalVisible(false)}
+			/>
+			<CategoryModal specialData={specialData} onCancel={() => setSpecialData(void 0)} />
+			{/* {renderCards()} */}
 		</RootPanel>
 	);
 };

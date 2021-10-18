@@ -1,5 +1,6 @@
 import { Model } from 'dva';
 import reducers from './reducers';
+import effects from './effects';
 
 /**
  * 批量查询
@@ -61,7 +62,8 @@ let model: Model = {
     state: {
         data: [],
     },
-    reducers
+    reducers,
+    effects
 };
 
 export { SingleState, SingleDataSource, SpecialData };
