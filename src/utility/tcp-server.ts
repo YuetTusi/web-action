@@ -49,6 +49,7 @@ server.on('connection', (socket: Socket) => {
         // console.log('on data:', chunk);
         stack.__socket__ = socket;
         stack.putData(chunk);
+        // stackDataHandle(chunk);
     });
 
     socket.on('error', (err) => {
@@ -76,7 +77,7 @@ server.on('error', (err) => {
 function stackDataHandle(chunk: Buffer) {
 
     console.log('stackDataHandle:');
-    console.log(chunk);
+    console.log(chunk.toString());
 
     // 拷贝4个字节的长度
     const head = Buffer.alloc(4);
@@ -118,9 +119,9 @@ function send<T = any>(type: string, data: Command<T>) {
     head.writeUInt32BE(body.byteLength, 0);
     let current = pool.get(type);
     if (current) {
-        // current.socket.write(head);
-        // current.socket.write(body);
-        current.socket.write(Buffer.concat([head, body]));
+        current.socket.write(head);
+        current.socket.write(body);
+        // current.socket.write(Buffer.concat([head, body]));
     } else {
         console.warn('Socket is null');
     }
