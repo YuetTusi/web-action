@@ -1,10 +1,11 @@
 import React, { FC, memo } from 'react';
-import { useLocation, useSelector } from 'dva';
+import { useLocation, useSelector, routerRedux, useDispatch } from 'dva';
 import { HeaderBox } from './styled/header-box';
 import { UserInfoState } from '@/model/user-info';
 import { routeCaption } from '@/router/index/create-router';
 
 const WebHeader: FC<{}> = memo(() => {
+	const dispatch = useDispatch();
 	const { frequency_limit, validate } = useSelector<any, UserInfoState>(
 		(state) => state.userInfo
 	);
@@ -21,7 +22,9 @@ const WebHeader: FC<{}> = memo(() => {
 
 	return (
 		<HeaderBox>
-			<div className="caption">网络行为查询系统</div>
+			<div className="caption" onClick={() => dispatch(routerRedux.push('/login'))}>
+				网络行为查询系统
+			</div>
 			<div className="fn">
 				<div className="brd">
 					<span>{routeCaption(pathname)}</span>

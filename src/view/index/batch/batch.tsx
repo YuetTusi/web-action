@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent, useState } from 'react';
+import React, { FC, MouseEvent, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -16,16 +16,25 @@ import { PadBox } from '@/component/widget/box';
 import { helper, PAGESIZE } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
-import { BatchDataSource, BatchState, SpecialData } from '@/model/batch';
+import { BatchDataSource, BatchState } from '@/model/batch';
 import CategoryModal from './category-modal';
 import ChartModal from './chart-modal';
 import { getColumn } from './column';
 import { BatchProp } from './prop';
+import { CaseSort } from '@/schema/common';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Fetch } = SocketType;
 const { Item, useForm } = Form;
+
+const convertToArray = (data: Record<string, BatchDataSource>) => {
+	if (helper.isNullOrUndefined(data)) {
+		return [];
+	} else {
+		return Object.entries(data).map(([k, v]) => ({ mobile: k, category: v }));
+	}
+};
 
 /**
  * 批量查询
@@ -33,9 +42,11 @@ const { Item, useForm } = Form;
 const Batch: FC<BatchProp> = () => {
 	const dispatch = useDispatch();
 	const { data, pageIndex, loading } = useSelector<any, BatchState>((state) => state.batch);
-	const [currentSpecialData, setCurrentSpecialData] = useState<SpecialData>();
+	const [type, setType] = useState<CaseSort>();
+	const [currentSpecialData, setCurrentSpecialData] = useState<BatchDataSource>();
 	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
 	const [formRef] = useForm<{ tempFilePath: string }>();
+	const list = convertToArray(data);
 
 	/**
 	 * 查询Click
@@ -109,7 +120,8 @@ const Batch: FC<BatchProp> = () => {
 	 * @param type 分类
 	 * @param data 数据
 	 */
-	const onSortClick = (data?: SpecialData) => {
+	const onSortClick = (data: BatchDataSource, type: CaseSort) => {
+		setType(type);
 		setCurrentSpecialData(data);
 	};
 
@@ -126,6 +138,12 @@ const Batch: FC<BatchProp> = () => {
 	 */
 	const onPageChange = (pageIndex: number) =>
 		dispatch({ type: 'batch/setPageIndex', payload: pageIndex });
+
+	// console.log(
+	// 	Object.entries(data).map(([k, v]) => {
+	// 		return { mobile: k, category: v };
+	// 	})
+	// );
 
 	return (
 		<RootPanel>
@@ -151,15 +169,16 @@ const Batch: FC<BatchProp> = () => {
 						</Button>
 					</Item>
 					<Item>
-						<Button onClick={chartClick} disabled={data.length === 0} type="default">
+						<Button onClick={chartClick} disabled={list.length === 0} type="default">
 							<PieChartOutlined />
 							<span>占比统计</span>
 						</Button>
 					</Item>
 				</Form>
 			</PadBox>
-			<Table<BatchDataSource>
-				dataSource={data}
+
+			<Table<{ mobile: string; category: BatchDataSource }>
+				dataSource={list}
 				columns={getColumn(dispatch, onSortClick)}
 				pagination={false}
 				// pagination={{
@@ -171,9 +190,13 @@ const Batch: FC<BatchProp> = () => {
 				loading={loading}
 				rowKey={'mobile'}
 			/>
-			<CategoryModal onCancel={categoryCancel} specialData={currentSpecialData} />
+			<CategoryModal
+				onCancel={categoryCancel}
+				specialData={currentSpecialData}
+				type={type!}
+			/>
 			<ChartModal
-				data={[]}
+				data={list}
 				visible={chartModalVisible}
 				onCancel={() => setChartModalVisible(false)}
 			/>

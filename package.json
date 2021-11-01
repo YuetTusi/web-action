@@ -1,6 +1,6 @@
 {
 	"name": "web-action",
-	"version": "1.0.0",
+	"version": "0.0.1",
 	"description": "WebAction",
 	"main": "dist/main.js",
 	"repository": "https://github.com/YuetTusi/web-action.git",
@@ -71,7 +71,7 @@
 		"concurrently": "^6.2.1",
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.3.0",
-		"electron": "^15.0.0",
+		"electron": "^15.3.0",
 		"electron-builder": "^22.11.7",
 		"expose-loader": "^3.0.0",
 		"friendly-errors-webpack-plugin": "^1.7.0",

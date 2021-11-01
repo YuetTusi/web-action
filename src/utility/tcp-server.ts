@@ -27,32 +27,40 @@ interface SocketMark {
     socket: Socket;
 }
 
-
 server.on('connection', (socket: Socket) => {
 
     console.log(`Socket接入, 端口号: ${socket.remotePort}`);
     logger.info(`Socket接入, 端口号: ${socket.remotePort}`);
 
-    if (!pool.has(SocketType.Fetch)) {
-        //若map中没有名为type的socket，存入map
-        pool.set(SocketType.Fetch, {
-            // type: data.type,
-            type: SocketType.Fetch, //目前只有一个Socket，固定写死
-            port: socket.remotePort!,
-            socket
-        });
-        logger.info(`SocketType:${SocketType.Fetch}, Port:${socket.remotePort}`);
-    }
+    // if (!pool.has(SocketType.Fetch)) {
+    //     //若map中没有名为type的socket，存入map
+    //     pool.set(SocketType.Fetch, {
+    //         // type: data.type,
+    //         type: SocketType.Fetch, //目前只有一个Socket，固定写死
+    //         port: socket.remotePort!,
+    //         socket
+    //     });
+    //     logger.info(`SocketType:${SocketType.Fetch}, Port:${socket.remotePort}`);
+    // }
+
+    pool.set(SocketType.Fetch, {
+        // type: data.type,
+        type: SocketType.Fetch, //目前只有一个Socket，固定写死
+        port: socket.remotePort!,
+        socket
+    });
+    logger.info(`SocketType:${SocketType.Fetch}, Port:${socket.remotePort}`);
 
 
     socket.on('data', (chunk: Buffer) => {
-        // console.log('on data:', chunk);
+        // console.log('on data:', chunk.toString());
         stack.__socket__ = socket;
         stack.putData(chunk);
         // stackDataHandle(chunk);
     });
 
     socket.on('error', (err) => {
+        console.log('断开');
         const type = getSocketTypeByPort(pool, socket.remotePort!);
         removeSocketByPort(pool, socket.remotePort!);
         logger.error(`${type}_socket断开(port:${socket.remotePort}), 错误消息: ${err.message}`);
@@ -76,8 +84,8 @@ server.on('error', (err) => {
  */
 function stackDataHandle(chunk: Buffer) {
 
-    console.log('stackDataHandle:');
-    console.log(chunk.toString());
+    // console.log('stackDataHandle:');
+    // console.log(chunk.toString());
 
     // 拷贝4个字节的长度
     const head = Buffer.alloc(4);
@@ -133,11 +141,7 @@ function send<T = any>(type: string, data: Command<T>) {
  * @param port 端口
  */
 function removeSocketByPort(map: Map<string, SocketMark>, port: number) {
-    map.forEach((item) => {
-        if (item.port === port) {
-            map.delete(item.type);
-        }
-    })
+    map.clear();
 }
 
 /**

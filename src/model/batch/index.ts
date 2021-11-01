@@ -10,7 +10,7 @@ interface BatchState {
     /**
      * 数据
      */
-    data: BatchDataSource[],
+    data: Record<string, BatchDataSource>,
     /**
      * 当前页
      */
@@ -30,147 +30,121 @@ interface BatchState {
  */
 interface BatchDataSource {
     /**
-     * 查询时间
+     * 最后登录 "lastLogin": 0,
      */
-    gmt_create: string,
+    lastLogin: number,
     /**
-     * 手机号
+     * "participatingFunds": "0",
      */
-    mobile: string,
+    participatingFunds: string,
+    /** 
+     * 是否代理"isAgent": "N",
+     */
+    isAgent: string,
     /**
-     * 分类数据
+     * 是否注册 "isReg": 1,
      */
-    special_data: SpecialData[]
-}
-
-/**
- * 分类数据
- */
-interface SpecialData {
+    isReg: number,
     /**
-     * 分类
+     * "participatingWebsiteCount": "2",
      */
-    special_type: number,
+    participatingWebsiteCount: string,
     /**
-     * 查询id
+     * haveBindBankCard "Y"
      */
-    query_id: string,
-    /**
-     * 是否注册
-     */
-    is_reg: number,
-    /**
-     * 手机号
-     */
-    phone_num: string,
-    /**
-     * 其他
-     */
+    haveBindBankCard: string,
     [others: string]: any
 }
-
 
 let model: Model = {
     namespace: 'batch',
     state: {
-        data: [
-            {
-                "gmt_create": "2021-10-12 15:18:12",
-                "mobile": "13145589663",
-                "special_data": [
-                    {
-                        "special_type": 2,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13145589663"
-                    },
-                    {
-                        "special_type": 3,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13145589663"
-                    },
-                    {
-                        "special_type": 1,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13145589663"
-                    }
-                ]
-            },
-            {
-                "gmt_create": "2021-10-12 15:18:12",
-                "mobile": "18041523226",
-                "special_data": [
-                    {
-                        "special_type": 2,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18041523226"
-                    },
-                    {
-                        "special_type": 3,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18041523226"
-                    },
-                    {
-                        "special_type": 1,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18041523226"
-                    }
-                ]
-            },
-            {
-                "gmt_create": "2021-10-12 15:18:12",
-                "mobile": "18631558216",
-                "special_data": [
-                    {
-                        "special_type": 2,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18631558216"
-                    },
-                    {
-                        "special_type": 3,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18631558216"
-                    },
-                    {
-                        "special_type": 1,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "18631558216"
-                    }
-                ]
-            },
-            {
-                "gmt_create": "2021-10-12 15:18:12",
-                "mobile": "13020097148",
-                "special_data": [
-                    {
-                        "special_type": 2,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13020097148"
-                    },
-                    {
-                        "special_type": 3,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13020097148"
-                    },
-                    {
-                        "special_type": 1,
-                        "query_id": "e4513c9535cb90d57f54043583b5daa0",
-                        "is_reg": 0,
-                        "phone_num": "13020097148"
-                    }
-                ]
-            }
-        ],
+        data: {
+            // "6ea21f8fd01c3c17fc2779850d212b34": {
+            //     "涉黄": {
+            //         "lastLogin": "无数据",
+            //         "isReg": 0
+            //     },
+            //     "传销": {
+            //         "ParticipatingWebsiteCount": "N",
+            //         "lastLogin": "无数据",
+            //         "regTime": "1",
+            //         "isReg": 0,
+            //         "haveBindBankCard": "N"
+            //     },
+            //     "涉赌": {
+            //         "lastLogin": "无数据",
+            //         "participatingFunds": "0",
+            //         "isAgent": "N",
+            //         "isReg": 0,
+            //         "participatingWebsiteCount": "N",
+            //         "haveBindBankCard": "N"
+            //     }
+            // },
+            // "197a25cd11a4cd3f49e92069e0bb2208": {
+            //     "涉黄": {
+            //         "lastLogin": "无数据",
+            //         "isReg": 0
+            //     },
+            //     "传销": {
+            //         "ParticipatingWebsiteCount": "N",
+            //         "lastLogin": "无数据",
+            //         "regTime": "1",
+            //         "isReg": 0,
+            //         "haveBindBankCard": "N"
+            //     },
+            //     "涉赌": {
+            //         "lastLogin": "无数据",
+            //         "participatingFunds": "0",
+            //         "isAgent": "N",
+            //         "isReg": 0,
+            //         "participatingWebsiteCount": "N",
+            //         "haveBindBankCard": "N"
+            //     }
+            // },
+            // "841b2f6f36c367dbe88c1eb2403873b0": {
+            //     "涉黄": {
+            //         "lastLogin": "无数据",
+            //         "isReg": 0
+            //     },
+            //     "传销": {
+            //         "ParticipatingWebsiteCount": "N",
+            //         "lastLogin": "无数据",
+            //         "regTime": "1",
+            //         "isReg": 0,
+            //         "haveBindBankCard": "N"
+            //     },
+            //     "涉赌": {
+            //         "lastLogin": "无数据",
+            //         "participatingFunds": "0",
+            //         "isAgent": "N",
+            //         "isReg": 0,
+            //         "participatingWebsiteCount": "N",
+            //         "haveBindBankCard": "N"
+            //     }
+            // },
+            // "a4e26368c53208ec1dff1d972fab4828": {
+            //     "涉黄": {
+            //         "lastLogin": "无数据",
+            //         "isReg": 0
+            //     },
+            //     "传销": {
+            //         "ParticipatingWebsiteCount": "N",
+            //         "lastLogin": "无数据",
+            //         "regTime": "1",
+            //         "isReg": 0,
+            //         "haveBindBankCard": "N"
+            //     },
+            //     "涉赌": {
+            //         "lastLogin": "无数据",
+            //         "participatingFunds": "0",
+            //         "isAgent": "N",
+            //         "isReg": 0,
+            //         "participatingWebsiteCount": "N",
+            //         "haveBindBankCard": "N"
+            //     }
+            // }
+        },
         pageIndex: 1,
         pageSize: PAGESIZE,
         loading: false
@@ -179,5 +153,5 @@ let model: Model = {
     effects
 };
 
-export { BatchState, BatchDataSource, SpecialData };
+export { BatchState, BatchDataSource };
 export default model;

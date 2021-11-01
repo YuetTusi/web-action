@@ -187,9 +187,9 @@
   integrity sha1-koPJzlsomjxPYcEnV0aeWTd/gfM=
 
 "@electron/get@^1.13.0":
-  version "1.13.0"
-  resolved "https://registry.nlark.com/@electron/get/download/@electron/get-1.13.0.tgz#95c6bcaff4f9a505ea46792424f451efea89228c"
-  integrity sha1-lca8r/T5pQXqRnkkJPRR7+qJIow=
+  version "1.13.1"
+  resolved "https://registry.npmmirror.com/@electron/get/download/@electron/get-1.13.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40electron%2Fget%2Fdownload%2F%40electron%2Fget-1.13.1.tgz#42a0aa62fd1189638bd966e23effaebb16108368"
+  integrity sha1-QqCqYv0RiWOL2WbiPv+uuxYQg2g=
   dependencies:
     debug "^4.1.1"
     env-paths "^2.2.0"
@@ -199,7 +199,7 @@
     semver "^6.2.0"
     sumchecker "^3.0.1"
   optionalDependencies:
-    global-agent "^2.0.2"
+    global-agent "^3.0.0"
     global-tunnel-ng "^2.7.1"
 
 "@electron/universal@1.0.5":
@@ -391,9 +391,9 @@
   integrity sha1-82R2IxmcqSCWAAaz3M9jPqkF8kM=
 
 "@types/node@^14.6.2":
-  version "14.17.19"
-  resolved "https://registry.npmmirror.com/@types/node/download/@types/node-14.17.19.tgz?cache=0&sync_timestamp=1632567928956&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.17.19.tgz#7341e9ac1b5d748d7a3ddc04336ed536a6f91c31"
-  integrity sha1-c0HprBtddI16PdwEM27VNqb5HDE=
+  version "14.17.32"
+  resolved "https://registry.npmmirror.com/@types/node/download/@types/node-14.17.32.tgz?cache=0&sync_timestamp=1635213425908&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-14.17.32.tgz#2ca61c9ef8c77f6fa1733be9e623ceb0d372ad96"
+  integrity sha1-LKYcnvjHf2+hczvp5iPOsNNyrZY=
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
@@ -1068,7 +1068,7 @@ browserslist@^4.14.5:
 
 buffer-crc32@~0.2.3:
   version "0.2.13"
-  resolved "https://registry.npm.taobao.org/buffer-crc32/download/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
+  resolved "https://registry.npmmirror.com/buffer-crc32/download/buffer-crc32-0.2.13.tgz#0d333e3f00eac50aa1454abd30ef8c2a5d9a7242"
   integrity sha1-DTM+PwDqxQqhRUq9MO+MKl2ackI=
 
 buffer-equal@1.0.0:
@@ -1531,11 +1531,6 @@ copy-to-clipboard@^3.2.0:
   dependencies:
     toggle-selection "^1.0.6"
 
-core-js@^3.6.5:
-  version "3.18.1"
-  resolved "https://registry.npmmirror.com/core-js/download/core-js-3.18.1.tgz#289d4be2ce0085d40fc1244c0b1a54c00454622f"
-  integrity sha1-KJ1L4s4AhdQPwSRMCxpUwARUYi8=
-
 core-util-is@1.0.2:
   version "1.0.2"
   resolved "https://registry.nlark.com/core-util-is/download/core-util-is-1.0.2.tgz?cache=0&sync_timestamp=1630421011398&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-util-is%2Fdownload%2Fcore-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -1988,10 +1983,10 @@ electron-to-chromium@^1.3.846:
   resolved "https://registry.npmmirror.com/electron-to-chromium/download/electron-to-chromium-1.3.850.tgz?cache=0&sync_timestamp=1632521702260&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Felectron-to-chromium%2Fdownload%2Felectron-to-chromium-1.3.850.tgz#c56c72abfeab051b4b328beb894461c5912d0456"
   integrity sha1-xWxyq/6rBRtLMovriURhxZEtBFY=
 
-electron@^15.0.0:
-  version "15.0.0"
-  resolved "https://registry.npmmirror.com/electron/download/electron-15.0.0.tgz#b1b6244b1cffddf348c27c54b1310b3a3680246e"
-  integrity sha1-sbYkSxz/3fNIwnxUsTELOjaAJG4=
+electron@^15.3.0:
+  version "15.3.0"
+  resolved "https://registry.npmmirror.com/electron/download/electron-15.3.0.tgz?cache=0&sync_timestamp=1635498106823&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2Felectron%2Fdownload%2Felectron-15.3.0.tgz#f9803c5a05b2dac12efc6d4203492c7e204b4819"
+  integrity sha1-+YA8WgWy2sEu/G1CA0ksfiBLSBk=
   dependencies:
     "@electron/get" "^1.13.0"
     "@types/node" "^14.6.2"
@@ -2447,13 +2442,12 @@ glob@^7.0.3, glob@^7.1.3, glob@^7.1.6:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-global-agent@^2.0.2:
-  version "2.2.0"
-  resolved "https://registry.nlark.com/global-agent/download/global-agent-2.2.0.tgz#566331b0646e6bf79429a16877685c4a1fbf76dc"
-  integrity sha1-VmMxsGRua/eUKaFod2hcSh+/dtw=
+global-agent@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.nlark.com/global-agent/download/global-agent-3.0.0.tgz#ae7cd31bd3583b93c5a16437a1afe27cc33a1ab6"
+  integrity sha1-rnzTG9NYO5PFoWQ3oa/ifMM6GrY=
   dependencies:
     boolean "^3.0.1"
-    core-js "^3.6.5"
     es6-error "^4.1.1"
     matcher "^3.0.0"
     roarr "^2.15.3"
@@ -3377,7 +3371,7 @@ make-dir@^3.0.0:
 
 matcher@^3.0.0:
   version "3.0.0"
-  resolved "https://registry.npm.taobao.org/matcher/download/matcher-3.0.0.tgz?cache=0&sync_timestamp=1614510861086&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fmatcher%2Fdownload%2Fmatcher-3.0.0.tgz#bd9060f4c5b70aa8041ccc6f80368760994f30ca"
+  resolved "https://registry.npmmirror.com/matcher/download/matcher-3.0.0.tgz#bd9060f4c5b70aa8041ccc6f80368760994f30ca"
   integrity sha1-vZBg9MW3CqgEHMxvgDaHYJlPMMo=
   dependencies:
     escape-string-regexp "^4.0.0"
@@ -3879,7 +3873,7 @@ path-type@^4.0.0:
 
 pend@~1.2.0:
   version "1.2.0"
-  resolved "https://registry.nlark.com/pend/download/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
+  resolved "https://registry.npmmirror.com/pend/download/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
@@ -4707,7 +4701,7 @@ rimraf@^3.0.0, rimraf@^3.0.2:
 
 roarr@^2.15.3:
   version "2.15.4"
-  resolved "https://registry.nlark.com/roarr/download/roarr-2.15.4.tgz#f5fe795b7b838ccfe35dc608e0282b9eba2e7afd"
+  resolved "https://registry.npmmirror.com/roarr/download/roarr-2.15.4.tgz#f5fe795b7b838ccfe35dc608e0282b9eba2e7afd"
   integrity sha1-9f55W3uDjM/jXcYI4Cgrnrouev0=
   dependencies:
     boolean "^3.0.1"
@@ -5354,7 +5348,7 @@ tunnel@^0.0.6:
 
 type-fest@^0.13.1:
   version "0.13.1"
-  resolved "https://registry.nlark.com/type-fest/download/type-fest-0.13.1.tgz#0172cb5bce80b0bd542ea348db50c7e21834d934"
+  resolved "https://registry.npmmirror.com/type-fest/download/type-fest-0.13.1.tgz#0172cb5bce80b0bd542ea348db50c7e21834d934"
   integrity sha1-AXLLW86AsL1ULqNI21DH4hg02TQ=
 
 type-fest@^0.20.2:

@@ -38,9 +38,35 @@ const Index: FC<{}> = () => {
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.GetSingle, msg: { mobile: value } });
 			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { mobile: value } });
-			setTimeout(() => {
-				dispatch({ type: 'reading/setReading', payload: false });
-			}, 1000);
+
+			// dispatch({
+			// 	type: 'single/setData',
+			// 	payload: {
+			// 		涉黄: {
+			// 			lastLogin: '无数据',
+			// 			isReg: 0
+			// 		},
+			// 		传销: {
+			// 			ParticipatingWebsiteCount: 'N',
+			// 			lastLogin: '无数据',
+			// 			regTime: '1',
+			// 			isReg: 0,
+			// 			haveBindBankCard: 'N'
+			// 		},
+			// 		涉赌: {
+			// 			lastLogin: 0,
+			// 			participatingFunds: '0',
+			// 			isAgent: 'N',
+			// 			isReg: 1,
+			// 			participatingWebsiteCount: '2',
+			// 			haveBindBankCard: 'Y'
+			// 		}
+			// 	}
+			// });
+
+			// setTimeout(() => {
+			// 	dispatch({ type: 'reading/setReading', payload: false });
+			// }, 1000);
 		}
 	};
 
@@ -48,7 +74,7 @@ const Index: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="mobile" label="目标手机号" initialValue={'13145589663'}>
+					<Item name="mobile" label="目标手机号">
 						<Input />
 					</Item>
 					<Item>

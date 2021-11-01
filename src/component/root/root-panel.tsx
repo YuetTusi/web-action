@@ -5,8 +5,8 @@ import RootMenu from './root-menu';
 import { WebHeader } from '../layout';
 import ContentBox from '../layout/styled/content-box';
 import InnerBox from '../layout/styled/inner-box';
-import { RootPanelProp } from './props';
 import Reading from '../reading/reading';
+import { RootPanelProp } from './props';
 
 /**
  * 视图根组件

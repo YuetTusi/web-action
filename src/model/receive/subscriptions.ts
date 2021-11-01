@@ -1,14 +1,14 @@
 import { ipcRenderer, IpcRendererEvent } from 'electron';
 import { SubscriptionAPI } from 'dva';
 import Modal from 'antd/lib/modal';
-import server, { send } from '@/utility/tcp-server';
 import log from '@/utility/log';
+import server, { send } from '@/utility/tcp-server';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
     addDeptResult, bankBatchResult, bankResult, delDeptResult, findUserInfo,
-    getMultipleResult, getSingleResult, loginResult, menuResult,
-    operationLogResult, queryDeptByParentResult, queryLogResult, queryRoleResult,
-    regionResult, updateDeptResult, userActionResult
+    getMultipleResult, getSingleResult, loginResult, menuResult, operationLogResult,
+    queryDeptByParentResult, queryLogResult, queryRoleResult, regionResult,
+    updateDeptResult, userActionResult
 } from './listener';
 
 const { Fetch, Error } = SocketType;
@@ -71,8 +71,6 @@ export default {
                     delDeptResult(dispatch, command);
                     break;
                 case CommandType.QueryUserByDeptResult:
-
-                    break;
                 case CommandType.AddUserResult:
                 case CommandType.UpdateUserResult:
                 case CommandType.DelUserResult:
@@ -83,7 +81,7 @@ export default {
                     break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
-                    log.warn(`Not known command: ${command.cmd}`);
+                    log.warn(`Command not found: ${command.cmd}`);
                     break;
             }
         });
@@ -91,23 +89,23 @@ export default {
     /**
      * Socket出错
      */
-    onSocketError({ dispatch }: SubscriptionAPI) {
-        server.on(Error, (port: number, type: string) => {
+    // onSocketError({ dispatch }: SubscriptionAPI) {
+    //     server.on(Error, (port: number, type: string) => {
 
-            dispatch({ type: 'login/setLoading', payload: false });
-            dispatch({ type: 'reading/setReading', payload: false });
-            Modal.destroyAll();
-            Modal.warn({
-                title: '服务中断',
-                content: '服务通讯中断，软件将退出',
-                okText: '是',
-                zIndex: 9000,
-                onOk() {
-                    ipcRenderer.send('do-close', true);
-                }
-            });
-        });
-    },
+    //         dispatch({ type: 'login/setLoading', payload: false });
+    //         dispatch({ type: 'reading/setReading', payload: false });
+    //         Modal.destroyAll();
+    //         Modal.warn({
+    //             title: '服务中断',
+    //             content: '服务通讯中断，软件将退出',
+    //             okText: '是',
+    //             zIndex: 9000,
+    //             onOk() {
+    //                 ipcRenderer.send('do-close', true);
+    //             }
+    //         });
+    //     });
+    // },
     /**
      * UI启动
      */

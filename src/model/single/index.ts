@@ -9,7 +9,7 @@ interface SingleState {
     /**
      * 数据
      */
-    data: SingleDataSource[]
+    data: Record<string, SingleDataSource>
 }
 
 /**
@@ -17,54 +17,42 @@ interface SingleState {
  */
 interface SingleDataSource {
     /**
-     * 查询时间
+     * 最后登录 "lastLogin": 0,
      */
-    gmt_create: string,
+    lastLogin: number,
     /**
-     * 手机号
+     * "participatingFunds": "0",
      */
-    mobile: string,
+    participatingFunds: string,
+    /** 
+     * 是否代理"isAgent": "N",
+     */
+    isAgent: string,
     /**
-     * 分类数据
+     * 是否注册 "isReg": 1,
      */
-    special_data: SpecialData[]
-}
-
-/**
- * 分类数据
- */
-interface SpecialData {
+    isReg: number,
     /**
-     * 分类
+     * "participatingWebsiteCount": "2",
      */
-    special_type: number,
+    participatingWebsiteCount: string,
     /**
-     * 查询id
+     * haveBindBankCard "Y"
      */
-    query_id: string,
-    /**
-     * 是否注册
-     */
-    is_reg: number,
-    /**
-     * 手机号
-     */
-    phone_num: string,
-    /**
-     * 其他
-     */
+    haveBindBankCard: string,
     [others: string]: any
 }
+
 
 
 let model: Model = {
     namespace: 'single',
     state: {
-        data: [],
+        data: {},
     },
     reducers,
     effects
 };
 
-export { SingleState, SingleDataSource, SpecialData };
+export { SingleState, SingleDataSource };
 export default model;

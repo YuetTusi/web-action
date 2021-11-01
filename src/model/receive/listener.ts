@@ -21,15 +21,15 @@ const { Fetch } = SocketType;
 /**
  * 登录结果
  */
-export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean }>) {
+export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean, message: string }>) {
 
-    const { success } = cmd.msg;
+    const { success, message } = cmd.msg;
     msgBox.destroy();
     if (success) {
         msgBox.success('登录成功');
         dispatch(routerRedux.push('/targetInquire'));
     } else {
-        msgBox.error('登录失败');
+        msgBox.warn(message);
     }
     dispatch({ type: 'login/setLoading', payload: false });
 }

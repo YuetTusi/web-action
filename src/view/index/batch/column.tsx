@@ -3,7 +3,7 @@ import { Dispatch } from 'dva';
 import { ColumnsType } from 'antd/lib/table';
 import Tag from 'antd/lib/tag';
 import { ActionPanel } from './styled/batch-style';
-import { BatchDataSource, SpecialData } from '@/model/batch';
+import { BatchDataSource } from '@/model/batch';
 import { CaseSort } from '@/schema/common';
 
 /**
@@ -12,14 +12,9 @@ import { CaseSort } from '@/schema/common';
  */
 const getColumn = (
 	dispatch: Dispatch,
-	onSortClick: (data?: SpecialData) => void
-): ColumnsType<BatchDataSource> => {
+	onSortClick: (data: BatchDataSource, type: CaseSort) => void
+): ColumnsType<{ mobile: string; category: BatchDataSource }> => {
 	return [
-		{
-			title: '查询时间',
-			dataIndex: 'gmt_create',
-			key: 'gmt_create'
-		},
 		{
 			title: '目标帐号',
 			dataIndex: 'mobile',
@@ -27,35 +22,30 @@ const getColumn = (
 		},
 		{
 			title: '查询结果',
-			dataIndex: 'special_data',
-			key: 'special_data',
+			dataIndex: 'category',
+			key: 'category',
 			width: 180,
 			align: 'center',
-			render(value: SpecialData[]) {
+			render(value) {
 				return (
 					<ActionPanel>
 						<Tag
 							onClick={() => {
-								const next = value.find((i) => i.special_type === CaseSort.Porn);
-								onSortClick(next);
+								onSortClick(value['涉黄'], CaseSort.Porn);
 							}}
 							color="#faad14">
 							涉黄
 						</Tag>
 						<Tag
 							onClick={() => {
-								const next = value.find(
-									(i) => i.special_type === CaseSort.PyramidSales
-								);
-								onSortClick(next);
+								onSortClick(value['传销'], CaseSort.PyramidSales);
 							}}
 							color="#389e0d">
 							传销
 						</Tag>
 						<Tag
 							onClick={() => {
-								const next = value.find((i) => i.special_type === CaseSort.Bet);
-								onSortClick(next);
+								onSortClick(value['涉赌'], CaseSort.Bet);
 							}}
 							color="#1d39c4">
 							涉赌

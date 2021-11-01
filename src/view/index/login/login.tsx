@@ -7,6 +7,7 @@ import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import { LoginState } from '@/model/login';
+// import { routerRedux } from 'dva';
 // import { getDb } from '@/utility/db';
 
 const { Password } = Input;
