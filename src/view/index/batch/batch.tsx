@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import md5 from 'md5';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
 import React, { FC, MouseEvent, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'dva';
@@ -13,7 +14,7 @@ import Table from 'antd/lib/table';
 import message from 'antd/lib/message';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
-import { helper, PAGESIZE } from '@/utility/helper';
+import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
 import { BatchDataSource, BatchState } from '@/model/batch';
@@ -22,11 +23,13 @@ import ChartModal from './chart-modal';
 import { getColumn } from './column';
 import { BatchProp } from './prop';
 import { CaseSort } from '@/schema/common';
+import { OnlyNumber } from '@/utility/regex';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Fetch } = SocketType;
 const { Item, useForm } = Form;
+let mobileList: Array<{ md5: string; value: string }> = []; //保存手机号与md5对应表
 
 const convertToArray = (data: Record<string, BatchDataSource>) => {
 	if (helper.isNullOrUndefined(data)) {
@@ -41,7 +44,7 @@ const convertToArray = (data: Record<string, BatchDataSource>) => {
  */
 const Batch: FC<BatchProp> = () => {
 	const dispatch = useDispatch();
-	const { data, pageIndex, loading } = useSelector<any, BatchState>((state) => state.batch);
+	const { data, loading } = useSelector<any, BatchState>((state) => state.batch);
 	const [type, setType] = useState<CaseSort>();
 	const [currentSpecialData, setCurrentSpecialData] = useState<BatchDataSource>();
 	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
@@ -51,17 +54,122 @@ const Batch: FC<BatchProp> = () => {
 	/**
 	 * 查询Click
 	 */
-	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
+	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;
 		try {
 			const { tempFilePath } = getFieldsValue();
+			const txt = await fs.promises.readFile(tempFilePath, { encoding: 'utf8' });
+
+			mobileList = txt
+				.split('\n')
+				.filter((item) => OnlyNumber.test(item))
+				.map((item) => ({ md5: md5(item), value: item }));
+
 			if (helper.isNullOrUndefined(tempFilePath)) {
 				message.destroy();
 				message.warn('请选择模板文件');
 			} else {
-				console.log({ cmd: CommandType.GetMultiple, msg: { path: tempFilePath } });
-				send(Fetch, { cmd: CommandType.GetMultiple, msg: { path: tempFilePath } });
+				dispatch({ type: 'reading/setReading', payload: true });
+				console.log({
+					cmd: CommandType.GetMultiple,
+					msg: { list: mobileList.map((i) => i.md5) }
+				});
+				send(Fetch, {
+					cmd: CommandType.GetMultiple,
+					msg: { list: mobileList.map((i) => i.md5) }
+				});
+
+				//legacy: Mock数据
+				// dispatch({
+				// 	type: 'batch/setData',
+				// 	payload: {
+				// 		'6ea21f8fd01c3c17fc2779850d212b34': {
+				// 			涉黄: {
+				// 				lastLogin: '无数据',
+				// 				isReg: 1
+				// 			},
+				// 			传销: {
+				// 				ParticipatingWebsiteCount: 'N',
+				// 				lastLogin: '无数据',
+				// 				regTime: '1',
+				// 				isReg: 0,
+				// 				haveBindBankCard: 'N'
+				// 			},
+				// 			涉赌: {
+				// 				lastLogin: '无数据',
+				// 				participatingFunds: '0',
+				// 				isAgent: 'N',
+				// 				isReg: 0,
+				// 				participatingWebsiteCount: 'N',
+				// 				haveBindBankCard: 'N'
+				// 			}
+				// 		},
+				// 		'197a25cd11a4cd3f49e92069e0bb2208': {
+				// 			涉黄: {
+				// 				lastLogin: '无数据',
+				// 				isReg: 0
+				// 			},
+				// 			传销: {
+				// 				ParticipatingWebsiteCount: 'N',
+				// 				lastLogin: '无数据',
+				// 				regTime: '1',
+				// 				isReg: 1,
+				// 				haveBindBankCard: 'N'
+				// 			},
+				// 			涉赌: {
+				// 				lastLogin: '无数据',
+				// 				participatingFunds: '0',
+				// 				isAgent: 'N',
+				// 				isReg: 1,
+				// 				participatingWebsiteCount: 'N',
+				// 				haveBindBankCard: 'N'
+				// 			}
+				// 		},
+				// 		'841b2f6f36c367dbe88c1eb2403873b0': {
+				// 			涉黄: {
+				// 				lastLogin: '无数据',
+				// 				isReg: 0
+				// 			},
+				// 			传销: {
+				// 				ParticipatingWebsiteCount: 'N',
+				// 				lastLogin: '无数据',
+				// 				regTime: '1',
+				// 				isReg: 1,
+				// 				haveBindBankCard: 'N'
+				// 			},
+				// 			涉赌: {
+				// 				lastLogin: '无数据',
+				// 				participatingFunds: '0',
+				// 				isAgent: 'N',
+				// 				isReg: 0,
+				// 				participatingWebsiteCount: 'N',
+				// 				haveBindBankCard: 'N'
+				// 			}
+				// 		},
+				// 		a4e26368c53208ec1dff1d972fab4828: {
+				// 			涉黄: {
+				// 				lastLogin: '无数据',
+				// 				isReg: 0
+				// 			},
+				// 			传销: {
+				// 				ParticipatingWebsiteCount: 'N',
+				// 				lastLogin: '无数据',
+				// 				regTime: '1',
+				// 				isReg: 0,
+				// 				haveBindBankCard: 'N'
+				// 			},
+				// 			涉赌: {
+				// 				lastLogin: '无数据',
+				// 				participatingFunds: '0',
+				// 				isAgent: 'N',
+				// 				isReg: 0,
+				// 				participatingWebsiteCount: 'N',
+				// 				haveBindBankCard: 'N'
+				// 			}
+				// 		}
+				// 	}
+				// });
 			}
 		} catch (error) {
 			console.log(error);
@@ -136,8 +244,8 @@ const Batch: FC<BatchProp> = () => {
 	 * 翻页Change
 	 * @param pageIndex 当前页
 	 */
-	const onPageChange = (pageIndex: number) =>
-		dispatch({ type: 'batch/setPageIndex', payload: pageIndex });
+	// const onPageChange = (pageIndex: number) =>
+	// 	dispatch({ type: 'batch/setPageIndex', payload: pageIndex });
 
 	// console.log(
 	// 	Object.entries(data).map(([k, v]) => {
@@ -149,7 +257,7 @@ const Batch: FC<BatchProp> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="tempFilePath" label="选择模板">
+					<Item initialValue="D:\手机号.txt" name="tempFilePath" label="选择模板">
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}
@@ -171,7 +279,7 @@ const Batch: FC<BatchProp> = () => {
 					<Item>
 						<Button onClick={chartClick} disabled={list.length === 0} type="default">
 							<PieChartOutlined />
-							<span>占比统计</span>
+							<span>命中统计</span>
 						</Button>
 					</Item>
 				</Form>
@@ -179,7 +287,7 @@ const Batch: FC<BatchProp> = () => {
 
 			<Table<{ mobile: string; category: BatchDataSource }>
 				dataSource={list}
-				columns={getColumn(dispatch, onSortClick)}
+				columns={getColumn(dispatch, onSortClick, mobileList)}
 				pagination={false}
 				// pagination={{
 				// 	total: data.length,

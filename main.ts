@@ -1,5 +1,9 @@
 import path from 'path';
-import { app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
+import {
+    app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu,
+    OpenDialogReturnValue, SaveDialogReturnValue
+} from 'electron';
+
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
 

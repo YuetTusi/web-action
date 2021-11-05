@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent, useEffect, useState } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
@@ -15,10 +15,11 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { CaseSort } from '@/schema/common';
 import { CommandType, SocketType } from '@/schema/socket';
-import { CardResult, Gambling, Pyramid } from '@/model/bank';
+import { CardResult } from '@/model/bank-batch';
 import { BankBatchState } from '@/model/bank-batch';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import { OnlyNumber } from '@/utility/regex';
 import CategoryModal from './category-modal';
 import { getColumn, RowType } from './column';
 import ChartModal from './chart-modal';
@@ -30,27 +31,38 @@ const { Item, useForm } = Form;
 /**
  * 银行卡对象数据转为表格数据
  */
-const mapToTableData = (data: CardResult) =>
+const mapToTableData = (data: Record<string, CardResult>) =>
 	Object.entries(data).map(([k, v]) => ({
-		mobile: k,
-		...v
+		card: k,
+		result: v
 	}));
 
 /**
  * 汇总各分类下的命中数据
  */
-const totalHitData = (data: CardResult) =>
-	Object.entries(data).reduce(
-		(acc, [, v]) => {
-			acc[0].value += v?.pyramid?.hit ?? 0;
-			acc[1].value += v?.gambling?.hit ?? 0;
-			return acc;
-		},
-		[
-			{ name: '传销', value: 0 },
-			{ name: '涉赌', value: 0 }
-		]
-	);
+const totalHitData = (data: Record<string, CardResult>) => {
+	let porn = 0;
+	let bet = 0;
+	let pyramidSales = 0;
+
+	Object.values(data).forEach((item) => {
+		if (item['涉黄']?.isReg === 1) {
+			porn++;
+		}
+		if (item['传销']?.isReg === 1) {
+			pyramidSales++;
+		}
+		if (item['涉赌']?.isReg === 1) {
+			bet++;
+		}
+	});
+
+	return [
+		{ name: '涉黄', value: porn },
+		{ name: '传销', value: pyramidSales },
+		{ name: '涉赌', value: bet }
+	];
+};
 
 /**
  * 银行卡批量查询
@@ -58,80 +70,15 @@ const totalHitData = (data: CardResult) =>
 const BankBatch: FC<{}> = () => {
 	const dispatch = useDispatch();
 	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
-	const [specialData, setSpecialData] = useState<Gambling | Pyramid>();
-	const { hit_gambling, hit_pyramid, hits, result } = useSelector<any, BankBatchState>(
-		(state) => state.bankBatch
-	);
-	useEffect(() => {
-		//legacy: 测试数据
-		dispatch({
-			type: 'bankBatch/setData',
-			payload: {
-				hits: 0,
-				hit_gambling: 0,
-				hit_pyramid: 0,
-				result: {
-					//银行卡号
-					'6213363479902259472': {
-						//赌博数据
-						gambling: {
-							hit: 3,
-							reg_count: 3,
-							balance: 0,
-							login_time: 2,
-							reg_time: 0,
-							is_agent: 1
-						},
-						//传销数据
-						pyramid: {
-							hit: 0
-						}
-					},
-					'6222032106001274118': {
-						gambling: {
-							hit: 0
-						},
-						pyramid: {
-							hit: 1,
-							reg_count: 1,
-							balance: 1,
-							login_time: 0,
-							reg_time: 0,
-							is_agent: 0
-						}
-					},
-					'6222032106001274115': {
-						gambling: {
-							hit: 0
-						},
-						pyramid: {
-							hit: 1,
-							reg_count: 1,
-							balance: 1,
-							login_time: 0,
-							reg_time: 0,
-							is_agent: 0
-						}
-					}
-				}
-			}
-		});
-	}, []);
-
+	const [specialData, setSpecialData] = useState<Record<string, any>>();
+	const { data } = useSelector<any, BankBatchState>((state) => state.bankBatch); //hit_gambling, hit_pyramid, hits,
 	const [formRef] = useForm();
 
 	/**
 	 * 点击分类handle
 	 */
-	const actionHandle = (type: CaseSort, data: RowType) => {
-		switch (type) {
-			case CaseSort.Bet:
-				setSpecialData(data.gambling);
-				break;
-			case CaseSort.PyramidSales:
-				setSpecialData(data.pyramid);
-				break;
-		}
+	const actionHandle = (type: string, result: CardResult) => {
+		setSpecialData(result[type]);
 	};
 
 	/**
@@ -176,18 +123,160 @@ const BankBatch: FC<{}> = () => {
 	 * 查询Click
 	 * @param event
 	 */
-	const onSearchClick = (event: MouseEvent<HTMLButtonElement>) => {
+	const onSearchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;
 		try {
 			const { tempFilePath } = getFieldsValue();
+
 			if (helper.isNullOrUndefined(tempFilePath)) {
 				message.destroy();
 				message.warn('请选择模板文件');
 			} else {
-				console.log({ cmd: CommandType.BankBatch, msg: { path: tempFilePath } });
-				send(SocketType.Fetch, { cmd: CommandType.BankBatch, msg: { path: tempFilePath } });
+				const txt = await fs.promises.readFile(tempFilePath, { encoding: 'utf8' });
+				const list = txt.split('\n').filter((item) => OnlyNumber.test(item));
+				dispatch({ type: 'reading/setReading', payload: true });
+				console.log({
+					cmd: CommandType.BankBatch,
+					msg: { list }
+				});
+				send(SocketType.Fetch, {
+					cmd: CommandType.BankBatch,
+					msg: { list }
+				});
 			}
+			//legacy: 测试数据
+			// dispatch({
+			// 	type: 'bankBatch/setData',
+			// 	payload: {
+			// 		'6216727500000238961': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 1,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 1,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 1,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		},
+			// 		'6217562600001515155': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 1,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 0,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		},
+			// 		'9559980868435875811': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 1,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 0,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		},
+			// 		'9559980868435875812': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 1,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 0,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		},
+			// 		'9559980868435875813': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 0,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		},
+			// 		'9559980868435875814': {
+			// 			传销: {
+			// 				ParticipatingWebsiteCount: 'N',
+			// 				haveBindBankCard: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				regTime: '1'
+			// 			},
+			// 			涉赌: {
+			// 				haveBindBankCard: 'N',
+			// 				isAgent: 'N',
+			// 				isReg: 0,
+			// 				lastLogin: '无数据',
+			// 				participatingFunds: '0',
+			// 				participatingWebsiteCount: 'N'
+			// 			},
+			// 			涉黄: {
+			// 				isReg: 0,
+			// 				lastLogin: '无数据'
+			// 			}
+			// 		}
+			// 	}
+			// });
 		} catch (error) {
 			console.log(error);
 		}
@@ -197,7 +286,7 @@ const BankBatch: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="tempFilePath" label="选择模板">
+					<Item initialValue="D:\银行卡.txt" name="tempFilePath" label="选择模板">
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}
@@ -218,23 +307,23 @@ const BankBatch: FC<{}> = () => {
 					</Item>
 					<Item>
 						<Button
-							disabled={Object.entries(result).length === 0}
+							disabled={Object.entries(data).length === 0}
 							onClick={() => setChartModalVisible(true)}
 							type="default">
 							<PieChartOutlined />
-							<span>占比统计</span>
+							<span>命中统计</span>
 						</Button>
 					</Item>
 				</Form>
 			</PadBox>
 			<Table<RowType>
-				dataSource={mapToTableData(result)}
+				dataSource={mapToTableData(data)}
 				columns={getColumn(dispatch, actionHandle)}
 				pagination={false}
-				rowKey="mobile"
+				rowKey="card"
 			/>
 			<ChartModal
-				data={totalHitData(result)}
+				data={totalHitData(data)}
 				visible={chartModalVisible}
 				onCancel={() => setChartModalVisible(false)}
 			/>

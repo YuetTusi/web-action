@@ -6,3 +6,5 @@ export const BankCardNumber = /\d{13,19}/;
 export const PoliceNumber = /\d{6}/;
 //身份证号
 export const ChineseIdNumber = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/
+//数字
+export const OnlyNumber = /\d+/;

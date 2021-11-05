@@ -15,7 +15,7 @@ export default {
         try {
             yield fork([db, 'insert'], payload);
         } catch (error: any) {
-            log.error(`目标查询入库失败 @model/single/insertHistory:${error.message}`);
+            log.error(`手机号查询入库失败 @model/single/insertHistory:${error.message}`);
         }
     }
 };

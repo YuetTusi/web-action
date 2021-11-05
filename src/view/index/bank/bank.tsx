@@ -7,17 +7,17 @@ import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Badge from 'antd/lib/badge';
 import Card from 'antd/lib/card';
+import message from 'antd/lib/message';
+import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { BankState, Gambling, Pyramid } from '@/model/bank';
 import { BankCardNumber } from '@/utility/regex';
-import message from 'antd/lib/message';
-import SearchOutlined from '@ant-design/icons/SearchOutlined';
+import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
 import { CommandType, SocketType } from '@/schema/socket';
 import { CardTitle } from '../index/styled/card-title';
 import { CardItemList } from '../index/styled/card-item';
-import { helper } from '@/utility/helper';
 
 const { Item, useForm } = Form;
 const { Ribbon } = Badge;
@@ -43,61 +43,35 @@ const Bank: FC<{}> = () => {
 	const [formRef] = useForm();
 	const card = getCard(result);
 
-	useEffect(() => {
-		//legacy: 测试数据
-		dispatch({
-			type: 'bank/setData',
-			payload: {
-				hits: 0,
-				hit_gambling: 0,
-				hit_pyramid: 0,
-				result: {
-					//银行卡号
-					'6213363479902259472': {
-						//赌博数据
-						gambling: {
-							hit: 1,
-							reg_count: 3,
-							balance: 0,
-							login_time: 2,
-							reg_time: 0,
-							is_agent: 1
-						},
-						//传销数据
-						pyramid: {
-							hit: 0
-						}
-					},
-					'6222032106001274118': {
-						gambling: {
-							hit: 0
-						},
-						pyramid: {
-							hit: 1,
-							reg_count: 1,
-							balance: 1,
-							login_time: 0,
-							reg_time: 0,
-							is_agent: 0
-						}
-					},
-					'6222032106001274115': {
-						gambling: {
-							hit: 0
-						},
-						pyramid: {
-							hit: 1,
-							reg_count: 1,
-							balance: 1,
-							login_time: 0,
-							reg_time: 0,
-							is_agent: 0
-						}
-					}
-				}
-			}
-		});
-	}, []);
+	// useEffect(() => {
+	// 	//legacy: 测试数据
+	// 	dispatch({
+	// 		type: 'bank/setData',
+	// 		payload: {
+	// 			"hits": 0,
+	// 			"result": {
+	// 				"676762b406ef5d0dfc95ff3b3be7eb50": {
+	// 					"gambling": {
+	// 						"hit": 1
+	// 					},
+	// 					"pyramid": {
+	// 						"hit": 3
+	// 					}
+	// 				},
+	// 				"0633963617d3972e26fa63ea9900a469": {
+	// 					"gambling": {
+	// 						"hit": 20
+	// 					},
+	// 					"pyramid": {
+	// 						"hit": 0
+	// 					}
+	// 				}
+	// 			},
+	// 			"hit_gambling": 0,
+	// 			"hit_pyramid": 0
+	// 		}
+	// 	});
+	// }, []);
 
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -111,11 +85,8 @@ const Bank: FC<{}> = () => {
 			return;
 		} else {
 			dispatch({ type: 'reading/setReading', payload: true });
-			console.log({ cmd: CommandType.Bank, msg: { accounts: [value] } });
-			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { accounts: [value] } });
-			setTimeout(() => {
-				dispatch({ type: 'reading/setReading', payload: false });
-			}, 1000);
+			console.log({ cmd: CommandType.Bank, msg: { number: value } });
+			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { number: value } });
 		}
 	};
 

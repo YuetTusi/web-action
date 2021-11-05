@@ -19,9 +19,9 @@ enum CommandType {
      */
     MenuResult = 'menu-result',
     /**
-     * 查询用户信息
+     * 接收用户使用次数
      */
-    FindUserInfo = 'find-user-info',
+    LimitResult = 'limit-result',
     /**
      * 登录
      */

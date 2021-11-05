@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { FC, Key, useEffect, useState } from 'react';
 import { routerRedux, useDispatch, useLocation, useSelector } from 'dva';
 import Menu from 'antd/lib/menu';
-import AimOutlined from '@ant-design/icons/AimOutlined';
+import MobileOutlined from '@ant-design/icons/MobileOutlined';
 import FileSearchOutlined from '@ant-design/icons/FileSearchOutlined';
 import CreditCardOutlined from '@ant-design/icons/CreditCardOutlined';
 import BorderOutlined from '@ant-design/icons/BorderOutlined';
@@ -32,7 +32,7 @@ const menuIcon = (url: string) => {
 	switch (url) {
 		case '/':
 		case '/targetInquire':
-			return <AimOutlined />;
+			return <MobileOutlined />;
 		case '/batchInquire':
 			return <FileSearchOutlined />;
 		case '/bank':
@@ -66,6 +66,7 @@ const RootMenu: FC<{}> = () => {
 			return (
 				<Item
 					onClick={() => {
+						dispatch({ type: 'reading/setReading', payload: false });
 						dispatch(routerRedux.push(item.menu_url));
 					}}
 					key={item.menu_url}>
@@ -81,6 +82,7 @@ const RootMenu: FC<{}> = () => {
 				return (
 					<Item
 						onClick={() => {
+							dispatch({ type: 'reading/setReading', payload: false });
 							dispatch(routerRedux.push(item.menu_url));
 						}}
 						icon={menuIcon(item.menu_url)}

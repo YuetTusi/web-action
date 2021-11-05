@@ -34,7 +34,7 @@ let model: Model = {
             {
                 "menu_code": "130",
                 "parent_code": "-1",
-                "menu_name": "目标查询",
+                "menu_name": "手机号查询",
                 "menu_name_en": "MBCX",
                 "menu_url": "/targetInquire",
                 "menu_image": null,
@@ -50,7 +50,7 @@ let model: Model = {
             {
                 "menu_code": "140",
                 "parent_code": "-1",
-                "menu_name": "批量查询",
+                "menu_name": "手机号批量查询",
                 "menu_name_en": "PLCX",
                 "menu_url": "/batchInquire",
                 "menu_image": null,

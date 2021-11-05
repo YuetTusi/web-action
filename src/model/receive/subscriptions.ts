@@ -5,7 +5,7 @@ import log from '@/utility/log';
 import server, { send } from '@/utility/tcp-server';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    addDeptResult, bankBatchResult, bankResult, delDeptResult, findUserInfo,
+    addDeptResult, bankBatchResult, bankResult, delDeptResult, limitResult,
     getMultipleResult, getSingleResult, loginResult, menuResult, operationLogResult,
     queryDeptByParentResult, queryLogResult, queryRoleResult, regionResult,
     updateDeptResult, userActionResult
@@ -31,8 +31,8 @@ export default {
                 case CommandType.MenuResult:
                     menuResult(dispatch, command);
                     break;
-                case CommandType.FindUserInfo:
-                    findUserInfo(dispatch, command);
+                case CommandType.LimitResult:
+                    limitResult(dispatch, command);
                     break;
                 case CommandType.GetSingleResult:
                     getSingleResult(dispatch, command);
@@ -127,11 +127,5 @@ export default {
             });
         });
 
-    },
-    // consoleClear({ }: SubscriptionAPI) {
-
-    //     setTimeout(() => {
-    //         console.clear();
-    //     }, 1200);
-    // }
+    }
 };

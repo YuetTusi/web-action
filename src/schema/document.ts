@@ -17,7 +17,11 @@ enum Document {
     /**
      * 银行卡批量
      */
-    BankBatch = 'bank-batch'
+    BankBatch = 'bank-batch',
+    /**
+     * 查询日志
+     */
+    SearchLog = 'search-log'
 }
 
 export { Document };

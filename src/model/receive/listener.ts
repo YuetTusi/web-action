@@ -48,18 +48,14 @@ export function menuResult(dispatch: Dispatch, cmd: Command<Result<MenuNode[]>>)
 /**
  * 查询用户信息
  */
-export function findUserInfo(dispatch: Dispatch, cmd: Command<Res<UserInfoState>>) {
-    const { code, message, data } = cmd.msg;
+export function limitResult(dispatch: Dispatch, cmd: Command<{ frequency_limit: number }>) {
+    const { frequency_limit } = cmd.msg;
 
-    if (code >= 200 && code < 300) {
-        dispatch({ type: 'userInfo/setData', payload: data });
-    } else {
-        log.error(`查询用户信息失败 @receive/listener/findUserInfo:${message}`);
-    }
+    dispatch({ type: 'userInfo/setData', payload: { frequency_limit } });
 }
 
 /**
- * 目标查询结果
+ * 手机号查询结果
  */
 export function getSingleResult(dispatch: Dispatch, cmd: Command<Res<SingleDataSource[]>>) {
 

@@ -41,6 +41,7 @@ const toChartData = (
 			bet++;
 		}
 	}
+
 	return [
 		{ name: '涉黄', value: porn },
 		{ name: '传销', value: pyramidSales },
@@ -52,7 +53,8 @@ const toChartData = (
  * 图表Modal
  */
 const ChartModal: FC<ChartModalProp> = ({ data, visible, onCancel }) => {
-	// console.log(toChartData(data));
+	
+	
 
 	return (
 		<Modal

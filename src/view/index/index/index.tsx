@@ -1,3 +1,4 @@
+import md5 from 'md5';
 import React, { FC, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
@@ -17,7 +18,7 @@ import CaseCard from './case-card';
 const { Item, useForm } = Form;
 
 /**
- * 目标查询
+ * 手机号查询
  */
 const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
@@ -36,8 +37,8 @@ const Index: FC<{}> = () => {
 			return;
 		} else {
 			dispatch({ type: 'reading/setReading', payload: true });
-			console.log({ cmd: CommandType.GetSingle, msg: { mobile: value } });
-			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { mobile: value } });
+			console.log({ cmd: CommandType.GetSingle, msg: { number: md5(value) } });
+			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { number: md5(value) } });
 
 			// dispatch({
 			// 	type: 'single/setData',
@@ -63,10 +64,6 @@ const Index: FC<{}> = () => {
 			// 		}
 			// 	}
 			// });
-
-			// setTimeout(() => {
-			// 	dispatch({ type: 'reading/setReading', payload: false });
-			// }, 1000);
 		}
 	};
 
@@ -74,7 +71,7 @@ const Index: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="mobile" label="目标手机号">
+					<Item initialValue="17674147732" name="mobile" label="目标手机号">
 						<Input />
 					</Item>
 					<Item>

@@ -165,9 +165,9 @@ const routeCaption = (pathname: string) => {
 	switch (pathname) {
 		case '/':
 		case '/targetInquire':
-			return '目标查询';
+			return '手机号查询';
 		case '/batchInquire':
-			return '批量查询';
+			return '手机号批量查询';
 		case '/bank':
 			return '银行卡查询';
 		case '/bank-batch':

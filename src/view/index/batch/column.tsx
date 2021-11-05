@@ -6,19 +6,54 @@ import { ActionPanel } from './styled/batch-style';
 import { BatchDataSource } from '@/model/batch';
 import { CaseSort } from '@/schema/common';
 
+const renderTag = (
+	data: Record<string, BatchDataSource>,
+	onSortClick: (data: BatchDataSource, type: CaseSort) => void
+) => {
+	return (
+		<>
+			<Tag
+				onClick={() => {
+					onSortClick(data['涉黄'], CaseSort.Porn);
+				}}
+				color={data['涉黄'].isReg !== 0 ? '#faad14' : 'default'}>
+				涉黄
+			</Tag>
+			<Tag
+				onClick={() => {
+					onSortClick(data['传销'], CaseSort.PyramidSales);
+				}}
+				color={data['传销'].isReg !== 0 ? '#389e0d' : 'default'}>
+				传销
+			</Tag>
+			<Tag
+				onClick={() => {
+					onSortClick(data['涉赌'], CaseSort.Bet);
+				}}
+				color={data['涉赌'].isReg !== 0 ? '#1d39c4' : 'default'}>
+				涉赌
+			</Tag>
+		</>
+	);
+};
+
 /**
  * 表头
  * @returns 列头定义
  */
 const getColumn = (
 	dispatch: Dispatch,
-	onSortClick: (data: BatchDataSource, type: CaseSort) => void
+	onSortClick: (data: BatchDataSource, type: CaseSort) => void,
+	mobileList: Array<{ md5: string; value: string }> = []
 ): ColumnsType<{ mobile: string; category: BatchDataSource }> => {
 	return [
 		{
-			title: '目标帐号',
+			title: '手机号',
 			dataIndex: 'mobile',
-			key: 'mobile'
+			key: 'mobile',
+			render(md5: string) {
+				return mobileList.find((i) => i.md5 === md5)?.value ?? '';
+			}
 		},
 		{
 			title: '查询结果',
@@ -27,31 +62,7 @@ const getColumn = (
 			width: 180,
 			align: 'center',
 			render(value) {
-				return (
-					<ActionPanel>
-						<Tag
-							onClick={() => {
-								onSortClick(value['涉黄'], CaseSort.Porn);
-							}}
-							color="#faad14">
-							涉黄
-						</Tag>
-						<Tag
-							onClick={() => {
-								onSortClick(value['传销'], CaseSort.PyramidSales);
-							}}
-							color="#389e0d">
-							传销
-						</Tag>
-						<Tag
-							onClick={() => {
-								onSortClick(value['涉赌'], CaseSort.Bet);
-							}}
-							color="#1d39c4">
-							涉赌
-						</Tag>
-					</ActionPanel>
-				);
+				return <ActionPanel>{renderTag(value, onSortClick)}</ActionPanel>;
 			}
 		}
 	];

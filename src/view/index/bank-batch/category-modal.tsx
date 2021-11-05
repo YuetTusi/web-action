@@ -1,17 +1,17 @@
 import React, { FC } from 'react';
 import Button from 'antd/lib/button';
 import Modal from 'antd/lib/modal';
+import Tag from 'antd/lib/tag';
 import CheckCircleOutlined from '@ant-design/icons/CheckCircleOutlined';
 import { CategoryList } from './styled/category-list';
 import { CaseSort } from '@/schema/common';
-import { Gambling, Pyramid } from '@/model/bank';
 import { helper } from '@/utility/helper';
 
 interface CategoryModalProp {
 	/**
 	 * 分类数据
 	 */
-	specialData?: Gambling | Pyramid;
+	specialData?: Record<string, any>;
 	/**
 	 * 取消click
 	 */
@@ -51,30 +51,46 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel }) => {
 			<CategoryList>
 				<li>
 					<label>命中数量</label>
-					<span>{specialData?.hit ?? '--'}</span>
+					<span>
+						<span>
+							{helper.isNullOrUndefined(specialData?.isReg) ? (
+								'--'
+							) : specialData?.isReg === 0 ? (
+								<Tag color="red">未注册</Tag>
+							) : (
+								<Tag color="green">已注册</Tag>
+							)}
+						</span>
+					</span>
 				</li>
 				<li>
-					<label>注册数量</label>
-					<span>{(specialData as Gambling)?.reg_count ?? '--'}</span>
+					<label>账号个数</label>
+					<span>{specialData?.participatingWebsiteCount ?? '--'}</span>
 				</li>
 				<li>
-					<label>注册时间</label>
-					<span>{(specialData as Gambling)?.reg_time ?? '--'}</span>
+					<label>登录信息</label>
+					<span>{specialData?.lastLogin ?? '--'}</span>
 				</li>
 				<li>
-					<label>登录时间</label>
-					<span>{(specialData as Gambling)?.login_time ?? '--'}</span>
+					<label>是否绑定银行卡</label>
+					<span>
+						{helper.isNullOrUndefined(specialData?.haveBindBankCard)
+							? '--'
+							: specialData?.haveBindBankCard === 'N'
+							? '否'
+							: '是'}
+					</span>
 				</li>
 				<li>
-					<label>余额</label>
-					<span>{(specialData as Gambling)?.balance ?? '--'}</span>
+					<label>涉及资金</label>
+					<span>{specialData?.participatingFunds ?? '--'}</span>
 				</li>
 				<li>
 					<label>是否代理</label>
 					<span>
-						{helper.isNullOrUndefined((specialData as Gambling)?.is_agent)
+						{helper.isNullOrUndefined(specialData?.isAgent)
 							? '--'
-							: (specialData as Gambling)?.is_agent === 0
+							: specialData?.isAgent === 'N'
 							? '否'
 							: '是'}
 					</span>

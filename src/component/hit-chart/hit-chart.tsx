@@ -19,7 +19,7 @@ echarts.use([
 const option: Record<string, any> = {
 	tooltip: {
 		trigger: 'item',
-		formatter: '{b}: {d}%'
+		formatter: '{b}数量：{c}<br/>占比：{d}%'
 	},
 	legend: {
 		orient: 'vertical',
@@ -29,10 +29,6 @@ const option: Record<string, any> = {
 		{
 			name: '命中统计',
 			type: 'pie',
-			// data: [
-			// 	{ value: 50, name: '涉赌' },
-			// 	{ value: 50, name: '传销' }
-			// ],
 			emphasis: {
 				itemStyle: {
 					shadowBlur: 10,
@@ -59,14 +55,21 @@ const HitChart: FC<{ data: Array<{ name: string; value: number }> }> = ({ data }
 				colors.shift();
 			}
 			option.color = colors;
-			option.series[0].data = data;
+			option.series[0].data = data.map((i) => ({
+				...i,
+				label: { show: true, formatter: '{b}数量：{c}' }
+			}));
 			chart.setOption(option);
 		}
 	}, [data]);
 
 	return (
 		<div id="chart-root" style={{ width: '800px', height: '460px' }}>
-			<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} style={{ paddingTop: '200px' }} description="暂无统计数据" />
+			<Empty
+				image={Empty.PRESENTED_IMAGE_SIMPLE}
+				style={{ paddingTop: '200px' }}
+				description="暂无统计数据"
+			/>
 		</div>
 	);
 };

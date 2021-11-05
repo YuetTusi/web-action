@@ -7,8 +7,7 @@ import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import { LoginState } from '@/model/login';
-// import { routerRedux } from 'dva';
-// import { getDb } from '@/utility/db';
+import { routerRedux } from 'dva';
 
 const { Password } = Input;
 const { Item, useForm } = Form;
@@ -24,6 +23,8 @@ const Login: FC<{}> = () => {
 		try {
 			const values = await validateFields();
 			dispatch({ type: 'login/login', payload: values });
+			// dispatch({ type: 'userInfo/setData', payload: { frequency_limit:234 } });
+			// dispatch(routerRedux.push('/targetInquire'))
 		} catch (error) {
 			console.log(error);
 		} finally {
@@ -39,12 +40,14 @@ const Login: FC<{}> = () => {
 				<h2>网络行为查询系统</h2>
 				<Form form={fromRef}>
 					<Item
+						initialValue="1"
 						rules={[{ required: true, message: '请填写用户' }]}
 						name="username"
 						label="用户">
 						<Input />
 					</Item>
 					<Item
+						initialValue="1"
 						rules={[{ required: true, message: '请填写密码' }]}
 						name="password"
 						label="密码">

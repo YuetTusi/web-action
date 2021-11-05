@@ -17,9 +17,9 @@ const getColumn = (): ColumnsType<SearchLogData> => {
 			render(value) {
 				switch (value) {
 					case 1:
-						return '目标查询';
+						return '手机号查询';
 					case 2:
-						return '批量查询';
+						return '手机号批量查询';
 					default:
 						return '其他';
 				}
