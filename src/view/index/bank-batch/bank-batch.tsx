@@ -13,7 +13,7 @@ import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
 import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
-import { CaseSort } from '@/schema/common';
+import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
 import { CardResult } from '@/model/bank-batch';
 import { BankBatchState } from '@/model/bank-batch';
@@ -143,6 +143,14 @@ const BankBatch: FC<{}> = () => {
 				send(SocketType.Fetch, {
 					cmd: CommandType.BankBatch,
 					msg: { list }
+				});
+				dispatch({
+					type: 'searchLog/insert',
+					payload: {
+						_id: helper.newId(),
+						type: Document.BankBatch,
+						content: list.join(',')
+					}
 				});
 			}
 			//legacy: 测试数据

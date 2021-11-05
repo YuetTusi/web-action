@@ -23,8 +23,8 @@ const Login: FC<{}> = () => {
 		try {
 			const values = await validateFields();
 			dispatch({ type: 'login/login', payload: values });
-			// dispatch({ type: 'userInfo/setData', payload: { frequency_limit:234 } });
-			// dispatch(routerRedux.push('/targetInquire'))
+			dispatch({ type: 'userInfo/setData', payload: { frequency_limit:234 } });
+			dispatch(routerRedux.push('/targetInquire'))
 		} catch (error) {
 			console.log(error);
 		} finally {

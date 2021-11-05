@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components';
 import Loading from '@/component/loading';
 import { theme } from '@/styled/theme';
 import { GlobalStyle } from '@/styled/global-style';
+import ErrorBoundary from '@/component/error-boundary';
 
 /**
  * 路由配置
@@ -25,12 +26,12 @@ const createRouter = (api?: RouterAPI) => {
 							path="/"
 							exact={true}
 							render={() => {
-								const Next = lazy<FC<any>>(
-									() => import('@/view/index/login')
-								);
+								const Next = lazy<FC<any>>(() => import('@/view/index/login'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -41,7 +42,9 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/login'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -54,7 +57,9 @@ const createRouter = (api?: RouterAPI) => {
 								);
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -65,7 +70,9 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/batch'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -76,7 +83,9 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/bank'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -87,7 +96,9 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/bank-batch'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
@@ -98,55 +109,14 @@ const createRouter = (api?: RouterAPI) => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/search-log'));
 								return (
 									<Suspense fallback={<Loading />}>
-										<Next />
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
 									</Suspense>
 								);
 							}}
 						/>
-						<Route
-							path="/operateJournal"
-							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/op-log'));
-								return (
-									<Suspense fallback={<Loading />}>
-										<Next />
-									</Suspense>
-								);
-							}}
-						/>
-						<Route
-							path="/deptmanage"
-							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/department'));
-								return (
-									<Suspense fallback={<Loading />}>
-										<Next />
-									</Suspense>
-								);
-							}}
-						/>
-						<Route
-							path="/rolemanage"
-							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/role'));
-								return (
-									<Suspense fallback={<Loading />}>
-										<Next />
-									</Suspense>
-								);
-							}}
-						/>
-						<Route
-							path="/usermanage"
-							render={() => {
-								const Next = lazy<FC<any>>(() => import('@/view/index/user'));
-								return (
-									<Suspense fallback={<Loading />}>
-										<Next />
-									</Suspense>
-								);
-							}}
-						/>
+
 						<Route component={() => <h1>无此页面</h1>} />
 					</Switch>
 				</Router>

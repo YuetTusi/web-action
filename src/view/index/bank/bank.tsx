@@ -15,6 +15,7 @@ import { BankState, Gambling, Pyramid } from '@/model/bank';
 import { BankCardNumber } from '@/utility/regex';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
 import { CardTitle } from '../index/styled/card-title';
 import { CardItemList } from '../index/styled/card-item';
@@ -87,6 +88,14 @@ const Bank: FC<{}> = () => {
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.Bank, msg: { number: value } });
 			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { number: value } });
+			dispatch({
+				type: 'searchLog/insert',
+				payload: {
+					_id: helper.newId(),
+					type: Document.Bank,
+					content: value
+				}
+			});
 		}
 	};
 

@@ -89,7 +89,7 @@ class Db {
      * @param {string} sortField 排序字段
      * @param {1|-1} asc 正序逆序
      */
-    findByPage(condition: Record<string, any> | null | undefined, pageIndex = 1, pageSize = 15, sortField = 'updatedAt', asc = 1) {
+    findByPage(condition: Record<string, any> | null | undefined, pageIndex = 1, pageSize = 10, sortField = 'updatedAt', asc = 1) {
         return new Promise((resolve, reject) => {
             this._instance.loadDatabase((err) => {
                 if (err) {
@@ -139,7 +139,7 @@ class Db {
      * @param {boolean} multi 是否删除多条
      * @returns {Promise<number>}
      */
-    remove(condition: Record<string, any> | null | undefined, multi = false) {
+    remove(condition: Record<string, any> | null | undefined, multi = false): Promise<number> {
         return new Promise((resolve, reject) => {
             this._instance.loadDatabase((err) => {
                 if (err) {

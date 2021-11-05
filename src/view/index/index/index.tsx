@@ -10,7 +10,9 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { MobileNumber } from '@/utility/regex';
 import message from 'antd/lib/message';
+import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
 import { SingleState } from '@/model/single';
 import CaseCard from './case-card';
@@ -39,6 +41,10 @@ const Index: FC<{}> = () => {
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.GetSingle, msg: { number: md5(value) } });
 			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { number: md5(value) } });
+			dispatch({
+				type: 'searchLog/insert',
+				payload: { _id: helper.newId(), type: Document.Aim, content: value }
+			});
 
 			// dispatch({
 			// 	type: 'single/setData',

@@ -1,22 +1,20 @@
-import React, { FC, MouseEvent } from 'react';
-import { useSelector } from 'dva';
+import React, { FC, MouseEvent, useEffect } from 'react';
+import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
-import SyncOutlined from '@ant-design/icons/SyncOutlined';
+import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
 import Form from 'antd/lib/form';
-import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import Select from 'antd/lib/select';
 import Table from 'antd/lib/table';
+import Modal from 'antd/lib/modal';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
-import { CaseSort } from '@/schema/common';
-import { SearchLogData, SearchLogState } from '@/model/search-log';
-import { helper, PAGESIZE } from '@/utility/helper';
+import { Document } from '@/schema/document';
+import { SearchLogEntity } from '@/schema/search-log-entity';
+import { SearchLogState } from '@/model/search-log';
+import { PAGESIZE } from '@/utility/helper';
 import { getColumn } from './column';
 import { FormValue, SearchLogProp } from './props';
-import { send } from '@/utility/tcp-server';
-import { CommandType, SocketType } from '@/schema/socket';
-
 const { Item, useForm } = Form;
 const { Option } = Select;
 
@@ -24,28 +22,41 @@ const { Option } = Select;
  * 查询日志
  */
 const SearchLog: FC<SearchLogProp> = () => {
-
+	const dispatch = useDispatch();
 	const { data, pageIndex, pageSize, total, loading } = useSelector<any, SearchLogState>(
 		(state) => state.searchLog
 	);
 	const [formRef] = useForm<FormValue>();
 
+	useEffect(() => {
+		dispatch({
+			type: 'searchLog/queryData',
+			payload: { condition: { type: 'all' }, pageIndex: 1, pageSize: PAGESIZE }
+		});
+	}, []);
+
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
 		const { getFieldsValue } = formRef;
-		const { keyword, special_type } = getFieldsValue();
-		// dispatch({ type: 'reading/setReading', payload: true });
-		send(SocketType.Fetch, {
-			cmd: CommandType.QueryLog,
-			msg: {
-				keyword: keyword ?? '',
-				special_type: helper.isNullOrUndefined(special_type) ? '' : special_type.join(','),
-				pageIndex,
-				pageSize
-			}
+		const { type } = getFieldsValue();
+		dispatch({
+			type: 'searchLog/queryData',
+			payload: { condition: { type }, pageIndex: 1, pageSize: PAGESIZE }
 		});
 	};
 
-	const resetClick = (event: MouseEvent<HTMLButtonElement>) => {};
+	const delClick = (event: MouseEvent<HTMLButtonElement>) => {
+		event.preventDefault();
+		Modal.confirm({
+			onOk() {
+				dispatch({ type: 'searchLog/del' });
+			},
+			title: '清除日志',
+			content: '日志将全部清除，确认吗？',
+			okText: '是',
+			cancelText: '否'
+		});
+	};
 
 	/**
 	 * 翻页Change
@@ -54,16 +65,10 @@ const SearchLog: FC<SearchLogProp> = () => {
 	 */
 	const onPageChange = (pageIndex: number, pageSize?: number) => {
 		const { getFieldsValue } = formRef;
-		const { keyword, special_type } = getFieldsValue();
-		// dispatch({ type: 'reading/setReading', payload: true });
-		send(SocketType.Fetch, {
-			cmd: CommandType.QueryLog,
-			msg: {
-				keyword: keyword ?? '',
-				special_type: helper.isNullOrUndefined(special_type) ? '' : special_type.join(','),
-				pageIndex,
-				pageSize: pageSize ?? PAGESIZE
-			}
+		const { type } = getFieldsValue();
+		dispatch({
+			type: 'searchLog/queryData',
+			payload: { condition: { type }, pageIndex, pageSize }
 		});
 	};
 
@@ -71,14 +76,13 @@ const SearchLog: FC<SearchLogProp> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="keyword" label="过滤项">
-						<Input onClick={() => {}} />
-					</Item>
-					<Item name="special_type" label="专题类型">
-						<Select mode="multiple" style={{ width: '200px' }}>
-							<Option value={CaseSort.Porn}>涉黄</Option>
-							<Option value={CaseSort.PyramidSales}>传销</Option>
-							<Option value={CaseSort.Bet}>涉赌</Option>
+					<Item initialValue="all" name="type" label="查询类型">
+						<Select style={{ width: '200px' }}>
+							<Option value={'all'}>全部</Option>
+							<Option value={Document.Aim}>手机号查询</Option>
+							<Option value={Document.AimBatch}>手机号批量查询</Option>
+							<Option value={Document.Bank}>银行卡查询</Option>
+							<Option value={Document.BankBatch}>银行卡批量查询</Option>
 						</Select>
 					</Item>
 					<Item>
@@ -88,15 +92,15 @@ const SearchLog: FC<SearchLogProp> = () => {
 						</Button>
 					</Item>
 					<Item>
-						<Button onClick={resetClick} type="default">
-							<SyncOutlined />
-							<span>重置</span>
+						<Button onClick={delClick} danger={true}>
+							<DeleteOutlined />
+							<span>清除日志</span>
 						</Button>
 					</Item>
 				</Form>
 			</PadBox>
 			<div>
-				<Table<SearchLogData>
+				<Table<SearchLogEntity>
 					pagination={{
 						current: pageIndex,
 						pageSize,
@@ -104,9 +108,10 @@ const SearchLog: FC<SearchLogProp> = () => {
 						onChange: onPageChange
 					}}
 					columns={getColumn()}
+					scroll={{ x: 'max-content' }}
 					dataSource={data}
 					loading={loading}
-					rowKey="query_id"
+					rowKey="_id"
 				/>
 			</div>
 		</RootPanel>

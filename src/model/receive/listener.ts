@@ -5,8 +5,6 @@ import { send } from "@/utility/tcp-server";
 import { PAGESIZE } from "@/utility/helper";
 import { SocketType, Command, CommandType, Result, Res } from "@/schema/socket";
 import { SingleDataSource } from "../single";
-import { UserInfoState } from "../user-info";
-import { SearchLogData } from "../search-log";
 import { UserData } from '../user';
 import { OpLogData } from "../op-log";
 import { RoleData } from "../role";
@@ -112,34 +110,6 @@ export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchSt
         dispatch({ type: 'bankBatch/setData', payload: data });
     } else {
         msgBox.warn(message);
-    }
-    dispatch({ type: 'reading/setReading', payload: false });
-}
-
-/**
- * 查询日志
- */
-export function queryLogResult(dispatch: Dispatch, cmd: Command<Result<{
-    pageIndex: number,
-    pageSize: number,
-    totalPage: number,
-    totalCount: number,
-    rows: SearchLogData[]
-}>>) {
-    const { ret, data } = cmd.msg;
-    if (ret === 0) {
-        dispatch({
-            type: 'searchLog/setPage',
-            payload: {
-                pageIndex: data.pageIndex,
-                pageSize: data.pageSize,
-                total: data.totalCount
-            }
-        });
-        dispatch({
-            type: 'searchLog/setData',
-            payload: data.rows
-        });
     }
     dispatch({ type: 'reading/setReading', payload: false });
 }

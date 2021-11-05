@@ -22,7 +22,7 @@ const helper = {
      * 生成id
      */
     newId(option?: V4Options) {
-        return v4(option);
+        return v4(option).replace(/-/g, '');
     },
     getDeptTree(data: DeptNode[], disableId: string[] = []): DataNode[] {
         if (data && data.length > 0) {

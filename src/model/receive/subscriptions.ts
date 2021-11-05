@@ -7,7 +7,7 @@ import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
     addDeptResult, bankBatchResult, bankResult, delDeptResult, limitResult,
     getMultipleResult, getSingleResult, loginResult, menuResult, operationLogResult,
-    queryDeptByParentResult, queryLogResult, queryRoleResult, regionResult,
+    queryDeptByParentResult, queryRoleResult, regionResult,
     updateDeptResult, userActionResult
 } from './listener';
 
@@ -45,9 +45,6 @@ export default {
                     break;
                 case CommandType.BankBatchResult:
                     bankBatchResult(dispatch, command);
-                    break;
-                case CommandType.QueryLogResult:
-                    queryLogResult(dispatch, command);
                     break;
                 case CommandType.OperationLogResult:
                     operationLogResult(dispatch, command);

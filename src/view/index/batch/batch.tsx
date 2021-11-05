@@ -16,6 +16,7 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
 import { BatchDataSource, BatchState } from '@/model/batch';
 import CategoryModal from './category-modal';
@@ -78,6 +79,14 @@ const Batch: FC<BatchProp> = () => {
 				send(Fetch, {
 					cmd: CommandType.GetMultiple,
 					msg: { list: mobileList.map((i) => i.md5) }
+				});
+				dispatch({
+					type: 'searchLog/insert',
+					payload: {
+						_id: helper.newId(),
+						type: Document.AimBatch,
+						content: mobileList.map((i) => i.value).join(',')
+					}
 				});
 
 				//legacy: Mock数据

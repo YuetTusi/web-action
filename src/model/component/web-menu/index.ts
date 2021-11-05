@@ -94,6 +94,22 @@ let model: Model = {
                 "gmt_create": null,
                 "gmt_modified": null,
                 "childMenuInfos": []
+            },
+            {
+                "menu_code": "160",
+                "parent_code": "-1",
+                "menu_name": "查询日志",
+                "menu_name_en": "CXRZ",
+                "menu_url": "/inquireJournal",
+                "menu_image": null,
+                "is_leaf": 1,
+                "is_enabled": 0,
+                "sort": 1,
+                "description": null,
+                "is_admin": 1,
+                "gmt_create": null,
+                "gmt_modified": null,
+                "childMenuInfos": []
             }
         ]
     },

@@ -2,13 +2,9 @@ interface SearchLogProp { }
 
 interface FormValue {
     /**
-     * 过滤项
+     * 查询类型
      */
-    keyword: string,
-    /**
-     * 专题类型
-     */
-    special_type: string[]
+    type: string,
 }
 
 export { SearchLogProp, FormValue };

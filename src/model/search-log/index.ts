@@ -1,12 +1,14 @@
 import { Model } from 'dva';
+import effects from './effects';
 import reducers from './reducers';
 import { PAGESIZE } from '@/utility/helper';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 
 interface SearchLogState {
     /**
      * 数据
      */
-    data: SearchLogData[],
+    data: SearchLogEntity[],
     /**
      * 当前页
      */
@@ -25,25 +27,6 @@ interface SearchLogState {
     loading: boolean
 }
 
-interface SearchLogData {
-    /**
-     * ID
-     */
-    query_id: string,
-    /**
-     * 目标手机号
-     */
-    phone_num: string,
-    /**
-     * 查询类型
-     */
-    query_type: number,
-    /**
-     * 查询时间
-     */
-    gmt_create: string
-}
-
 let model: Model = {
     namespace: 'searchLog',
     state: {
@@ -53,8 +36,9 @@ let model: Model = {
         loading: false,
         data: []
     },
-    reducers
+    reducers,
+    effects
 }
 
-export { SearchLogState, SearchLogData };
+export { SearchLogState };
 export default model;
