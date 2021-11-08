@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import md5 from 'md5';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent, useState, useRef } from 'react';
+import React, { FC, MouseEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -266,7 +266,8 @@ const Batch: FC<BatchProp> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item initialValue="D:\手机号.txt" name="tempFilePath" label="选择模板">
+					{/* initialValue="D:\手机号.txt" */}
+					<Item name="tempFilePath" label="选择模板">
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}

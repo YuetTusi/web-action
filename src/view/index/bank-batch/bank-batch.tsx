@@ -294,7 +294,8 @@ const BankBatch: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item initialValue="D:\银行卡.txt" name="tempFilePath" label="选择模板">
+					{/* initialValue="D:\银行卡.txt" */}
+					<Item name="tempFilePath" label="选择模板">
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}

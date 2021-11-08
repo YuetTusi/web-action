@@ -86,23 +86,23 @@ export default {
     /**
      * Socket出错
      */
-    // onSocketError({ dispatch }: SubscriptionAPI) {
-    //     server.on(Error, (port: number, type: string) => {
+    onSocketError({ dispatch }: SubscriptionAPI) {
+        server.on(Error, (port: number, type: string) => {
 
-    //         dispatch({ type: 'login/setLoading', payload: false });
-    //         dispatch({ type: 'reading/setReading', payload: false });
-    //         Modal.destroyAll();
-    //         Modal.warn({
-    //             title: '服务中断',
-    //             content: '服务通讯中断，软件将退出',
-    //             okText: '是',
-    //             zIndex: 9000,
-    //             onOk() {
-    //                 ipcRenderer.send('do-close', true);
-    //             }
-    //         });
-    //     });
-    // },
+            dispatch({ type: 'login/setLoading', payload: false });
+            dispatch({ type: 'reading/setReading', payload: false });
+            Modal.destroyAll();
+            Modal.warn({
+                title: '服务中断',
+                content: '服务通讯中断，软件将退出',
+                okText: '是',
+                zIndex: 9000,
+                onOk() {
+                    ipcRenderer.send('do-close', true);
+                }
+            });
+        });
+    },
     /**
      * UI启动
      */

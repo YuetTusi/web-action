@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useEffect } from 'react';
+import React, { FC, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
@@ -38,7 +38,7 @@ const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }
 
 const Bank: FC<{}> = () => {
 	const dispatch = useDispatch();
-	const { hits, hit_gambling, hit_pyramid, result } = useSelector<any, BankState>(
+	const { result } = useSelector<any, BankState>(
 		(state) => state.bank
 	);
 	const [formRef] = useForm();
@@ -103,7 +103,8 @@ const Bank: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item name="mobile" label="卡号" initialValue={'6213363479902259472'}>
+					{/* initialValue={'6213363479902259472'} */}
+					<Item name="mobile" label="卡号">
 						<Input />
 					</Item>
 					<Item>

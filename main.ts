@@ -1,13 +1,35 @@
 import path from 'path';
+import { spawn, ChildProcessWithoutNullStreams } from 'child_process';
 import {
     app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu,
     OpenDialogReturnValue, SaveDialogReturnValue
 } from 'electron';
+import log from './src/utility/log';
 
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
+let serveProc: ChildProcessWithoutNullStreams | null = null; //后台进程
 
 let mainWindow: BrowserWindow | null = null;
+
+/**
+ * 运行exe进程
+ * @param handle 进程句柄
+ * @param exeName exe名称
+ * @param exePath exe路径
+ * @param exeParams 参数
+ */
+function runProc(handle: ChildProcessWithoutNullStreams | null,
+    exeName: string, exePath: string, exeParams: string[] = []) {
+    handle = spawn(exeName, exeParams, {
+        cwd: exePath
+    });
+    handle.once('error', () => {
+        log.error(`启动${exeName}失败`);
+        console.log(`${exeName}启动失败`);
+        handle = null;
+    });
+}
 
 /**
  * 销毁所有窗口
@@ -16,6 +38,10 @@ function destroyAllWindow() {
     if (mainWindow !== null) {
         mainWindow.destroy();
         mainWindow = null;
+    }
+    if (serveProc !== null) {
+        serveProc.kill();
+        serveProc = null;
     }
 }
 
@@ -58,6 +84,9 @@ app.on('ready', () => {
         }
     });
     mainWindow.webContents.addListener('new-window', (event) => event.preventDefault());
+    mainWindow.webContents.on('did-finish-load', () => {
+        runProc(serveProc, 'LocalAgent.exe', path.join(cwd, '../../LocalAgent'));
+    });
     mainWindow.on('close', (event) => {
         //关闭事件到mainWindow中去处理
         event.preventDefault();
@@ -72,11 +101,11 @@ app.on('ready', () => {
     }
     // #生产模式屏蔽快捷键（发布把注释放开）
     if (mode !== 'development') {
-        // globalShortcut.register('Control+R', () => { });
-        // globalShortcut.register('Control+Shift+R', () => { });
-        // globalShortcut.register('CommandOrControl+Shift+I', () => { });
+        globalShortcut.register('Control+R', () => { });
+        globalShortcut.register('Control+Shift+R', () => { });
+        globalShortcut.register('CommandOrControl+Shift+I', () => { });
     }
-    // mainWindow.removeMenu();
+    mainWindow.removeMenu();
 });
 
 ipcMain.handle('select-file', async (event, args) => {

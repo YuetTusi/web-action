@@ -77,7 +77,8 @@ const Index: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item initialValue="17674147732" name="mobile" label="目标手机号">
+					{/* initialValue="17674147732" */}
+					<Item name="mobile" label="目标手机号">
 						<Input />
 					</Item>
 					<Item>
