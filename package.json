@@ -25,11 +25,7 @@
 		"directories": {
 			"buildResources": "static"
 		},
-		"asar": true,
-		"asarUnpack": [
-			"./dist",
-			"./src"
-		],
+		"asar": false,
 		"files": [
 			"dist/**/*",
 			"node_modules/**/*",

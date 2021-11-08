@@ -4,12 +4,12 @@ import {
     app, BrowserWindow, dialog, ipcMain, globalShortcut, Menu,
     OpenDialogReturnValue, SaveDialogReturnValue
 } from 'electron';
+import { helper } from './src/utility/helper';
 import log from './src/utility/log';
 
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
 let serveProc: ChildProcessWithoutNullStreams | null = null; //后台进程
-
 let mainWindow: BrowserWindow | null = null;
 
 /**
@@ -90,7 +90,9 @@ app.on('ready', () => {
     mainWindow.on('close', (event) => {
         //关闭事件到mainWindow中去处理
         event.preventDefault();
-        mainWindow!.webContents.send('will-close');
+        if (mainWindow !== null) {
+            mainWindow.webContents.send('will-close');
+        }
     });
 
     if (mode === 'development') {
@@ -101,11 +103,12 @@ app.on('ready', () => {
     }
     // #生产模式屏蔽快捷键（发布把注释放开）
     if (mode !== 'development') {
-        globalShortcut.register('Control+R', () => { });
-        globalShortcut.register('Control+Shift+R', () => { });
-        globalShortcut.register('CommandOrControl+Shift+I', () => { });
+        helper.writeVersion();
+        // globalShortcut.register('Control+R', () => { });
+        // globalShortcut.register('Control+Shift+R', () => { });
+        // globalShortcut.register('CommandOrControl+Shift+I', () => { });
     }
-    mainWindow.removeMenu();
+    // mainWindow.removeMenu();
 });
 
 ipcMain.handle('select-file', async (event, args) => {

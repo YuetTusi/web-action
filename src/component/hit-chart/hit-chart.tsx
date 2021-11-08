@@ -48,7 +48,6 @@ const HitChart: FC<{ data: Array<{ name: string; value: number }> }> = ({ data }
 
 	useEffect(() => {
 		const $chartRoot = document.getElementById('chart-root');
-		console.log(data);
 		if ($chartRoot !== null && !helper.isNullOrUndefined(data) && data.length > 0) {
 			const chart = echarts.init($chartRoot);
 			if (data.length === 2) {

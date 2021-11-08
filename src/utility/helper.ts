@@ -1,7 +1,11 @@
+import path from 'path';
+import { versions } from 'process';
+import { writeFile } from 'fs/promises';
 import { v4, V4Options } from 'uuid';
 import { DeptNode } from "@/model/dept-tree";
 import { DataNode } from "antd/lib/tree";
 
+const cwd = process.cwd();
 const PAGESIZE = 10;
 
 //封装工具函数
@@ -45,6 +49,21 @@ const helper = {
             });
         } else {
             return [];
+        }
+    },
+    /**
+     * 写入版本信息
+     */
+    async writeVersion() {
+        const version = Object.entries(versions).reduce((acc, [k, v]) => {
+            acc += `${k}:${v}\r\n`;
+            return acc;
+        }, '');
+        try {
+            await writeFile(path.join(cwd, './app.version'), version);
+            return true;
+        } catch (error) {
+            throw error;
         }
     }
 };
