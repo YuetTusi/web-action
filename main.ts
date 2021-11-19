@@ -83,9 +83,12 @@ app.on('ready', () => {
             contextIsolation: false
         }
     });
+
+
+
     mainWindow.webContents.addListener('new-window', (event) => event.preventDefault());
     mainWindow.webContents.on('did-finish-load', () => {
-        runProc(serveProc, 'LocalAgent.exe', path.join(cwd, '../../LocalAgent'));
+        runProc(serveProc, 'LocalAgent.exe', path.join(cwd, '../LocalAgent'));
     });
     mainWindow.on('close', (event) => {
         //关闭事件到mainWindow中去处理
