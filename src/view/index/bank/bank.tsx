@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
@@ -19,9 +19,11 @@ import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
 import { CardTitle } from '../index/styled/card-title';
 import { CardItemList } from '../index/styled/card-item';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 
 const { Item, useForm } = Form;
 const { Ribbon } = Badge;
+let memoValue = '';
 
 const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }>) => {
 	const next = Object.entries(result);
@@ -38,64 +40,81 @@ const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }
 
 const Bank: FC<{}> = () => {
 	const dispatch = useDispatch();
-	const { result } = useSelector<any, BankState>(
-		(state) => state.bank
-	);
+	const { result } = useSelector<any, BankState>((state) => state.bank);
 	const [formRef] = useForm();
 	const card = getCard(result);
 
-	// useEffect(() => {
-	// 	//legacy: 测试数据
-	// 	dispatch({
-	// 		type: 'bank/setData',
-	// 		payload: {
-	// 			"hits": 0,
-	// 			"result": {
-	// 				"676762b406ef5d0dfc95ff3b3be7eb50": {
-	// 					"gambling": {
-	// 						"hit": 1
-	// 					},
-	// 					"pyramid": {
-	// 						"hit": 3
-	// 					}
-	// 				},
-	// 				"0633963617d3972e26fa63ea9900a469": {
-	// 					"gambling": {
-	// 						"hit": 20
-	// 					},
-	// 					"pyramid": {
-	// 						"hit": 0
-	// 					}
-	// 				}
-	// 			},
-	// 			"hit_gambling": 0,
-	// 			"hit_pyramid": 0
-	// 		}
-	// 	});
-	// }, []);
+	useEffect(() => {
+		const { getFieldValue } = formRef;
+		const cardNo = getFieldValue('cardNo');
+		const next: SearchLogEntity[] = [];
+
+		if (result[cardNo]) {
+			next.push({
+				type: Document.Bank,
+				keyword: cardNo,
+				result: {
+					涉赌: result[cardNo].gambling,
+					传销: result[cardNo].pyramid
+				}
+			});
+		}
+		if (next.length > 0) {
+			dispatch({ type: 'searchLog/insert', payload: next });
+		}
+	}, [result]);
+
+	useEffect(() => {
+		return () => {
+			dispatch({
+				type: 'bank/setData',
+				payload: {
+					hits: 0,
+					hit_gambling: 0,
+					hit_pyramid: 0,
+					result: {}
+				}
+			});
+		};
+	}, []);
 
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 
 		const { getFieldValue } = formRef;
-		const value = getFieldValue('mobile');
+		const value = getFieldValue('cardNo');
 
 		if (!BankCardNumber.test(value)) {
 			message.destroy();
 			message.warn('请输入正确的银行卡号');
 			return;
 		} else {
+			memoValue = value;
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.Bank, msg: { number: value } });
 			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { number: value } });
-			dispatch({
-				type: 'searchLog/insert',
-				payload: {
-					_id: helper.newId(),
-					type: Document.Bank,
-					content: value
-				}
-			});
+
+			//legacy: 测试数据
+			// dispatch({
+			// 	type: 'bank/setData',
+			// 	payload: {
+			// 		hits: 0,
+			// 		result: {
+			// 			'6213363479902259472': {
+			// 				gambling: {
+			// 					hit: 20
+			// 				},
+			// 				pyramid: {
+			// 					hit: 0
+			// 				}
+			// 			}
+			// 		},
+			// 		hit_gambling: 0,
+			// 		hit_pyramid: 0
+			// 	}
+			// });
+
+			// dispatch({ type: 'reading/setReading', payload: false });
 		}
 	};
 
@@ -104,7 +123,7 @@ const Bank: FC<{}> = () => {
 			<PadBox>
 				<Form form={formRef} layout="inline">
 					{/* initialValue={'6213363479902259472'} */}
-					<Item name="mobile" label="卡号">
+					<Item name="cardNo" label="卡号" initialValue={memoValue}>
 						<Input />
 					</Item>
 					<Item>

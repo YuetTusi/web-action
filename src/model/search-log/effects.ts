@@ -13,7 +13,9 @@ export default {
      * 查询日志数据
      */
     *queryData({ payload }: AnyAction, { all, call, put }: EffectsCommandMap) {
-        const { condition, pageIndex, pageSize = PAGESIZE } = payload;
+        const {
+            condition, pageIndex, pageSize = PAGESIZE
+        } = payload;
         const db = new Db(Document.SearchLog);
         yield put({ type: 'setLoading', payload: true });
         try {
@@ -21,6 +23,13 @@ export default {
             let param: Record<string, any> = {};
             if (condition?.type !== 'all') {
                 param.type = condition.type;
+            }
+
+            if (condition?.start && condition?.end) {
+                param.createdAt = {
+                    $gte: condition.start.toDate(),
+                    $lte: condition.end.toDate()
+                }
             }
 
             const [next, total]: [SearchLogEntity[], number] = yield all([
@@ -37,13 +46,14 @@ export default {
     },
     /**
      * 添加日志
-     * @param {SearchLogEntity} payload 日志Entity
+     * @param {SearchLogEntity[]} payload 日志Entity
      */
-    *insert({ payload }: AnyAction, { fork }: EffectsCommandMap) {
+    *insert({ payload }: AnyAction, { all }: EffectsCommandMap) {
 
         const db = new Db(Document.SearchLog);
         try {
-            yield fork([db, 'insert'], payload);
+            yield all((payload as SearchLogEntity[]).map(i => db.insert(i)));
+            // yield fork([db, 'insert'], payload);
         } catch (error: any) {
             logger.error(`添加日志失败 @model/search-log/effects/insert: ${error.message}`);
         }

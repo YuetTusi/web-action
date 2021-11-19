@@ -1,7 +1,7 @@
-import fs from 'fs';
+import { copyFile, readFile } from 'fs/promises';
 import path from 'path';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent, useState } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
@@ -23,10 +23,12 @@ import { OnlyNumber } from '@/utility/regex';
 import CategoryModal from './category-modal';
 import { getColumn, RowType } from './column';
 import ChartModal from './chart-modal';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Item, useForm } = Form;
+let memoValue = '';
 
 /**
  * 银行卡对象数据转为表格数据
@@ -74,6 +76,29 @@ const BankBatch: FC<{}> = () => {
 	const { data } = useSelector<any, BankBatchState>((state) => state.bankBatch); //hit_gambling, hit_pyramid, hits,
 	const [formRef] = useForm();
 
+	useEffect(() => {
+		const kv = Object.entries(data);
+		let next: SearchLogEntity[] = [];
+		if (kv.length > 0) {
+			for (let [k, v] of kv) {
+				next.push({
+					type: Document.BankBatch,
+					keyword: k,
+					result: v
+				});
+			}
+		}
+		if (next.length > 0) {
+			dispatch({ type: 'searchLog/insert', payload: next });
+		}
+	}, [data]);
+
+	useEffect(() => {
+		return () => {
+			dispatch({ type: 'bankBatch/setData', payload: {} });
+		};
+	}, []);
+
 	/**
 	 * 点击分类handle
 	 */
@@ -93,7 +118,7 @@ const BankBatch: FC<{}> = () => {
 				? path.join(cwd, './asset/银行卡模板.txt')
 				: path.join(cwd, './resources/asset/银行卡模板.txt');
 			try {
-				await fs.promises.copyFile(srcPath, filePath);
+				await copyFile(srcPath, filePath);
 				message.success('下载成功');
 			} catch (error) {
 				console.log(error);
@@ -133,7 +158,8 @@ const BankBatch: FC<{}> = () => {
 				message.destroy();
 				message.warn('请选择模板文件');
 			} else {
-				const txt = await fs.promises.readFile(tempFilePath, { encoding: 'utf8' });
+				memoValue = tempFilePath;
+				const txt = await readFile(tempFilePath, { encoding: 'utf8' });
 				const list = txt.split('\n').filter((item) => OnlyNumber.test(item));
 				dispatch({ type: 'reading/setReading', payload: true });
 				console.log({
@@ -295,7 +321,7 @@ const BankBatch: FC<{}> = () => {
 			<PadBox>
 				<Form form={formRef} layout="inline">
 					{/* initialValue="D:\银行卡.txt" */}
-					<Item name="tempFilePath" label="选择模板">
+					<Item name="tempFilePath" label="选择模板" initialValue={memoValue}>
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}

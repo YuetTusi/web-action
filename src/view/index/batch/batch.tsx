@@ -1,8 +1,8 @@
-import fs from 'fs';
+import { copyFile, readFile } from 'fs/promises';
 import path from 'path';
 import md5 from 'md5';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent, useState } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -16,20 +16,22 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
+import { OnlyNumber } from '@/utility/regex';
 import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
+import { CaseSort } from '@/schema/common';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 import { BatchDataSource, BatchState } from '@/model/batch';
 import CategoryModal from './category-modal';
 import ChartModal from './chart-modal';
 import { getColumn } from './column';
 import { BatchProp } from './prop';
-import { CaseSort } from '@/schema/common';
-import { OnlyNumber } from '@/utility/regex';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { Fetch } = SocketType;
 const { Item, useForm } = Form;
+let memoValue = '';
 let mobileList: Array<{ md5: string; value: string }> = []; //保存手机号与md5对应表
 
 const convertToArray = (data: Record<string, BatchDataSource>) => {
@@ -52,6 +54,30 @@ const Batch: FC<BatchProp> = () => {
 	const [formRef] = useForm<{ tempFilePath: string }>();
 	const list = convertToArray(data);
 
+	useEffect(() => {
+		let next: SearchLogEntity[] = [];
+		const kv = Object.entries(data);
+		for (let [k, v] of kv) {
+			const { value } = mobileList.find((i) => i.md5 === k)!;
+			if (value) {
+				next.push({
+					type: Document.AimBatch,
+					keyword: value,
+					result: v
+				});
+			}
+		}
+		if (next.length > 0) {
+			dispatch({ type: 'searchLog/insert', payload: next });
+		}
+	}, [data]);
+
+	useEffect(() => {
+		return () => {
+			dispatch({ type: 'batch/setData', payload: {} });
+		};
+	}, []);
+
 	/**
 	 * 查询Click
 	 */
@@ -60,17 +86,18 @@ const Batch: FC<BatchProp> = () => {
 		const { getFieldsValue } = formRef;
 		try {
 			const { tempFilePath } = getFieldsValue();
-			const txt = await fs.promises.readFile(tempFilePath, { encoding: 'utf8' });
-
-			mobileList = txt
-				.split('\n')
-				.filter((item) => OnlyNumber.test(item))
-				.map((item) => ({ md5: md5(item), value: item }));
 
 			if (helper.isNullOrUndefined(tempFilePath)) {
 				message.destroy();
 				message.warn('请选择模板文件');
 			} else {
+				memoValue = tempFilePath;
+				const txt = await readFile(tempFilePath, { encoding: 'utf8' });
+
+				mobileList = txt
+					.split('\n')
+					.filter((item) => OnlyNumber.test(item))
+					.map((item) => ({ md5: md5(item), value: item }));
 				dispatch({ type: 'reading/setReading', payload: true });
 				console.log({
 					cmd: CommandType.GetMultiple,
@@ -79,14 +106,6 @@ const Batch: FC<BatchProp> = () => {
 				send(Fetch, {
 					cmd: CommandType.GetMultiple,
 					msg: { list: mobileList.map((i) => i.md5) }
-				});
-				dispatch({
-					type: 'searchLog/insert',
-					payload: {
-						_id: helper.newId(),
-						type: Document.AimBatch,
-						content: mobileList.map((i) => i.value).join(',')
-					}
 				});
 
 				//legacy: Mock数据
@@ -179,6 +198,7 @@ const Batch: FC<BatchProp> = () => {
 				// 		}
 				// 	}
 				// });
+				// dispatch({ type: 'reading/setReading', payload: false });
 			}
 		} catch (error) {
 			console.log(error);
@@ -205,7 +225,7 @@ const Batch: FC<BatchProp> = () => {
 				? path.join(cwd, './asset/手机号模板.txt')
 				: path.join(cwd, './resources/asset/手机号模板.txt');
 			try {
-				await fs.promises.copyFile(srcPath, filePath);
+				await copyFile(srcPath, filePath);
 				message.success('下载成功');
 			} catch (error) {
 				console.log(error);
@@ -267,7 +287,7 @@ const Batch: FC<BatchProp> = () => {
 			<PadBox>
 				<Form form={formRef} layout="inline">
 					{/* initialValue="D:\手机号.txt" */}
-					<Item name="tempFilePath" label="选择模板">
+					<Item name="tempFilePath" label="选择模板" initialValue={memoValue}>
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
 							readOnly={true}

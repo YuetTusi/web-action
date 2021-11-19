@@ -1,7 +1,8 @@
-import React, { FC, MouseEvent, useEffect } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DeleteOutlined from '@ant-design/icons/DeleteOutlined';
+import DatePicker from 'antd/lib/date-picker';
 import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
 import Select from 'antd/lib/select';
@@ -13,9 +14,12 @@ import { Document } from '@/schema/document';
 import { SearchLogEntity } from '@/schema/search-log-entity';
 import { SearchLogState } from '@/model/search-log';
 import { PAGESIZE } from '@/utility/helper';
+import ResultModal from './result-modal';
 import { getColumn } from './column';
 import { FormValue, SearchLogProp } from './props';
+import { Dayjs } from 'dayjs';
 const { Item, useForm } = Form;
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 /**
@@ -23,6 +27,8 @@ const { Option } = Select;
  */
 const SearchLog: FC<SearchLogProp> = () => {
 	const dispatch = useDispatch();
+	const [resultModalVisible, setResultModalVisible] = useState(false);
+	const [result, setResult] = useState<Record<string, any>>();
 	const { data, pageIndex, pageSize, total, loading } = useSelector<any, SearchLogState>(
 		(state) => state.searchLog
 	);
@@ -38,10 +44,16 @@ const SearchLog: FC<SearchLogProp> = () => {
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;
-		const { type } = getFieldsValue();
+		const { type, range } = getFieldsValue();
+		let start: Dayjs | undefined;
+		let end: Dayjs | undefined;
+		if (range) {
+			start = range[0];
+			end = range[1];
+		}
 		dispatch({
 			type: 'searchLog/queryData',
-			payload: { condition: { type }, pageIndex: 1, pageSize: PAGESIZE }
+			payload: { condition: { type, start, end }, pageIndex: 1, pageSize: PAGESIZE }
 		});
 	};
 
@@ -65,25 +77,36 @@ const SearchLog: FC<SearchLogProp> = () => {
 	 */
 	const onPageChange = (pageIndex: number, pageSize?: number) => {
 		const { getFieldsValue } = formRef;
-		const { type } = getFieldsValue();
+		const { type, range } = getFieldsValue();
+		let start: Dayjs | undefined;
+		let end: Dayjs | undefined;
+		if (range) {
+			start = range[0];
+			end = range[1];
+		}
 		dispatch({
 			type: 'searchLog/queryData',
-			payload: { condition: { type }, pageIndex, pageSize }
+			payload: { condition: { type, start, end }, pageIndex, pageSize }
 		});
 	};
+
+	const onResultModalCancel = () => setResultModalVisible(false);
 
 	return (
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					<Item initialValue="all" name="type" label="查询类型">
-						<Select style={{ width: '200px' }}>
+					<Item initialValue="all" name="type" label="类型">
+						<Select style={{ width: '180px' }}>
 							<Option value={'all'}>全部</Option>
 							<Option value={Document.Aim}>手机号查询</Option>
 							<Option value={Document.AimBatch}>手机号批量查询</Option>
 							<Option value={Document.Bank}>银行卡查询</Option>
 							<Option value={Document.BankBatch}>银行卡批量查询</Option>
 						</Select>
+					</Item>
+					<Item name="range" label="查询时间">
+						<RangePicker format="YYYY-MM-DD HH:mm:ss" showTime={true} />
 					</Item>
 					<Item>
 						<Button onClick={searchClick} type="primary">
@@ -94,7 +117,7 @@ const SearchLog: FC<SearchLogProp> = () => {
 					<Item>
 						<Button onClick={delClick} danger={true}>
 							<DeleteOutlined />
-							<span>清除日志</span>
+							<span>清除</span>
 						</Button>
 					</Item>
 				</Form>
@@ -107,13 +130,18 @@ const SearchLog: FC<SearchLogProp> = () => {
 						total,
 						onChange: onPageChange
 					}}
-					columns={getColumn()}
+					columns={getColumn(dispatch, setResultModalVisible, setResult)}
 					scroll={{ x: 'max-content' }}
 					dataSource={data}
 					loading={loading}
 					rowKey="_id"
 				/>
 			</div>
+			<ResultModal
+				visbile={resultModalVisible}
+				data={result}
+				onCancel={onResultModalCancel}
+			/>
 		</RootPanel>
 	);
 };

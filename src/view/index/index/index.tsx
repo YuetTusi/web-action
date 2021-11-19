@@ -1,23 +1,24 @@
 import md5 from 'md5';
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import Row from 'antd/lib/row';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
+import message from 'antd/lib/message';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import { MobileNumber } from '@/utility/regex';
-import message from 'antd/lib/message';
-import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
 import { Document } from '@/schema/document';
 import { CommandType, SocketType } from '@/schema/socket';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 import { SingleState } from '@/model/single';
 import CaseCard from './case-card';
 
 const { Item, useForm } = Form;
+let memoValue = '';
 
 /**
  * 手机号查询
@@ -26,6 +27,24 @@ const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
 	const { data } = useSelector<any, SingleState>((state) => state.single);
 	const [formRef] = useForm();
+
+	useEffect(() => {
+		const { getFieldValue } = formRef;
+		const mobile = getFieldValue('mobile');
+		if (data && Object.keys(data).length > 0) {
+			const next = new SearchLogEntity();
+			next.type = Document.Aim;
+			next.keyword = mobile;
+			next.result = data;
+			dispatch({ type: 'searchLog/insert', payload: [next] });
+		}
+	}, [data]);
+
+	useEffect(() => {
+		return () => {
+			dispatch({ type: 'single/setData', payload: {} });
+		};
+	}, []);
 
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -38,13 +57,10 @@ const Index: FC<{}> = () => {
 			message.warn('请输入正确的手机号');
 			return;
 		} else {
+			memoValue = value;
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.GetSingle, msg: { number: md5(value) } });
 			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { number: md5(value) } });
-			dispatch({
-				type: 'searchLog/insert',
-				payload: { _id: helper.newId(), type: Document.Aim, content: value }
-			});
 
 			// dispatch({
 			// 	type: 'single/setData',
@@ -70,6 +86,7 @@ const Index: FC<{}> = () => {
 			// 		}
 			// 	}
 			// });
+			// dispatch({ type: 'reading/setReading', payload: false });
 		}
 	};
 
@@ -78,7 +95,7 @@ const Index: FC<{}> = () => {
 			<PadBox>
 				<Form form={formRef} layout="inline">
 					{/* initialValue="17674147732" */}
-					<Item name="mobile" label="目标手机号">
+					<Item name="mobile" label="目标手机号" initialValue={memoValue}>
 						<Input />
 					</Item>
 					<Item>

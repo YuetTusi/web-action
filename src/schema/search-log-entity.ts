@@ -11,13 +11,13 @@ class SearchLogEntity extends BaseEntity {
      */
     public type?: Document;
     /**
-     * 查询内容
+     * 查询内容（手机号/银行卡号）
      */
-    public content?: string;
+    public keyword?: string;
     /**
      * 查询结果
      */
-    public result?: any;
+    public result?: Record<string, any>;
 }
 
 export { SearchLogEntity };

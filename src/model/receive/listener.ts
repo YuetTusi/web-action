@@ -60,7 +60,7 @@ export function getSingleResult(dispatch: Dispatch, cmd: Command<Res<SingleDataS
     const { message, code, data } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        dispatch({ type: 'single/insertHistory', payload: data });
+        // dispatch({ type: 'single/insertHistory', payload: data });
         dispatch({ type: 'single/setData', payload: data });
     } else {
         msgBox.warn(message);
@@ -76,7 +76,7 @@ export function getMultipleResult(dispatch: Dispatch, cmd: Command<Res<BatchData
     const { code, message, data } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        dispatch({ type: 'batch/insertHistory', payload: data });
+        // dispatch({ type: 'batch/insertHistory', payload: data });
         dispatch({ type: 'batch/setData', payload: data });
     } else {
         msgBox.warn(message);
@@ -91,7 +91,7 @@ export function bankResult(dispatch: Dispatch, cmd: Command<Res<BankState>>) {
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        dispatch({ type: 'bank/insertHistory', payload: data });
+        // dispatch({ type: 'bank/insertHistory', payload: data });
         dispatch({ type: 'bank/setData', payload: data });
     } else {
         msgBox.warn(message);
@@ -106,7 +106,7 @@ export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchSt
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        dispatch({ type: 'bankBatch/insertHistory', payload: data });
+        // dispatch({ type: 'bankBatch/insertHistory', payload: data });
         dispatch({ type: 'bankBatch/setData', payload: data });
     } else {
         msgBox.warn(message);
