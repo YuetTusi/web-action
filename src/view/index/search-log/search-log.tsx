@@ -128,7 +128,8 @@ const SearchLog: FC<SearchLogProp> = () => {
 						current: pageIndex,
 						pageSize,
 						total,
-						onChange: onPageChange
+						onChange: onPageChange,
+						showSizeChanger: false
 					}}
 					columns={getColumn(dispatch, setResultModalVisible, setResult)}
 					scroll={{ x: 'max-content' }}

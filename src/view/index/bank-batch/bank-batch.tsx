@@ -7,6 +7,7 @@ import Form from 'antd/lib/form';
 import Button from 'antd/lib/button';
 import Input from 'antd/lib/input';
 import Table from 'antd/lib/table';
+import Modal from 'antd/lib/modal';
 import message from 'antd/lib/message';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -24,6 +25,8 @@ import CategoryModal from './category-modal';
 import { getColumn, RowType } from './column';
 import ChartModal from './chart-modal';
 import { SearchLogEntity } from '@/schema/search-log-entity';
+import ScrollPanel from '@/component/scroll-panel';
+import { ValidList } from '../batch/styled/valid-list';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
@@ -156,31 +159,70 @@ const BankBatch: FC<{}> = () => {
 		try {
 			const { tempFilePath } = getFieldsValue();
 
-			if (helper.isNullOrUndefined(tempFilePath)) {
+			if (helper.isNullOrUndefined(tempFilePath) || tempFilePath === '') {
 				message.destroy();
 				message.warn('请选择模板文件');
+				return;
+			}
+
+			memoValue = tempFilePath;
+			const txt = await readFile(tempFilePath, { encoding: 'utf8' });
+			const [errorList, passList] = helper.validateCardList(txt.split('\n'));
+
+			if (errorList.length === 0) {
+				Modal.confirm({
+					onOk() {
+						dispatch({ type: 'reading/setReading', payload: true });
+						console.log({
+							cmd: CommandType.BankBatch,
+							msg: { list: passList.map((i) => i.value) }
+						});
+						send(SocketType.Fetch, {
+							cmd: CommandType.BankBatch,
+							msg: { list: passList.map((i) => i.value) }
+						});
+					},
+					title: '查询提示',
+					content: (
+						<div>
+							<ScrollPanel>
+								{passList.map((i, index) => (
+									<div key={`L_${index}`}>{i.value}</div>
+								))}
+							</ScrollPanel>
+							<div>
+								共查询{passList.length}个卡号，将
+								<strong style={{ color: '#ff0000' }}>
+									使用
+									{passList.length}次
+								</strong>
+								查询，确定？
+							</div>
+						</div>
+					),
+					okText: '是',
+					cancelText: '否'
+				});
 			} else {
-				memoValue = tempFilePath;
-				const txt = await readFile(tempFilePath, { encoding: 'utf8' });
-				const list = txt.split('\n').filter((item) => OnlyNumber.test(item));
-				dispatch({ type: 'reading/setReading', payload: true });
-				console.log({
-					cmd: CommandType.BankBatch,
-					msg: { list }
-				});
-				send(SocketType.Fetch, {
-					cmd: CommandType.BankBatch,
-					msg: { list }
-				});
-				dispatch({
-					type: 'searchLog/insert',
-					payload: {
-						_id: helper.newId(),
-						type: Document.BankBatch,
-						content: list.join(',')
-					}
+				Modal.warn({
+					title: '银行卡号格式有误，请修正',
+					content: (
+						<>
+							<ValidList>
+								{errorList.map((item, index) => {
+									return (
+										<li className="err" key={`E_${index}`}>
+											{item}
+										</li>
+									);
+								})}
+							</ValidList>
+						</>
+					),
+					okText: '确定'
 				});
 			}
+
 			//legacy: 测试数据
 			// dispatch({
 			// 	type: 'bankBatch/setData',
