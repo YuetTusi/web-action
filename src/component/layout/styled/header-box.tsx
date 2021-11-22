@@ -12,7 +12,7 @@ const HeaderBox = styled.div`
 		justify-content: center;
 		background-color: #1890ff;
 		color: #fff;
-		font-size: 1.4rem;
+		font-size: 20px;
 		width: 240px;
 		text-align: center;
 	}

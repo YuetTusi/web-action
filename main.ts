@@ -70,7 +70,7 @@ app.on('window-all-closed', () => {
 app.on('ready', () => {
 
     mainWindow = new BrowserWindow({
-        title: '网络行为监控系统',
+        title: '网络行为查询评估系统',
         width: 1280,
         height: 768,
         minWidth: 1280,

@@ -11,9 +11,7 @@ const WebHeader: FC<{}> = memo(() => {
 	// onClick={() => dispatch(routerRedux.push('/login'))}
 	return (
 		<HeaderBox>
-			<div className="caption">
-				网络行为查询系统
-			</div>
+			<div className="caption">网络行为查询评估系统</div>
 			<div className="fn">
 				<div className="brd">
 					<span>{routeCaption(pathname)}</span>
