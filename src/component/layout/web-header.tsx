@@ -1,6 +1,5 @@
 import React, { FC, memo } from 'react';
-import { useDispatch, useLocation, useSelector } from 'dva';
-import { routerRedux } from 'dva/router';
+import { useLocation, useSelector } from 'dva';
 import { HeaderBox } from './styled/header-box';
 import { UserInfoState } from '@/model/user-info';
 import { routeCaption } from '@/router/index/create-router';
@@ -8,11 +7,11 @@ import { routeCaption } from '@/router/index/create-router';
 const WebHeader: FC<{}> = memo(() => {
 	const { frequency_limit } = useSelector<any, UserInfoState>((state) => state.userInfo);
 	const { pathname } = useLocation();
-	const dispatch = useDispatch();
-
+	// const dispatch = useDispatch();
+	// onClick={() => dispatch(routerRedux.push('/login'))}
 	return (
 		<HeaderBox>
-			<div onClick={() => dispatch(routerRedux.push('/login'))} className="caption">
+			<div className="caption">
 				网络行为查询系统
 			</div>
 			<div className="fn">

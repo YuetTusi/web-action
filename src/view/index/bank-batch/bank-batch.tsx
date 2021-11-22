@@ -73,6 +73,7 @@ const BankBatch: FC<{}> = () => {
 	const dispatch = useDispatch();
 	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
 	const [specialData, setSpecialData] = useState<Record<string, any>>();
+	const [card, setCard] = useState<string>(''); //卡号
 	const { data } = useSelector<any, BankBatchState>((state) => state.bankBatch); //hit_gambling, hit_pyramid, hits,
 	const [formRef] = useForm();
 
@@ -102,8 +103,9 @@ const BankBatch: FC<{}> = () => {
 	/**
 	 * 点击分类handle
 	 */
-	const actionHandle = (type: string, result: CardResult) => {
+	const actionHandle = (type: string, result: CardResult, card: string) => {
 		setSpecialData(result[type]);
+		setCard(card);
 	};
 
 	/**
@@ -311,6 +313,7 @@ const BankBatch: FC<{}> = () => {
 			// 		}
 			// 	}
 			// });
+			// dispatch({ type: 'reading/setReading', payload: false });
 		} catch (error) {
 			console.log(error);
 		}
@@ -362,7 +365,11 @@ const BankBatch: FC<{}> = () => {
 				visible={chartModalVisible}
 				onCancel={() => setChartModalVisible(false)}
 			/>
-			<CategoryModal specialData={specialData} onCancel={() => setSpecialData(void 0)} />
+			<CategoryModal
+				specialData={specialData}
+				card={card}
+				onCancel={() => setSpecialData(void 0)}
+			/>
 			{/* {renderCards()} */}
 		</RootPanel>
 	);

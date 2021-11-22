@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { FC } from 'react';
 import Button from 'antd/lib/button';
 import Modal from 'antd/lib/modal';
@@ -12,6 +13,10 @@ interface CategoryModalProp {
 	 * 分类数据
 	 */
 	specialData?: Record<string, any>;
+	/**
+	 * 卡号
+	 */
+	card: string;
 	/**
 	 * 取消click
 	 */
@@ -34,7 +39,7 @@ const getTitle = (type: number) => {
 /**
  * 分类查看Modal
  */
-const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel }) => {
+const CategoryModal: FC<CategoryModalProp> = ({ specialData, card, onCancel }) => {
 	return (
 		<Modal
 			footer={[
@@ -45,7 +50,7 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel }) => {
 			]}
 			onCancel={onCancel}
 			visible={specialData !== undefined}
-			title={'查询结果'}
+			title={`查询结果 ${card}`}
 			maskClosable={false}
 			closable={true}>
 			<CategoryList>
@@ -94,6 +99,10 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel }) => {
 							? '否'
 							: '是'}
 					</span>
+				</li>
+				<li>
+					<label>查询时间</label>
+					<span>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</span>
 				</li>
 			</CategoryList>
 		</Modal>

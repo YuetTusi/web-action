@@ -18,6 +18,7 @@ import { SingleState } from '@/model/single';
 import CaseCard from './case-card';
 
 const { Item, useForm } = Form;
+
 let memoValue = '';
 
 /**
