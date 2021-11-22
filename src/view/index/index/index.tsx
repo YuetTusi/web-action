@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import React, { FC, MouseEvent, useEffect } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import Row from 'antd/lib/row';
@@ -25,6 +25,8 @@ let memoValue = '';
  */
 const Index: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const [mobile, setMobile] = useState<string>('');
+	const [actionTime, setActionTime] = useState<null | Date>(null);
 	const { data } = useSelector<any, SingleState>((state) => state.single);
 	const [formRef] = useForm();
 
@@ -61,15 +63,19 @@ const Index: FC<{}> = () => {
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.GetSingle, msg: { number: md5(value) } });
 			send(SocketType.Fetch, { cmd: CommandType.GetSingle, msg: { number: md5(value) } });
+			setMobile(value);
+			setActionTime(new Date());
 
 			// dispatch({
 			// 	type: 'single/setData',
 			// 	payload: {
 			// 		涉黄: {
+			// 			actionTime: new Date(),
 			// 			lastLogin: '无数据',
 			// 			isReg: 0
 			// 		},
 			// 		传销: {
+			// 			actionTime: new Date(),
 			// 			ParticipatingWebsiteCount: 'N',
 			// 			lastLogin: '无数据',
 			// 			regTime: '1',
@@ -77,6 +83,7 @@ const Index: FC<{}> = () => {
 			// 			haveBindBankCard: 'N'
 			// 		},
 			// 		涉赌: {
+			// 			actionTime: new Date(),
 			// 			lastLogin: 0,
 			// 			participatingFunds: '0',
 			// 			isAgent: 'N',
@@ -94,7 +101,7 @@ const Index: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					{/* initialValue="17674147732" */}
+					{/* initialValue="17674147732" initialValue={memoValue}*/}
 					<Item name="mobile" label="目标手机号" initialValue={memoValue}>
 						<Input />
 					</Item>
@@ -108,7 +115,7 @@ const Index: FC<{}> = () => {
 			</PadBox>
 
 			<Row gutter={[16, 24]}>
-				<CaseCard data={data} />
+				<CaseCard data={data} mobile={mobile} actionTime={actionTime} />
 			</Row>
 		</RootPanel>
 	);

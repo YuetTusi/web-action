@@ -22,9 +22,10 @@ const Login: FC<{}> = () => {
 		event.preventDefault();
 		try {
 			const values = await validateFields();
+			sessionStorage.setItem('username', values.username);
 			dispatch({ type: 'login/login', payload: values });
-			dispatch({ type: 'userInfo/setData', payload: { frequency_limit:234 } });
-			dispatch(routerRedux.push('/targetInquire'))
+			// dispatch({ type: 'userInfo/setData', payload: { frequency_limit: 234 } });
+			// dispatch(routerRedux.push('/targetInquire'));
 		} catch (error) {
 			console.log(error);
 		} finally {
