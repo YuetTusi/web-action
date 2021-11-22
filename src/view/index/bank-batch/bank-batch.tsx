@@ -181,6 +181,139 @@ const BankBatch: FC<{}> = () => {
 							cmd: CommandType.BankBatch,
 							msg: { list: passList.map((i) => i.value) }
 						});
+						//legacy: 测试数据
+						// dispatch({
+						// 	type: 'bankBatch/setData',
+						// 	payload: {
+						// 		'6216727500000238961': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 1,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 1,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 1,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		},
+						// 		'6217562600001515155': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 1,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 0,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		},
+						// 		'9559980868435875811': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 1,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 0,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		},
+						// 		'9559980868435875812': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 1,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 0,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		},
+						// 		'9559980868435875813': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 0,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		},
+						// 		'9559980868435875814': {
+						// 			传销: {
+						// 				ParticipatingWebsiteCount: 'N',
+						// 				haveBindBankCard: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				regTime: '1'
+						// 			},
+						// 			涉赌: {
+						// 				haveBindBankCard: 'N',
+						// 				isAgent: 'N',
+						// 				isReg: 0,
+						// 				lastLogin: '无数据',
+						// 				participatingFunds: '0',
+						// 				participatingWebsiteCount: 'N'
+						// 			},
+						// 			涉黄: {
+						// 				isReg: 0,
+						// 				lastLogin: '无数据'
+						// 			}
+						// 		}
+						// 	}
+						// });
+						// dispatch({ type: 'reading/setReading', payload: false });
 					},
 					title: '查询提示',
 					content: (
@@ -222,140 +355,6 @@ const BankBatch: FC<{}> = () => {
 					okText: '确定'
 				});
 			}
-
-			//legacy: 测试数据
-			// dispatch({
-			// 	type: 'bankBatch/setData',
-			// 	payload: {
-			// 		'6216727500000238961': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 1,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 1,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 1,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		},
-			// 		'6217562600001515155': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 1,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 0,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		},
-			// 		'9559980868435875811': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 1,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 0,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		},
-			// 		'9559980868435875812': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 1,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 0,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		},
-			// 		'9559980868435875813': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 0,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		},
-			// 		'9559980868435875814': {
-			// 			传销: {
-			// 				ParticipatingWebsiteCount: 'N',
-			// 				haveBindBankCard: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				regTime: '1'
-			// 			},
-			// 			涉赌: {
-			// 				haveBindBankCard: 'N',
-			// 				isAgent: 'N',
-			// 				isReg: 0,
-			// 				lastLogin: '无数据',
-			// 				participatingFunds: '0',
-			// 				participatingWebsiteCount: 'N'
-			// 			},
-			// 			涉黄: {
-			// 				isReg: 0,
-			// 				lastLogin: '无数据'
-			// 			}
-			// 		}
-			// 	}
-			// });
-			// dispatch({ type: 'reading/setReading', payload: false });
 		} catch (error) {
 			console.log(error);
 		}

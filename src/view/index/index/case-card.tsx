@@ -8,7 +8,8 @@ import { SingleDataSource } from '@/model/single';
 import { CardTitle } from './styled/card-title';
 import { CardItemList } from './styled/card-item';
 import { helper } from '@/utility/helper';
-import { CardPanel, WaterMark } from './styled/card-panel';
+import Watermark from '@/component/watermark';
+import { CardPanel } from './styled/card-panel';
 
 const { Ribbon } = Badge;
 const username = sessionStorage.getItem('username');
@@ -82,9 +83,7 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 									</span>
 								</li>
 							</CardItemList>
-							<WaterMark>
-								<span>{username}</span>
-							</WaterMark>
+							<Watermark mark={username!} />
 						</CardPanel>
 					</Card>
 				</Ribbon>
@@ -149,9 +148,7 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 									</span>
 								</li>
 							</CardItemList>
-							<WaterMark>
-								<span>{username}</span>
-							</WaterMark>
+							<Watermark mark={username!} />
 						</CardPanel>
 					</Card>
 				</Ribbon>
@@ -216,9 +213,7 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 									</span>
 								</li>
 							</CardItemList>
-							<WaterMark>
-								<span>{username}</span>
-							</WaterMark>
+							<Watermark mark={username!} />
 						</CardPanel>
 					</Card>
 				</Ribbon>

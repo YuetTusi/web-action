@@ -11,6 +11,7 @@ import message from 'antd/lib/message';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
+import Watermark from '@/component/watermark';
 import { BankState, Gambling, Pyramid } from '@/model/bank';
 import { BankCardNumber } from '@/utility/regex';
 import { helper } from '@/utility/helper';
@@ -20,7 +21,7 @@ import { CommandType, SocketType } from '@/schema/socket';
 import { CardTitle } from '../index/styled/card-title';
 import { CardItemList } from '../index/styled/card-item';
 import { SearchLogEntity } from '@/schema/search-log-entity';
-import { CardPanel, WaterMark } from '../index/styled/card-panel';
+import { CardPanel } from '../index/styled/card-panel';
 import dayjs from 'dayjs';
 
 const { Item, useForm } = Form;
@@ -182,9 +183,7 @@ const Bank: FC<{}> = () => {
 										</span>
 									</li>
 								</CardItemList>
-								<WaterMark>
-									<span>{username}</span>
-								</WaterMark>
+								<Watermark mark={username!} />
 							</CardPanel>
 						</Card>
 					</Ribbon>
@@ -235,9 +234,7 @@ const Bank: FC<{}> = () => {
 										</span>
 									</li>
 								</CardItemList>
-								<WaterMark>
-									<span>{username}</span>
-								</WaterMark>
+								<Watermark mark={username!} />
 							</CardPanel>
 						</Card>
 					</Ribbon>

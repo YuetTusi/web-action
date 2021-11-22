@@ -4,16 +4,4 @@ const CardPanel = styled.div`
 	position: relative;
 `;
 
-const WaterMark = styled.div`
-	color: rgba(177, 177, 177, 0.5);
-	position: absolute;
-	bottom: 40%;
-	right: 20px;
-	z-index: 10;
-    font-size: 1.4rem;
-	font-weight: bold;
-    font-family: Arial, Helvetica, sans-serif;
-	transform: rotate(-45deg);
-`;
-
-export { CardPanel, WaterMark };
+export { CardPanel };

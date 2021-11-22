@@ -3,10 +3,13 @@ import React, { FC } from 'react';
 import Button from 'antd/lib/button';
 import Tag from 'antd/lib/tag';
 import Modal from 'antd/lib/modal';
+import Watermark from '@/component/watermark';
 import { CategoryList } from './styled/category-list';
 import { CaseSort } from '@/schema/common';
 import { BatchDataSource } from '@/model/batch';
 import { helper } from '@/utility/helper';
+
+const username = sessionStorage.getItem('username');
 
 interface CategoryModalProp {
 	/**
@@ -56,56 +59,59 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type, mob
 			title={`${getTitle(type)} ${mobile}`}
 			maskClosable={false}
 			closable={true}>
-			<CategoryList>
-				<li>
-					<label>注册状态</label>
-					<span>
-						{helper.isNullOrUndefined(specialData?.isReg) ? (
-							'--'
-						) : specialData?.isReg === 0 ? (
-							<Tag color="red">未注册</Tag>
-						) : (
-							<Tag color="green">已注册</Tag>
-						)}
-					</span>
-				</li>
-				<li>
-					<label>账号个数</label>
-					<span>{specialData?.participatingWebsiteCount ?? '--'}</span>
-				</li>
-				<li>
-					<label>登录信息</label>
-					<span>{specialData?.lastLogin ?? '--'}</span>
-				</li>
-				<li>
-					<label>是否绑定银行卡</label>
-					<span>
-						{helper.isNullOrUndefined(specialData?.haveBindBankCard)
-							? '--'
-							: specialData?.haveBindBankCard === 'N'
-							? '否'
-							: '是'}
-					</span>
-				</li>
-				<li>
-					<label>涉及资金</label>
-					<span>{specialData?.participatingFunds ?? '--'}</span>
-				</li>
-				<li>
-					<label>是否代理</label>
-					<span>
-						{helper.isNullOrUndefined(specialData?.isAgent)
-							? '--'
-							: specialData?.isAgent === 'N'
-							? '否'
-							: '是'}
-					</span>
-				</li>
-				<li>
-					<label>查询时间</label>
-					<span>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</span>
-				</li>
-			</CategoryList>
+			<div style={{ display: 'relative' }}>
+				<CategoryList>
+					<li>
+						<label>注册状态</label>
+						<span>
+							{helper.isNullOrUndefined(specialData?.isReg) ? (
+								'--'
+							) : specialData?.isReg === 0 ? (
+								<Tag color="red">未注册</Tag>
+							) : (
+								<Tag color="green">已注册</Tag>
+							)}
+						</span>
+					</li>
+					<li>
+						<label>账号个数</label>
+						<span>{specialData?.participatingWebsiteCount ?? '--'}</span>
+					</li>
+					<li>
+						<label>登录信息</label>
+						<span>{specialData?.lastLogin ?? '--'}</span>
+					</li>
+					<li>
+						<label>是否绑定银行卡</label>
+						<span>
+							{helper.isNullOrUndefined(specialData?.haveBindBankCard)
+								? '--'
+								: specialData?.haveBindBankCard === 'N'
+								? '否'
+								: '是'}
+						</span>
+					</li>
+					<li>
+						<label>涉及资金</label>
+						<span>{specialData?.participatingFunds ?? '--'}</span>
+					</li>
+					<li>
+						<label>是否代理</label>
+						<span>
+							{helper.isNullOrUndefined(specialData?.isAgent)
+								? '--'
+								: specialData?.isAgent === 'N'
+								? '否'
+								: '是'}
+						</span>
+					</li>
+					<li>
+						<label>查询时间</label>
+						<span>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</span>
+					</li>
+				</CategoryList>
+				<Watermark mark={username!} />
+			</div>
 		</Modal>
 	);
 };
