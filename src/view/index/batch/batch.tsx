@@ -49,6 +49,7 @@ const Batch: FC<BatchProp> = () => {
 	const dispatch = useDispatch();
 	const { data, loading } = useSelector<any, BatchState>((state) => state.batch);
 	const [type, setType] = useState<CaseSort>();
+	const [mobile, setMobile] = useState<string>('');
 	const [currentSpecialData, setCurrentSpecialData] = useState<BatchDataSource>();
 	const [chartModalVisible, setChartModalVisible] = useState<boolean>(false);
 	const [formRef] = useForm<{ tempFilePath: string }>();
@@ -93,6 +94,8 @@ const Batch: FC<BatchProp> = () => {
 			} else {
 				memoValue = tempFilePath;
 				const txt = await readFile(tempFilePath, { encoding: 'utf8' });
+
+				console.log(txt);
 
 				mobileList = txt
 					.split('\n')
@@ -257,8 +260,9 @@ const Batch: FC<BatchProp> = () => {
 	 * @param type 分类
 	 * @param data 数据
 	 */
-	const onSortClick = (data: BatchDataSource, type: CaseSort) => {
+	const onSortClick = (data: BatchDataSource, type: CaseSort, mobile: string) => {
 		setType(type);
+		setMobile(mobile);
 		setCurrentSpecialData(data);
 	};
 
@@ -332,6 +336,7 @@ const Batch: FC<BatchProp> = () => {
 				onCancel={categoryCancel}
 				specialData={currentSpecialData}
 				type={type!}
+				mobile={mobile}
 			/>
 			<ChartModal
 				data={list}

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { FC } from 'react';
 import Button from 'antd/lib/button';
 import Tag from 'antd/lib/tag';
@@ -8,6 +9,10 @@ import { BatchDataSource } from '@/model/batch';
 import { helper } from '@/utility/helper';
 
 interface CategoryModalProp {
+	/**
+	 * 手机号
+	 */
+	mobile: string;
 	/**
 	 * 分类
 	 */
@@ -38,7 +43,7 @@ const getTitle = (type: number) => {
 /**
  * 分类查看Modal
  */
-const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type }) => {
+const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type, mobile }) => {
 	return (
 		<Modal
 			footer={[
@@ -48,7 +53,7 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type }) =
 			]}
 			onCancel={onCancel}
 			visible={specialData !== undefined}
-			title={getTitle(type)}
+			title={`${getTitle(type)} ${mobile}`}
 			maskClosable={false}
 			closable={true}>
 			<CategoryList>
@@ -95,6 +100,10 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type }) =
 							? '否'
 							: '是'}
 					</span>
+				</li>
+				<li>
+					<label>查询时间</label>
+					<span>{dayjs().format('YYYY-MM-DD HH:mm:ss')}</span>
 				</li>
 			</CategoryList>
 		</Modal>
