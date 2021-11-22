@@ -1,4 +1,4 @@
-import React, { FC, MouseEvent, useEffect } from 'react';
+import React, { FC, MouseEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import Col from 'antd/lib/col';
 import Row from 'antd/lib/row';
@@ -20,9 +20,12 @@ import { CommandType, SocketType } from '@/schema/socket';
 import { CardTitle } from '../index/styled/card-title';
 import { CardItemList } from '../index/styled/card-item';
 import { SearchLogEntity } from '@/schema/search-log-entity';
+import { CardPanel, WaterMark } from '../index/styled/card-panel';
+import dayjs from 'dayjs';
 
 const { Item, useForm } = Form;
 const { Ribbon } = Badge;
+const username = sessionStorage.getItem('username');
 let memoValue = '';
 
 const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }>) => {
@@ -40,6 +43,8 @@ const getCard = (result: Record<string, { gambling: Gambling; pyramid: Pyramid }
 
 const Bank: FC<{}> = () => {
 	const dispatch = useDispatch();
+	const [mobile, setMobile] = useState<string>('');
+	const [actionTime, setActionTime] = useState<null | Date>(null);
 	const { result } = useSelector<any, BankState>((state) => state.bank);
 	const [formRef] = useForm();
 	const card = getCard(result);
@@ -93,6 +98,8 @@ const Bank: FC<{}> = () => {
 			dispatch({ type: 'reading/setReading', payload: true });
 			console.log({ cmd: CommandType.Bank, msg: { number: value } });
 			send(SocketType.Fetch, { cmd: CommandType.Bank, msg: { number: value } });
+			setActionTime(new Date());
+			setMobile(value);
 
 			//legacy: 测试数据
 			// dispatch({
@@ -122,7 +129,7 @@ const Bank: FC<{}> = () => {
 		<RootPanel>
 			<PadBox>
 				<Form form={formRef} layout="inline">
-					{/* initialValue={'6213363479902259472'} */}
+					{/* initialValue={'6213363479902259472'} initialValue={memoValue}*/}
 					<Item name="cardNo" label="卡号" initialValue={memoValue}>
 						<Input />
 					</Item>
@@ -137,71 +144,101 @@ const Bank: FC<{}> = () => {
 			<Row gutter={[16, 24]}>
 				<Col span={12}>
 					<Ribbon text="传销" placement="start" color="green">
-						<Card title={<CardTitle>目标结果</CardTitle>} size="small">
-							<CardItemList>
-								<li>
-									<label>命中数量</label>
-									<span>{card[0]?.pyramid?.hit ?? '--'}</span>
-								</li>
-								<li>
-									<label>注册数量</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>注册时间</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>登录时间</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>余额</label>
-									<span>--</span>
-								</li>
-								<li>
-									<label>是否代理</label>
-									<span>--</span>
-								</li>
-							</CardItemList>
+						<Card
+							title={<CardTitle>目标结果{mobile ? `（${mobile}）` : ''}</CardTitle>}
+							size="small">
+							<CardPanel>
+								<CardItemList>
+									<li>
+										<label>命中数量</label>
+										<span>{card[0]?.pyramid?.hit ?? '--'}</span>
+									</li>
+									<li>
+										<label>注册数量</label>
+										<span>--</span>
+									</li>
+									<li>
+										<label>注册时间</label>
+										<span>--</span>
+									</li>
+									<li>
+										<label>登录时间</label>
+										<span>--</span>
+									</li>
+									<li>
+										<label>余额</label>
+										<span>--</span>
+									</li>
+									<li>
+										<label>是否代理</label>
+										<span>--</span>
+									</li>
+									<li>
+										<label>查询时间</label>
+										<span>
+											{actionTime
+												? dayjs(actionTime).format('YYYY-MM-DD HH:mm:ss')
+												: '--'}
+										</span>
+									</li>
+								</CardItemList>
+								<WaterMark>
+									<span>{username}</span>
+								</WaterMark>
+							</CardPanel>
 						</Card>
 					</Ribbon>
 				</Col>
 				<Col span={12}>
 					<Ribbon text="涉赌" placement="start" color="geekblue">
-						<Card title={<CardTitle>目标结果</CardTitle>} size="small">
-							<CardItemList>
-								<li>
-									<label>命中数量</label>
-									<span>{card[0]?.gambling?.hit ?? '--'}</span>
-								</li>
-								<li>
-									<label>注册数量</label>
-									<span>{card[0]?.gambling?.reg_count ?? '--'}</span>
-								</li>
-								<li>
-									<label>注册时间</label>
-									<span>{card[0]?.gambling?.reg_time ?? '--'}</span>
-								</li>
-								<li>
-									<label>登录时间</label>
-									<span>{card[0]?.gambling?.login_time ?? '--'}</span>
-								</li>
-								<li>
-									<label>余额</label>
-									<span>{card[0]?.gambling?.balance ?? '--'}</span>
-								</li>
-								<li>
-									<label>是否代理</label>
-									<span>
-										{helper.isNullOrUndefined(card[0]?.gambling?.is_agent)
-											? '--'
-											: card[0]?.gambling?.is_agent === 0
-											? '否'
-											: '是'}
-									</span>
-								</li>
-							</CardItemList>
+						<Card
+							title={<CardTitle>目标结果{mobile ? `（${mobile}）` : ''}</CardTitle>}
+							size="small">
+							<CardPanel>
+								<CardItemList>
+									<li>
+										<label>命中数量</label>
+										<span>{card[0]?.gambling?.hit ?? '--'}</span>
+									</li>
+									<li>
+										<label>注册数量</label>
+										<span>{card[0]?.gambling?.reg_count ?? '--'}</span>
+									</li>
+									<li>
+										<label>注册时间</label>
+										<span>{card[0]?.gambling?.reg_time ?? '--'}</span>
+									</li>
+									<li>
+										<label>登录时间</label>
+										<span>{card[0]?.gambling?.login_time ?? '--'}</span>
+									</li>
+									<li>
+										<label>余额</label>
+										<span>{card[0]?.gambling?.balance ?? '--'}</span>
+									</li>
+									<li>
+										<label>是否代理</label>
+										<span>
+											{helper.isNullOrUndefined(card[0]?.gambling?.is_agent)
+												? '--'
+												: card[0]?.gambling?.is_agent === 0
+												? '否'
+												: '是'}
+										</span>
+									</li>
+									<li>
+										<label>查询时间</label>
+										<span>
+											{actionTime
+												? dayjs(actionTime).format('YYYY-MM-DD HH:mm:ss')
+												: '--'}
+										</span>
+									</li>
+								</CardItemList>
+								<WaterMark>
+									<span>{username}</span>
+								</WaterMark>
+							</CardPanel>
 						</Card>
 					</Ribbon>
 				</Col>

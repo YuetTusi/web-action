@@ -8,7 +8,7 @@ const WaterMark = styled.div`
 	color: rgba(177, 177, 177, 0.5);
 	position: absolute;
 	bottom: 40%;
-	right: 40%;
+	right: 20px;
 	z-index: 10;
     font-size: 1.4rem;
 	font-weight: bold;
