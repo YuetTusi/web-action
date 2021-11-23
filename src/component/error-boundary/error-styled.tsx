@@ -39,6 +39,14 @@ export const ErrorMessageRoot = styled.div`
 				line-height: 80px;
 				text-align: center;
 				border-bottom: 1px solid #1890ff;
+				& > div {
+					width: 1000px;
+					margin: 0 auto;
+					text-align: center;
+					text-overflow: ellipsis;
+					overflow: hidden;
+					white-space: nowrap;
+				}
 			}
 			.err-message {
 				flex: 1;
