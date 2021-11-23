@@ -21,9 +21,9 @@ export default {
         try {
 
             let param: Record<string, any> = {};
-            if (condition?.type !== 'all') {
-                param.type = condition.type;
-            }
+            // if (condition?.type !== 'all') {
+            //     param.type = condition.type;
+            // }
 
             if (condition?.start && condition?.end) {
                 param.createdAt = {

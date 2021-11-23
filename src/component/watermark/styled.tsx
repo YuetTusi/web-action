@@ -7,7 +7,7 @@ const WaterMark = styled.div`
 	left: 0;
 	right: 0;
 	bottom: 0;
-	font-size: 1.4rem;
+	font-size: 20px;
 	font-weight: normal;
 	font-family: Arial, Helvetica, sans-serif;
 

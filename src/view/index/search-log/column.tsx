@@ -1,15 +1,18 @@
 import dayjs from 'dayjs';
-import { Dispatch } from 'redux';
 import React from 'react';
 import Tag from 'antd/lib/tag';
 import { ColumnsType } from 'antd/lib/table';
 import { Document } from '@/schema/document';
+import { CaseSort } from '@/schema/common';
 import { SearchLogEntity } from '@/schema/search-log-entity';
 
-const getColumn = (dispatch: Dispatch, ...handles: any[]): ColumnsType<SearchLogEntity> => {
-	const [setResultModalVisible, setResult] = handles;
+const getColumn = (
+	type: CaseSort[] = [1, 2, 3],
+	...handles: Function[]
+): ColumnsType<SearchLogEntity> => {
+	const [setType, setResult, setRecord, setResultModalVisible] = handles;
 
-	return [
+	let columns: ColumnsType<SearchLogEntity> = [
 		{
 			title: '查询内容（手机号 / 银行卡号）',
 			dataIndex: 'keyword',
@@ -24,13 +27,13 @@ const getColumn = (dispatch: Dispatch, ...handles: any[]): ColumnsType<SearchLog
 			render: (type: Document) => {
 				switch (type) {
 					case Document.Aim:
-						return <Tag>手机号查询</Tag>;
+						return <Tag style={{ marginRight: 0 }}>手机号查询</Tag>;
 					case Document.AimBatch:
-						return <Tag>手机号批量查询</Tag>;
+						return <Tag style={{ marginRight: 0 }}>手机号批量查询</Tag>;
 					case Document.Bank:
-						return <Tag>银行卡查询</Tag>;
+						return <Tag style={{ marginRight: 0 }}>银行卡查询</Tag>;
 					case Document.BankBatch:
-						return <Tag>银行卡批量查询</Tag>;
+						return <Tag style={{ marginRight: 0 }}>银行卡批量查询</Tag>;
 				}
 			}
 		},
@@ -41,26 +44,88 @@ const getColumn = (dispatch: Dispatch, ...handles: any[]): ColumnsType<SearchLog
 			align: 'center',
 			width: 160,
 			render: (value: Date) => <span>{dayjs(value).format('YYYY-MM-DD HH:mm:ss')}</span>
-		},
-		{
-			title: '查询结果',
-			dataIndex: 'result',
-			key: 'result',
-			align: 'center',
-			width: 90,
-			render(data: any) {
-				return (
-					<a
-						onClick={() => {
-							setResult(data);
-							setResultModalVisible(true);
-						}}>
-						查询结果
-					</a>
-				);
-			}
 		}
 	];
+
+	if (type.length !== 0) {
+		columns = columns.concat(
+			type.map((item) => {
+				switch (item) {
+					case CaseSort.Porn:
+						return {
+							title: '涉黄',
+							dataIndex: 'result',
+							key: 'porn',
+							align: 'center',
+							width: 60,
+							render(data: any, record: any) {
+								return (
+									<Tag
+										onClick={() => {
+											setType(CaseSort.Porn);
+											setResult(data['涉黄']);
+											setRecord(record);
+											setResultModalVisible(true);
+										}}
+										color="#faad14"
+										style={{ marginRight: 0, cursor: 'pointer' }}>
+										涉黄
+									</Tag>
+								);
+							}
+						};
+					case CaseSort.PyramidSales:
+						return {
+							title: '传销',
+							dataIndex: 'result',
+							key: 'pyramidSales',
+							align: 'center',
+							width: 60,
+							render(data: any, record: any) {
+								return (
+									<Tag
+										onClick={() => {
+											setType(CaseSort.PyramidSales);
+											setResult(data['传销']);
+											setRecord(record);
+											setResultModalVisible(true);
+										}}
+										color="#389e0d"
+										style={{ marginRight: 0, cursor: 'pointer' }}>
+										传销
+									</Tag>
+								);
+							}
+						};
+					case CaseSort.Bet:
+						return {
+							title: '涉赌',
+							dataIndex: 'result',
+							key: 'bet',
+							align: 'center',
+							width: 60,
+							render(data: any, record: any) {
+								return (
+									<Tag
+										onClick={() => {
+											setType(CaseSort.Bet);
+											setResult(data['涉赌']);
+											setRecord(record);
+											setResultModalVisible(true);
+										}}
+										color="#1d39c4"
+										style={{ marginRight: 0, cursor: 'pointer' }}>
+										涉赌
+									</Tag>
+								);
+							}
+						};
+				}
+			})
+		);
+	}
+
+	return columns;
 };
 
 export { getColumn };

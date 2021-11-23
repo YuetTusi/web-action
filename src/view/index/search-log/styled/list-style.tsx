@@ -1,14 +1,7 @@
 import styled from 'styled-components';
 
-const DescBox = styled.div`
-	display: flex;
-	flex-direction: row;
-`;
-
 const BoxItem = styled.fieldset`
-	flex: 1;
-	margin: 2px;
-	border: 1px solid #f0f0f0;
+	padding: 10px;
 	legend {
 		width: auto;
 		margin-left: 10px;
@@ -39,4 +32,4 @@ const ResultList = styled.ul`
 	}
 `;
 
-export { DescBox, BoxItem, ResultList };
+export { BoxItem, ResultList };
