@@ -96,7 +96,7 @@ const helper = {
         let cardList: Array<{ md5: string, value: string }> = [];
 
         for (let i = 0; i < list.length; i++) {
-            if (BankCardNumber.test(list[i])) {
+            if (BankCardNumber.test(list[i].trim())) {
                 cardList.push({ md5: md5(list[i]), value: list[i] });
             } else {
                 errorList.push(list[i]);
