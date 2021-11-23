@@ -1,3 +1,4 @@
+import debounce from 'lodash/debounce';
 import { copyFile, readFile } from 'fs/promises';
 import path from 'path';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
@@ -114,24 +115,28 @@ const BankBatch: FC<{}> = () => {
 	/**
 	 * 下载模板Click
 	 */
-	const downloadClick = async (event: MouseEvent<HTMLButtonElement>) => {
-		event.preventDefault();
-		const { filePath }: SaveDialogReturnValue = await ipcRenderer.invoke('save-temp-file');
+	const downloadClick = debounce(
+		async (event: MouseEvent<HTMLButtonElement>) => {
+			event.preventDefault();
+			const { filePath }: SaveDialogReturnValue = await ipcRenderer.invoke('save-temp-file');
 
-		if (filePath) {
-			const srcPath = isDev
-				? path.join(cwd, './asset/银行卡模板.txt')
-				: path.join(cwd, './resources/asset/银行卡模板.txt');
-			try {
-				await copyFile(srcPath, filePath);
-				message.success('下载成功');
-			} catch (error) {
-				console.log(error);
-				message.error('下载失败');
+			if (filePath) {
+				const srcPath = isDev
+					? path.join(cwd, './asset/银行卡模板.txt')
+					: path.join(cwd, './resources/asset/银行卡模板.txt');
+				try {
+					await copyFile(srcPath, filePath);
+					message.success('下载成功');
+				} catch (error) {
+					console.log(error);
+					message.error('下载失败');
+				}
+				//todo: 在此将模板文件拷到目标路径
 			}
-			//todo: 在此将模板文件拷到目标路径
-		}
-	};
+		},
+		500,
+		{ leading: true, trailing: false }
+	);
 
 	/**
 	 * 选择文件
