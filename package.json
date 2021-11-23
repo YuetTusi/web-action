@@ -27,8 +27,8 @@
 		},
 		"asar": true,
 		"asarUnpack": [
-			"./package.json",
-			"dist/**/*"
+			"dist/**/*",
+			"package.json"
 		],
 		"files": [
 			"dist/**/*",

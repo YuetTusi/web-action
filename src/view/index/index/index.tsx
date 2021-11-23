@@ -71,12 +71,10 @@ const Index: FC<{}> = () => {
 			// 	type: 'single/setData',
 			// 	payload: {
 			// 		涉黄: {
-			// 			actionTime: new Date(),
 			// 			lastLogin: '无数据',
 			// 			isReg: 0
 			// 		},
 			// 		传销: {
-			// 			actionTime: new Date(),
 			// 			ParticipatingWebsiteCount: 'N',
 			// 			lastLogin: '无数据',
 			// 			regTime: '1',
@@ -84,7 +82,6 @@ const Index: FC<{}> = () => {
 			// 			haveBindBankCard: 'N'
 			// 		},
 			// 		涉赌: {
-			// 			actionTime: new Date(),
 			// 			lastLogin: 0,
 			// 			participatingFunds: '0',
 			// 			isAgent: 'N',
