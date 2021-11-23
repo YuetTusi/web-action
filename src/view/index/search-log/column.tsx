@@ -62,12 +62,13 @@ const getColumn = (
 								return (
 									<Tag
 										onClick={() => {
+											console.log(data);
 											setType(CaseSort.Porn);
 											setResult(data['涉黄']);
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color="#faad14"
+										color={data['涉黄'].isReg !== 0 ? '#faad14' : 'default'}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										涉黄
 									</Tag>
@@ -90,7 +91,7 @@ const getColumn = (
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color="#389e0d"
+										color={data['传销'].isReg !== 0 ? '#389e0d' : 'default'}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										传销
 									</Tag>
@@ -113,7 +114,7 @@ const getColumn = (
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color="#1d39c4"
+										color={data['涉赌'].isReg !== 0 ? '#1d39c4' : 'default'}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										涉赌
 									</Tag>
