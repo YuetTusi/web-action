@@ -20,12 +20,16 @@
 	},
 	"build": {
 		"appId": "4c9e34def3049532",
-		"productName": "网络行为监控系统",
+		"productName": "网络行为查询评估系统",
 		"copyright": "Copyright © 2021 北京万盛华通科技有限公司",
 		"directories": {
 			"buildResources": "static"
 		},
-		"asar": false,
+		"asar": true,
+		"asarUnpack": [
+			"./package.json",
+			"dist/**/*"
+		],
 		"files": [
 			"dist/**/*",
 			"node_modules/**/*",
@@ -80,7 +84,6 @@
 		"less": "^4.1.1",
 		"less-loader": "^10.0.1",
 		"loader-utils": "^2.0.0",
-		"md5": "^2.3.0",
 		"react": "^17.0.2",
 		"react-dom": "^17.0.2",
 		"stickpackage": "^3.1.5",
@@ -98,6 +101,7 @@
 		"dva-immer": "^1.0.0",
 		"echarts": "^5.2.1",
 		"lodash": "^4.17.21",
+		"md5": "^2.3.0",
 		"nedb": "^1.8.0",
 		"styled-components": "^5.3.1",
 		"uuid": "^8.3.2",
