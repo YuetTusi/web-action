@@ -116,7 +116,34 @@ const createRouter = (api?: RouterAPI) => {
 								);
 							}}
 						/>
-
+						<Route
+							path="/installApp"
+							render={() => {
+								const Next = lazy<FC<any>>(
+									() => import('@/view/index/installation')
+								);
+								return (
+									<Suspense fallback={<Loading />}>
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
+							path="/appLog"
+							render={() => {
+								const Next = lazy<FC<any>>(() => import('@/view/index/app-log'));
+								return (
+									<Suspense fallback={<Loading />}>
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
+									</Suspense>
+								);
+							}}
+						/>
 						<Route component={() => <h1>无此页面</h1>} />
 					</Switch>
 				</Router>
@@ -142,20 +169,11 @@ const routeCaption = (pathname: string) => {
 			return '银行卡查询';
 		case '/bank-batch':
 			return '银行卡批量查询';
-		case '/journalManage':
-			return '日志管理';
 		case '/inquireJournal':
+		case '/appLog':
 			return '查询日志';
-		case '/operateJournal':
-			return '操作日志';
-		case '/systemsetup':
-			return '管理中心';
-		case '/deptmanage':
-			return '部门管理';
-		case '/rolemanage':
-			return '角色管理';
-		case '/usermanage':
-			return '帐户管理';
+		case '/installApp':
+			return '安装应用查询';
 		default:
 			return '';
 	}

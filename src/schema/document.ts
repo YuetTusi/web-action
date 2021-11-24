@@ -21,7 +21,11 @@ enum Document {
     /**
      * 查询日志
      */
-    SearchLog = 'search-log'
+    SearchLog = 'search-log',
+    /**
+     * 应用安装日志
+     */
+    AppInstallLog = 'app-install-log'
 }
 
 export { Document };

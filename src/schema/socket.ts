@@ -63,6 +63,14 @@ enum CommandType {
      */
     BankBatchResult = 'bank-batch-result',
     /**
+     * 查询安装应用
+     */
+    Installation = 'installation',
+    /**
+     * 查询安装应用结果
+     */
+    InstallationResult = 'installation-result',
+    /**
      * 查询日志
      */
     QueryLog = 'query-log',

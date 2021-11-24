@@ -7,7 +7,7 @@ import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import { LoginState } from '@/model/login';
-// import { routerRedux } from 'dva';
+import { routerRedux } from 'dva';
 
 const { Password } = Input;
 const { Item, useForm } = Form;
@@ -24,8 +24,8 @@ const Login: FC<{}> = () => {
 			const values = await validateFields();
 			sessionStorage.setItem('username', values.username);
 			dispatch({ type: 'login/login', payload: values });
-			// dispatch({ type: 'userInfo/setData', payload: { frequency_limit: 999 } });
-			// dispatch(routerRedux.push('/targetInquire'));
+			dispatch({ type: 'userInfo/setData', payload: { frequency_limit: 999 } });
+			dispatch(routerRedux.push('/targetInquire'));
 		} catch (error) {
 			console.log(error);
 		} finally {

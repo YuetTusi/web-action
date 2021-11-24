@@ -9,6 +9,7 @@ import BorderOutlined from '@ant-design/icons/BorderOutlined';
 import HistoryOutlined from '@ant-design/icons/HistoryOutlined';
 import ClockCircleOutlined from '@ant-design/icons/ClockCircleOutlined';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
+import AppstoreAddOutlined from '@ant-design/icons/AppstoreAddOutlined';
 import { MenuNode, WebMenuState } from '@/model/component/web-menu';
 
 const { Item, SubMenu } = Menu;
@@ -40,12 +41,15 @@ const menuIcon = (url: string) => {
 			return <CreditCardOutlined />;
 		case '/bank-batch':
 			return <FileSearchOutlined />;
-		case '/inquireJournal':
-			return <ClockCircleOutlined />;
 		case '/journalManage':
 			return <HistoryOutlined />;
 		case '/systemsetup':
 			return <SettingOutlined />;
+		case '/installApp':
+			return <AppstoreAddOutlined />;
+		case '/inquireJournal':
+		case '/appLog':
+			return <ClockCircleOutlined />;
 		default:
 			return <BorderOutlined />;
 	}

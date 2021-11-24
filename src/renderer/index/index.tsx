@@ -14,6 +14,7 @@ import singleModel from '@/model/single';
 import batchModel from '@/model/batch';
 import bankModel from '@/model/bank';
 import bankBatchModel from '@/model/bank-batch';
+import installationModel from '@/model/installation';
 import searchLogModel from '@/model/search-log';
 import 'antd/dist/antd.less';
 
@@ -37,6 +38,7 @@ app.model(singleModel);
 app.model(batchModel);
 app.model(bankModel);
 app.model(bankBatchModel);
+app.model(installationModel);
 app.model(searchLogModel);
 app.router(createRouter);
 app.start('#root');

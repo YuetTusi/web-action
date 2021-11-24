@@ -1,14 +1,12 @@
 import { Dispatch, routerRedux } from "dva";
 import msgBox from 'antd/lib/message';
-import log from '@/utility/log';
-import { send } from "@/utility/tcp-server";
-import { PAGESIZE } from "@/utility/helper";
-import { SocketType, Command, CommandType, Result, Res } from "@/schema/socket";
+import { SocketType, Command, Result, Res } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { MenuNode } from "../component/web-menu";
 import { BatchDataSource } from "../batch";
 import { BankBatchState } from "../bank-batch";
 import { BankState } from "../bank";
+import { InstalledApp } from "../installation";
 
 const { Fetch } = SocketType;
 
@@ -104,6 +102,20 @@ export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchSt
     if (code >= 200 && code < 300) {
         // dispatch({ type: 'bankBatch/insertHistory', payload: data });
         dispatch({ type: 'bankBatch/setData', payload: data });
+    } else {
+        msgBox.warn(message);
+    }
+    dispatch({ type: 'reading/setReading', payload: false });
+}
+
+/**
+ * 安装应用查询结果
+ */
+export function installationResult(dispatch: Dispatch, cmd: Command<Res<InstalledApp>>) {
+    const { code, data, message } = cmd.msg;
+
+    if (code >= 200 && code < 300) {
+        dispatch({ type: 'installation/setData', payload: data });
     } else {
         msgBox.warn(message);
     }

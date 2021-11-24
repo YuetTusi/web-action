@@ -5,8 +5,8 @@ import log from '@/utility/log';
 import server, { send } from '@/utility/tcp-server';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    bankBatchResult, bankResult, limitResult,
-    getMultipleResult, getSingleResult, loginResult, menuResult
+    bankBatchResult, bankResult, limitResult, getMultipleResult,
+    getSingleResult, loginResult, menuResult, installationResult
 } from './listener';
 
 const { Fetch, Error } = SocketType;
@@ -43,6 +43,9 @@ export default {
                     break;
                 case CommandType.BankBatchResult:
                     bankBatchResult(dispatch, command);
+                    break;
+                case CommandType.InstallationResult:
+                    installationResult(dispatch, command);
                     break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
