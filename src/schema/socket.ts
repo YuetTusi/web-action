@@ -71,125 +71,13 @@ enum CommandType {
      */
     QueryLogResult = 'query-log-result',
     /**
-     * 操作日志
-     */
-    OperationLog = 'operation-log',
-    /**
-     * 操作日志结果
-     */
-    OperationLogResult = 'operation-log-result',
-    /**
-     * 查询角色
-     */
-    QueryRole = 'query-role',
-    /**
-     * 查询角色结果
-     */
-    QueryRoleResult = 'query-role-result',
-    /**
      * 更新角色菜单
      */
     UpdateRoleMenu = 'update-role-menu',
     /**
      * 更新角色菜单结果
      */
-    UpdateRoleMenuResult = 'update-role-menu-result',
-    /**
-     * 查询部门树
-     */
-    QueryDeptByParent = 'query-dept-by-parent',
-    /**
-     * 查询部门树结果
-     */
-    QueryDeptByParentResult = 'query-dept-by-parent-result',
-    /**
-     * 地区
-     */
-    Region = 'region',
-    /**
-     * 地区结果
-     */
-    RegionResult = 'region-result',
-    /**
-     * 添加部门
-     */
-    AddDept = 'add-dept',
-    /**
-     * 添加部门结果
-     */
-    AddDeptResult = 'add-dept-result',
-    /**
-     * 更新部门
-     */
-    UpdateDept = 'update-dept',
-    /**
-     * 更新部门结果
-     */
-    UpdateDeptResult = 'update-dept-result',
-    /**
-     * 删除部门
-     */
-    DelDept = 'del-dept',
-    /**
-     * 删除部门结果
-     */
-    DelDeptResult = 'del-dept-result',
-    /**
-     * 查询帐号
-     */
-    QueryUserByDept = 'query-user-by-dept',
-    /**
-     * 查询帐号结果
-     */
-    QueryUserByDeptResult = 'query-user-by-dept-result',
-    /**
-     * 充值
-     */
-    Recharge = 'recharge',
-    /**
-     * 充值结果
-     */
-    RechargeResult = 'recharge-result',
-    /**
-     * 用户启用/禁用
-     */
-    UserIsEnable = 'user-is-enable',
-    /**
-     * 用户启用/禁用结果
-     */
-    UserIsEnableResult = 'user-is-enable-result',
-    /**
-     * 重置密码
-     */
-    ResetPassword = 'reset-password',
-    /**
-     * 重置密码结果
-     */
-    ResetPasswordResult = 'reset-password-result',
-    /**
-     * 删除用户
-     */
-    DelUser = 'del-user',
-    /**
-     * 删除用户结果
-     */
-    DelUserResult = 'del-user-result',
-    /**
-     * 添加帐户
-     */
-    AddUser = 'add-user',
-    /**
-     * 添加帐户结果
-     */
-    AddUserResult = 'add-user-result',
-    /**
-     * 编辑帐户
-     */
-    UpdateUser = 'update-user',
-    /**
-     * 编辑帐户结果
-     */
-    UpdateUserResult = 'update-user-result'
+    UpdateRoleMenuResult = 'update-role-menu-result'
 }
 
 /**

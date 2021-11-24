@@ -5,10 +5,8 @@ import log from '@/utility/log';
 import server, { send } from '@/utility/tcp-server';
 import { Command, CommandType, SocketType } from '@/schema/socket';
 import {
-    addDeptResult, bankBatchResult, bankResult, delDeptResult, limitResult,
-    getMultipleResult, getSingleResult, loginResult, menuResult, operationLogResult,
-    queryDeptByParentResult, queryRoleResult, regionResult,
-    updateDeptResult, userActionResult
+    bankBatchResult, bankResult, limitResult,
+    getMultipleResult, getSingleResult, loginResult, menuResult
 } from './listener';
 
 const { Fetch, Error } = SocketType;
@@ -45,36 +43,6 @@ export default {
                     break;
                 case CommandType.BankBatchResult:
                     bankBatchResult(dispatch, command);
-                    break;
-                case CommandType.OperationLogResult:
-                    operationLogResult(dispatch, command);
-                    break;
-                case CommandType.QueryRoleResult:
-                    queryRoleResult(dispatch, command);
-                    break;
-                case CommandType.QueryDeptByParentResult:
-                    queryDeptByParentResult(dispatch, command);
-                    break;
-                case CommandType.RegionResult:
-                    regionResult(dispatch, command);
-                    break;
-                case CommandType.AddDeptResult:
-                    addDeptResult(dispatch, command);
-                    break;
-                case CommandType.UpdateDeptResult:
-                    updateDeptResult(dispatch, command);
-                    break;
-                case CommandType.DelDeptResult:
-                    delDeptResult(dispatch, command);
-                    break;
-                case CommandType.QueryUserByDeptResult:
-                case CommandType.AddUserResult:
-                case CommandType.UpdateUserResult:
-                case CommandType.DelUserResult:
-                case CommandType.RechargeResult:
-                case CommandType.UserIsEnableResult:
-                case CommandType.ResetPasswordResult:
-                    userActionResult(dispatch, command);
                     break;
                 default:
                     console.warn(`未知Command:${command.cmd}`);
