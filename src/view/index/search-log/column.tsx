@@ -62,7 +62,6 @@ const getColumn = (
 								return (
 									<Tag
 										onClick={() => {
-											console.log(data);
 											setType(CaseSort.Porn);
 											setResult(data['涉黄']);
 											setRecord(record);
