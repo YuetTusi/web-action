@@ -18,36 +18,36 @@ interface MenuNode {
     childMenuInfos: MenuNode[]
 }
 
-let menuData: MenuNode[] = [
-    {
-        "menu_name": "手机号查询",
-        "menu_url": "/targetInquire",
-        "childMenuInfos": []
-    },
-    {
-        "menu_name": "手机号批量查询",
-        "menu_url": "/batchInquire",
-        "childMenuInfos": []
-    },
-    {
-        "menu_name": "银行卡查询",
-        "menu_url": "/bank",
-        "childMenuInfos": []
-    },
-    {
-        "menu_name": "银行卡批量查询",
-        "menu_url": "/bank-batch",
-        "childMenuInfos": []
-    }
-]
+let menuData: MenuNode[] = []
 
 switch (useType) {
     case UseType.WebAction:
-        menuData = menuData.concat([{
-            "menu_name": "查询日志",
-            "menu_url": "/inquireJournal",
-            "childMenuInfos": []
-        }]);
+        menuData = menuData.concat([
+            {
+                "menu_name": "手机号查询",
+                "menu_url": "/targetInquire",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "手机号批量查询",
+                "menu_url": "/batchInquire",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "银行卡查询",
+                "menu_url": "/bank",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "银行卡批量查询",
+                "menu_url": "/bank-batch",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "查询日志",
+                "menu_url": "/inquireJournal",
+                "childMenuInfos": []
+            }]);
         break;
     case UseType.AppAction:
         menuData = menuData.concat([{
