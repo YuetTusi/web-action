@@ -69,14 +69,11 @@ let config = {
 						}
 					}
 				]
+			},
+			{
+				test: /\.ya?ml$/,
+				use: [{ loader: 'yaml-loader' }]
 			}
-			// {
-			// 	test: require.resolve('jquery'),
-			// 	loader: 'expose-loader',
-			// 	options: {
-			// 		exposes: ['$', 'jQuery']
-			// 	}
-			// }
 		]
 	},
 	plugins: [

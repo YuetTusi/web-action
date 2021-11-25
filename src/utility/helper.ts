@@ -1,10 +1,17 @@
+import memoize from 'lodash/memoize';
+import yaml from 'js-yaml';
 import md5 from 'md5';
 import { v4, V4Options } from 'uuid';
+import { readFileSync, accessSync } from 'fs';
 import path from 'path';
+import crypto from 'crypto';
 import { versions } from 'process';
 import { writeFile } from 'fs/promises';
 import { OnlyNumber, BankCardNumber } from './regex';
+import { Conf } from '@/schema/conf';
+import log from './log';
 
+const KEY = 'az'; //密钥
 const cwd = process.cwd();
 const PAGESIZE = 10;
 
@@ -78,7 +85,32 @@ const helper = {
             }
         }
         return [errorList, cardList];
-    }
+    },
+    /**
+     * 读取配置文件
+     * @param algo 解密算法（默认rc4）
+     */
+    readConf: memoize((algo: string = 'rc4'): Conf | null => {
+        const isDev = process.env['NODE_ENV'];
+        if (isDev === 'development') {
+            let confPath = path.join(cwd, './src/config/ui.yaml');
+            let chunk = readFileSync(confPath, 'utf8');
+            return yaml.load(chunk) as Conf;
+        } else {
+            let confPath = path.join(cwd, 'resources/config/conf');
+            try {
+                accessSync(confPath);
+                let chunk = readFileSync(confPath, 'utf8');
+                const decipher = crypto.createDecipher(algo, KEY);
+                let conf = decipher.update(chunk, 'hex', 'utf8');
+                conf += decipher.final('utf8');
+                return yaml.load(conf) as Conf;
+            } catch (error: any) {
+                log.error(`读取配置文件失败 @utility/helper/readConf() : ${error.message}`)
+                return null;
+            }
+        }
+    })
 };
 
 export { helper, PAGESIZE };

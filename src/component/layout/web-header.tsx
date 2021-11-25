@@ -3,6 +3,9 @@ import { useLocation, useSelector } from 'dva';
 import { HeaderBox } from './styled/header-box';
 import { UserInfoState } from '@/model/user-info';
 import { routeCaption } from '@/router/index/create-router';
+import { helper } from '@/utility/helper';
+
+const { title } = helper.readConf()!;
 
 const WebHeader: FC<{}> = memo(() => {
 	const { frequency_limit } = useSelector<any, UserInfoState>((state) => state.userInfo);
@@ -11,7 +14,7 @@ const WebHeader: FC<{}> = memo(() => {
 	// onClick={() => dispatch(routerRedux.push('/login'))}
 	return (
 		<HeaderBox>
-			<div className="caption">网络行为查询评估系统</div>
+			<div className="caption">{title ?? ''}</div>
 			<div className="fn">
 				<div className="brd">
 					<span>{routeCaption(pathname)}</span>

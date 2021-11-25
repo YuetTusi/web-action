@@ -21,7 +21,7 @@ let config = {
 		},
 		extensions: ['.tsx', '.ts', '.js', '.json']
 	},
-    optimization: {
+	optimization: {
 		minimize: true,
 		minimizer: [
 			new TerserWebpackPlugin({
@@ -70,11 +70,15 @@ let config = {
 						}
 					}
 				]
+			},
+			{
+				test: /\.ya?ml$/,
+				use: [{ loader: 'yaml-loader' }]
 			}
 		]
 	},
 	plugins: [
-        new CleanWebpackPlugin({
+		new CleanWebpackPlugin({
 			verbose: true
 		}),
 		new AntdDayjsWebpackPlugin(),

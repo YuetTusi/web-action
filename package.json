@@ -26,12 +26,12 @@
 			"buildResources": "static"
 		},
 		"asar": true,
-		"asarUnpack": [
+		"files": [
 			"dist/**/*",
 			"icon.png",
 			"package.json"
 		],
-		"files": [
+		"asarUnpack": [
 			"dist/**/*",
 			"icon.png",
 			"package.json"

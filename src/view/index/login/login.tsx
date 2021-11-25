@@ -7,8 +7,10 @@ import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import { LoginState } from '@/model/login';
+import { helper } from '@/utility/helper';
 import { routerRedux } from 'dva';
 
+let { title } = helper.readConf()!;
 const { Password } = Input;
 const { Item, useForm } = Form;
 
@@ -38,7 +40,7 @@ const Login: FC<{}> = () => {
 	return (
 		<LoginBg>
 			<LoginBox>
-				<h2>网络行为查询系统</h2>
+				<h2>{title ?? '用户登录'}</h2>
 				<Form form={fromRef}>
 					<Item
 						rules={[{ required: true, message: '请填写用户' }]}

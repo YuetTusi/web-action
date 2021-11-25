@@ -9,8 +9,14 @@ import log from './src/utility/log';
 
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
+const config = helper.readConf();
 let serveProc: ChildProcessWithoutNullStreams | null = null; //后台进程
 let mainWindow: BrowserWindow | null = null;
+
+if (helper.isNullOrUndefined(config)) {
+    dialog.showErrorBox('启动失败', '配置文件读取失败, 请联系技术支持');
+    app.exit(0);
+}
 
 /**
  * 运行exe进程
@@ -70,7 +76,7 @@ app.on('window-all-closed', () => {
 app.on('ready', () => {
 
     mainWindow = new BrowserWindow({
-        title: '网络行为查询评估系统',
+        title: config?.title ?? '',
         width: 1280,
         height: 768,
         minWidth: 1280,
