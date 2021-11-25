@@ -5,6 +5,7 @@ import { ColumnsType } from 'antd/lib/table';
 import { Document } from '@/schema/document';
 import { CaseSort } from '@/schema/common';
 import { SearchLogEntity } from '@/schema/search-log-entity';
+import { helper } from '@/utility/helper';
 
 const getColumn = (
 	type: CaseSort[] = [1, 2, 3],
@@ -67,7 +68,12 @@ const getColumn = (
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color={data['涉黄']?.isReg !== 0 ? '#faad14' : 'default'}
+										color={
+											helper.isNullOrUndefined(data['涉黄']?.isReg) ||
+											data['涉黄']?.isReg === 0
+												? 'default'
+												: '#faad14'
+										}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										涉黄
 									</Tag>
@@ -90,7 +96,12 @@ const getColumn = (
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color={data['传销']?.isReg !== 0 ? '#389e0d' : 'default'}
+										color={
+											helper.isNullOrUndefined(data['传销']?.isReg) ||
+											data['传销']?.isReg === 0
+												? 'default'
+												: '#389e0d'
+										}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										传销
 									</Tag>
@@ -113,7 +124,12 @@ const getColumn = (
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
-										color={data['涉赌']?.isReg !== 0 ? '#1d39c4' : 'default'}
+										color={
+											helper.isNullOrUndefined(data['涉赌']?.isReg) ||
+											data['涉赌']?.isReg === 0
+												? 'default'
+												: '#1d39c4'
+										}
 										style={{ marginRight: 0, cursor: 'pointer' }}>
 										涉赌
 									</Tag>
