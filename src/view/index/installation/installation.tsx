@@ -21,12 +21,13 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import ScrollPanel from '@/component/scroll-panel';
 import { CommandType, SocketType } from '@/schema/socket';
+import DetailModal from './detail-modal';
 import { ValidList } from '../batch/styled/valid-list';
 import { InstallationProp, SearchForm } from './prop';
 import { getColumn } from './column';
 
-let memoValue = '';
-let mobileList: string[] = []; //保存手机号与md5对应表
+let memoValue = 'C:\\Users\\yuet\\Downloads\\手机号模板.txt';
+let mobileList: string[] = []; //保存手机号
 const { Fetch } = SocketType;
 const { Option } = Select;
 const cwd = process.cwd();
@@ -39,7 +40,9 @@ const { useForm, Item } = Form;
 const Installation: FC<InstallationProp> = () => {
 	const [formRef] = useForm<SearchForm>();
 	const dispatch = useDispatch();
-	const { data, loading } = useSelector<any, InstallationState>((state) => state.installation);
+	const { data, detail, loading } = useSelector<any, InstallationState>(
+		(state) => state.installation
+	);
 
 	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
@@ -93,6 +96,19 @@ const Installation: FC<InstallationProp> = () => {
 									appList: '',
 									lastUpdateTimeList: '',
 									apppkgList: 'com.tencent.news',
+									appNameList: '腾讯新闻',
+									lastActiveTime30List: ',',
+									activeDay30List: ','
+								},
+								{
+									ieid: null,
+									pid: null,
+									isid: null,
+									oiid: null,
+									appList: '',
+									lastUpdateTimeList: '',
+									apppkgList:
+										'com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan',
 									appNameList: '腾讯新闻',
 									lastActiveTime30List: ',',
 									activeDay30List: ','
@@ -219,12 +235,12 @@ const Installation: FC<InstallationProp> = () => {
 							<span>下载模板</span>
 						</Button>
 					</Item>
-					<Item>
+					{/* <Item>
 						<Button onClick={() => {}} disabled={true} type="default">
 							<PieChartOutlined />
 							<span>命中统计</span>
 						</Button>
-					</Item>
+					</Item> */}
 				</Form>
 			</PadBox>
 
@@ -238,10 +254,11 @@ const Installation: FC<InstallationProp> = () => {
 				// 	current: pageIndex,
 				// 	onChange: onPageChange
 				// }}
-				rowKey={'pid'}
+				rowKey={'apppkgList'}
 				scroll={{ x: 'max-content' }}
 				loading={loading}
 			/>
+			<DetailModal visible={detail !== null} data={detail} />
 		</RootPanel>
 	);
 };

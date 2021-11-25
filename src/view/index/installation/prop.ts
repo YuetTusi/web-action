@@ -1,3 +1,5 @@
+import { InstalledApp } from "@/model/installation";
+
 interface InstallationProp { };
 
 /**
@@ -14,4 +16,16 @@ interface SearchForm {
     type: 'PHONE' | 'IMEI' | 'IMSI' | 'OAID'
 }
 
-export { InstallationProp, SearchForm };
+interface DetailModalProp {
+
+    /**
+     * 隐藏/显示
+     */
+    visible: boolean,
+    /**
+     * 详情数据
+     */
+    data: InstalledApp | null
+}
+
+export { InstallationProp, SearchForm, DetailModalProp };

@@ -9,7 +9,11 @@ interface InstallationState {
     /**
      * 数据
      */
-    data: InstalledApp[]
+    data: InstalledApp[],
+    /**
+     * 详情数据
+     */
+    detail: InstalledApp | null
 }
 
 /**
@@ -62,7 +66,8 @@ const model: Model = {
     namespace: 'installation',
     state: {
         loading: false,
-        data: []
+        data: [],
+        detail: null
     },
     reducers
 }
