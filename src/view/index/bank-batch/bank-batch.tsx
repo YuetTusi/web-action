@@ -21,7 +21,6 @@ import { CardResult } from '@/model/bank-batch';
 import { BankBatchState } from '@/model/bank-batch';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
-import { OnlyNumber } from '@/utility/regex';
 import CategoryModal from './category-modal';
 import { getColumn, RowType } from './column';
 import ChartModal from './chart-modal';
@@ -373,6 +372,7 @@ const BankBatch: FC<{}> = () => {
 					<Item name="tempFilePath" label="选择模板" initialValue={memoValue}>
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
+							placeholder="请选择模板文件"
 							readOnly={true}
 							style={{ width: '260px' }}
 						/>

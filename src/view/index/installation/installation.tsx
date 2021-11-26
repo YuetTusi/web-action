@@ -6,7 +6,6 @@ import React, { FC, MouseEvent } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
-import PieChartOutlined from '@ant-design/icons/PieChartOutlined';
 import Form from 'antd/lib/form';
 import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
@@ -26,7 +25,7 @@ import { ValidList } from '../batch/styled/valid-list';
 import { InstallationProp, SearchForm } from './prop';
 import { getColumn } from './column';
 
-let memoValue = 'C:\\Users\\yuet\\Downloads\\手机号模板.txt';
+let memoValue = '';
 let mobileList: string[] = []; //保存手机号
 const { Fetch } = SocketType;
 const { Option } = Select;
@@ -66,56 +65,56 @@ const Installation: FC<InstallationProp> = () => {
 						dispatch({ type: 'reading/setReading', payload: true });
 						console.log({
 							cmd: CommandType.Installation,
-							msg: { exids: mobileList, idtype: type }
+							msg: { list: mobileList, type }
 						});
 						send(Fetch, {
 							cmd: CommandType.Installation,
-							msg: { exids: mobileList, idtype: type }
+							msg: { list: mobileList, type }
 						});
 						//legacy: Mock数据
-						dispatch({
-							type: 'installation/setData',
-							payload: [
-								{
-									ieid: null,
-									pid: null,
-									isid: null,
-									oiid: null,
-									appList: '',
-									lastUpdateTimeList: '',
-									apppkgList: 'com.tencent.news,com.kuaiduizuoye.scan',
-									appNameList: '腾讯新闻,快对作业',
-									lastActiveTime30List: ',',
-									activeDay30List: ','
-								},
-								{
-									ieid: null,
-									pid: null,
-									isid: null,
-									oiid: null,
-									appList: '',
-									lastUpdateTimeList: '',
-									apppkgList: 'com.tencent.news',
-									appNameList: '腾讯新闻',
-									lastActiveTime30List: ',',
-									activeDay30List: ','
-								},
-								{
-									ieid: null,
-									pid: null,
-									isid: null,
-									oiid: null,
-									appList: '',
-									lastUpdateTimeList: '',
-									apppkgList:
-										'com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan',
-									appNameList: '腾讯新闻',
-									lastActiveTime30List: ',',
-									activeDay30List: ','
-								}
-							]
-						});
-						dispatch({ type: 'reading/setReading', payload: false });
+						// dispatch({
+						// 	type: 'installation/setData',
+						// 	payload: [
+						// 		{
+						// 			ieid: null,
+						// 			pid: null,
+						// 			isid: null,
+						// 			oiid: null,
+						// 			appList: '',
+						// 			lastUpdateTimeList: '',
+						// 			apppkgList: 'com.tencent.news,com.kuaiduizuoye.scan',
+						// 			appNameList: '腾讯新闻,快对作业',
+						// 			lastActiveTime30List: ',',
+						// 			activeDay30List: ','
+						// 		},
+						// 		{
+						// 			ieid: null,
+						// 			pid: null,
+						// 			isid: null,
+						// 			oiid: null,
+						// 			appList: '',
+						// 			lastUpdateTimeList: '',
+						// 			apppkgList: 'com.tencent.news',
+						// 			appNameList: '腾讯新闻',
+						// 			lastActiveTime30List: ',',
+						// 			activeDay30List: ','
+						// 		},
+						// 		{
+						// 			ieid: null,
+						// 			pid: null,
+						// 			isid: null,
+						// 			oiid: null,
+						// 			appList: '',
+						// 			lastUpdateTimeList: '',
+						// 			apppkgList:
+						// 				'com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan',
+						// 			appNameList: '腾讯新闻',
+						// 			lastActiveTime30List: ',',
+						// 			activeDay30List: ','
+						// 		}
+						// 	]
+						// });
+						// dispatch({ type: 'reading/setReading', payload: false });
 					},
 					title: '查询提示',
 					content: (
@@ -211,11 +210,16 @@ const Installation: FC<InstallationProp> = () => {
 					<Item name="tempFilePath" label="选择模板" initialValue={memoValue}>
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
+							placeholder="请选择模板文件"
 							readOnly={true}
 							style={{ width: '260px' }}
 						/>
 					</Item>
-					<Item name="type" label="查询类型" initialValue="PHONE">
+					<Item
+						name="type"
+						label="查询类型"
+						initialValue="PHONE"
+						style={{ width: '160px' }}>
 						<Select>
 							<Option value="PHONE">PHONE</Option>
 							<Option value="IMEI">IMEI</Option>

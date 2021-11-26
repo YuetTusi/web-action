@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 const DetailPanel = styled.div`
+	position: relative;
 	.ant-row {
 		margin-bottom: 10px;
 	}

@@ -8,7 +8,7 @@ import Input from 'antd/lib/input';
 import Button from 'antd/lib/button';
 import { LoginState } from '@/model/login';
 import { helper } from '@/utility/helper';
-import { routerRedux } from 'dva';
+// import { routerRedux } from 'dva';
 
 let { title } = helper.readConf()!;
 const { Password } = Input;
@@ -26,8 +26,8 @@ const Login: FC<{}> = () => {
 			const values = await validateFields();
 			sessionStorage.setItem('username', values.username);
 			dispatch({ type: 'login/login', payload: values });
-			dispatch({ type: 'userInfo/setData', payload: { frequency_limit: 999 } });
-			dispatch(routerRedux.push('/targetInquire'));
+			// dispatch({ type: 'userInfo/setData', payload: { frequency_limit: 999 } });
+			// dispatch(routerRedux.push('/targetInquire'));
 		} catch (error) {
 			console.log(error);
 		} finally {

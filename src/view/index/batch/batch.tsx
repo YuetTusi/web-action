@@ -338,6 +338,7 @@ const Batch: FC<BatchProp> = () => {
 					<Item name="tempFilePath" label="选择模板" initialValue={memoValue}>
 						<Input
 							onClick={() => selectFileHandle(__dirname)}
+							placeholder="请选择模板文件"
 							readOnly={true}
 							style={{ width: '260px' }}
 						/>

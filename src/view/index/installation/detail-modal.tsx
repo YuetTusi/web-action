@@ -7,10 +7,12 @@ import Empty from 'antd/lib/empty';
 import Descriptions from 'antd/lib/descriptions';
 import Modal from 'antd/lib/modal';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
+import Watermark from '@/component/watermark';
 import { InstalledApp } from '@/model/installation';
 import { DetailModalProp } from './prop';
 import { DetailBox, DetailPanel } from './styled/DetailBox';
 
+const username = sessionStorage.getItem('username');
 const { Item } = Descriptions;
 
 /**
@@ -84,6 +86,7 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 						</DetailBox>
 					</Col>
 				</Row>
+				<Watermark mark={username ?? ''} />
 			</DetailPanel>
 		);
 	}
