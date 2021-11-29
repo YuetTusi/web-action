@@ -1,2 +1,3 @@
 title: '网络行为查询评估系统'
-useType: 1
+useType: 0
+useHardwareAcceleration: false

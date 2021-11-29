@@ -8,7 +8,11 @@ interface Conf {
     /**
      * 类型（0：评估系统 1：应用查询系统）
      */
-    useType: UseType
+    useType: UseType,
+    /**
+     * 使用硬件加速
+     */
+    useHardwareAcceleration: boolean
 }
 
 export { Conf };

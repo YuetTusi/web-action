@@ -7,11 +7,20 @@ import {
 import { helper } from './src/utility/helper';
 import log from './src/utility/log';
 
+let useHardwareAcceleration = true; //是否使用硬件加速
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
 const config = helper.readConf();
 let serveProc: ChildProcessWithoutNullStreams | null = null; //后台进程
 let mainWindow: BrowserWindow | null = null;
+
+useHardwareAcceleration = config?.useHardwareAcceleration ?? !helper.isWin7();
+
+if (!useHardwareAcceleration) {
+    console.log('useHardwareAcceleration!!!!!!!!!!!!!!!!');
+    app.disableHardwareAcceleration();
+    app.commandLine.appendArgument('disable-gpu');
+}
 
 if (helper.isNullOrUndefined(config)) {
     dialog.showErrorBox('启动失败', '配置文件读取失败, 请联系技术支持');
@@ -62,6 +71,25 @@ function exitApp(platform: string) {
         app.exit(0);
     }
 }
+
+process.on('uncaughtException', (err) => {
+    log.error(`Process UncaughtException: ${err.stack ?? ''}`);
+    app.exit();
+});
+
+app.on('render-process-gone', (event, webContents, details) => {
+    log.error(`Render Process Gone: ${JSON.stringify({
+        exitCode: details.exitCode,
+        title: webContents.getTitle(),
+        reason: details.reason
+    })}`);
+    switch (details.reason) {
+        case 'crashed':
+            webContents.getTitle();
+            break;
+    }
+});
+
 
 app.on('before-quit', () => {
     //移除mainWindow上的listeners

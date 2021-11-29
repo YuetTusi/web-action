@@ -2,6 +2,7 @@ import memoize from 'lodash/memoize';
 import yaml from 'js-yaml';
 import md5 from 'md5';
 import { v4, V4Options } from 'uuid';
+import os from 'os';
 import { readFileSync, accessSync } from 'fs';
 import path from 'path';
 import crypto from 'crypto';
@@ -110,7 +111,10 @@ const helper = {
                 return null;
             }
         }
-    })
+    }),
+    isWin7() {
+        return process.platform === 'win32' && os.release().startsWith('6.1');
+    }
 };
 
 export { helper, PAGESIZE };
