@@ -17,7 +17,6 @@ let mainWindow: BrowserWindow | null = null;
 useHardwareAcceleration = config?.useHardwareAcceleration ?? !helper.isWin7();
 
 if (!useHardwareAcceleration) {
-    console.log('useHardwareAcceleration!!!!!!!!!!!!!!!!');
     app.disableHardwareAcceleration();
     app.commandLine.appendArgument('disable-gpu');
 }
