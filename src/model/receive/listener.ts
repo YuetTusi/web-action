@@ -7,8 +7,10 @@ import { BatchDataSource } from "../batch";
 import { BankBatchState } from "../bank-batch";
 import { BankState } from "../bank";
 import { InstalledApp } from "../installation";
+import { helper } from "@/utility/helper";
+import { UseType } from "@/schema/use-type";
 
-const { Fetch } = SocketType;
+const { useType } = helper.readConf()!;
 
 /**
  * 登录结果
@@ -19,7 +21,14 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
     msgBox.destroy();
     if (success) {
         msgBox.success('登录成功');
-        dispatch(routerRedux.push('/targetInquire'));
+        switch (useType) {
+            case UseType.WebAction:
+                dispatch(routerRedux.push('/targetInquire'));
+                break;
+            case UseType.AppAction:
+                dispatch(routerRedux.push('/installApp'));
+                break;
+        }
     } else {
         msgBox.warn(message);
     }
