@@ -2,7 +2,7 @@ import debounce from 'lodash/debounce';
 import path from 'path';
 import { copyFile, readFile } from 'fs/promises';
 import { ipcRenderer, OpenDialogReturnValue, SaveDialogReturnValue } from 'electron';
-import React, { FC, MouseEvent } from 'react';
+import React, { FC, MouseEvent, useEffect } from 'react';
 import { useDispatch, useSelector } from 'dva';
 import SearchOutlined from '@ant-design/icons/SearchOutlined';
 import DownloadOutlined from '@ant-design/icons/DownloadOutlined';
@@ -20,13 +20,15 @@ import RootPanel from '@/component/root';
 import { PadBox } from '@/component/widget/box';
 import ScrollPanel from '@/component/scroll-panel';
 import { CommandType, SocketType } from '@/schema/socket';
+import { Document } from '@/schema/document';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 import DetailModal from './detail-modal';
 import { ValidList } from '../batch/styled/valid-list';
 import { InstallationProp, SearchForm } from './prop';
 import { getColumn } from './column';
 
 let memoValue = '';
-let mobileList: string[] = []; //保存手机号
+let mobileList: Array<{ md5: string; value: string }> = []; //保存手机号与md5对应表
 const { Fetch } = SocketType;
 const { Option } = Select;
 const cwd = process.cwd();
@@ -43,6 +45,25 @@ const Installation: FC<InstallationProp> = () => {
 		(state) => state.installation
 	);
 
+	useEffect(() => {
+		const { getFieldValue } = formRef;
+		const next: SearchLogEntity[] = [];
+
+		// if (data.length > 0) {
+		// 	next.push({
+		// 		type: Document.AppInstallLog,
+		// 		keyword: cardNo,
+		// 		result: {
+		// 			涉赌: result[cardNo].gambling,
+		// 			传销: result[cardNo].pyramid
+		// 		}
+		// 	});
+		// }
+		// if (next.length > 0) {
+		// 	dispatch({ type: 'searchLog/insert', payload: next });
+		// }
+	}, [data]);
+
 	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;
@@ -58,46 +79,46 @@ const Installation: FC<InstallationProp> = () => {
 			memoValue = tempFilePath;
 			const txt = await readFile(tempFilePath, { encoding: 'utf8' });
 			const [errorList, passList] = helper.validateMobileList(txt.split('\n'));
-			mobileList = passList.map((i) => i.value);
 			if (errorList.length === 0) {
+				mobileList = passList;
 				Modal.confirm({
 					onOk() {
 						dispatch({ type: 'reading/setReading', payload: true });
 						console.log({
 							cmd: CommandType.Installation,
-							msg: { list: mobileList, type }
+							msg: { list: mobileList.map((i) => i.md5), type }
 						});
 						send(Fetch, {
 							cmd: CommandType.Installation,
-							msg: { list: mobileList, type }
+							msg: { list: mobileList.map((i) => i.md5), type }
 						});
 						//legacy: Mock数据
-						dispatch({
-							type: 'installation/setData',
-							payload: [
-								{
-									activeDay30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
-									appNameList:
-										'迷你世界,腾讯新闻,电子邮件,WiFi万能钥匙,视频,作业帮,便签,视频,天气,华为主题动态引擎,指南针,游戏中心,纳米盒,计算器,15日天气预报,QQ,和平精英,爱奇艺,我要学,钱包,抖音,快对作业,多彩引擎,保卫萝卜3,酷狗音乐,汤姆猫跑酷,腾讯视频,阅读,百度,墨迹天气,阅达教育,快游戏,小游戏',
-									apppkgList:
-										'com.minitech.miniworld,com.tencent.news,com.android.email,com.snda.wifilocating,com.tencent.tvoem,com.baidu.homework,com.nearme.note,com.coloros.yoli,com.coloros.weather,com.ibimuyu.lockscreen,com.coloros.compass,com.nearme.gamecenter,com.jinxin.namibox,com.android.calculator2,com.tianqiyubao2345,com.tencent.mobileqq,com.tencent.tmgp.pubgmhd,com.qiyi.video,com.sh.iwantstudy,com.coloros.wallet,com.ss.android.ugc.aweme,com.kuaiduizuoye.scan,com.heytap.colorfulengine,com.feiyu.carrot3,com.kugou.android,com.outfit7.talkingtomgoldrun,com.tencent.qqlive,com.oppo.reader,com.baidu.searchbox,com.moji.mjweather,com.k12n,com.heytap.xgame,com.nearme.play',
-									ieid: '13d6aaaa46515135fd92f019b7e8e84a',
-									isid: '09a88ec4e59071a4dafa3ac82604a4dd',
-									lastActiveTime30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
-									lastUpdateTime: '',
-									oiid: '',
-									pid: ''
-								}
-							]
-						});
-						dispatch({ type: 'reading/setReading', payload: false });
+						// dispatch({
+						// 	type: 'installation/setData',
+						// 	payload: [
+						// 		{
+						// 			activeDay30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+						// 			appNameList:
+						// 				'迷你世界,腾讯新闻,电子邮件,WiFi万能钥匙,视频,作业帮,便签,视频,天气,华为主题动态引擎,指南针,游戏中心,纳米盒,计算器,15日天气预报,QQ,和平精英,爱奇艺,我要学,钱包,抖音,快对作业,多彩引擎,保卫萝卜3,酷狗音乐,汤姆猫跑酷,腾讯视频,阅读,百度,墨迹天气,阅达教育,快游戏,小游戏',
+						// 			apppkgList:
+						// 				'com.minitech.miniworld,com.tencent.news,com.android.email,com.snda.wifilocating,com.tencent.tvoem,com.baidu.homework,com.nearme.note,com.coloros.yoli,com.coloros.weather,com.ibimuyu.lockscreen,com.coloros.compass,com.nearme.gamecenter,com.jinxin.namibox,com.android.calculator2,com.tianqiyubao2345,com.tencent.mobileqq,com.tencent.tmgp.pubgmhd,com.qiyi.video,com.sh.iwantstudy,com.coloros.wallet,com.ss.android.ugc.aweme,com.kuaiduizuoye.scan,com.heytap.colorfulengine,com.feiyu.carrot3,com.kugou.android,com.outfit7.talkingtomgoldrun,com.tencent.qqlive,com.oppo.reader,com.baidu.searchbox,com.moji.mjweather,com.k12n,com.heytap.xgame,com.nearme.play',
+						// 			ieid: '13d6aaaa46515135fd92f019b7e8e84a',
+						// 			isid: '09a88ec4e59071a4dafa3ac82604a4dd',
+						// 			lastActiveTime30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+						// 			lastUpdateTime: '',
+						// 			oiid: '',
+						// 			pid: '77cead680b92491deb51e1830d30bb78'
+						// 		}
+						// 	]
+						// });
+						// dispatch({ type: 'reading/setReading', payload: false });
 					},
 					title: '查询提示',
 					content: (
 						<div>
 							<ScrollPanel>
 								{mobileList.map((i, index) => (
-									<div key={`L_${index}`}>{i}</div>
+									<div key={`L_${index}`}>{i.value}</div>
 								))}
 							</ScrollPanel>
 							<div>
@@ -226,7 +247,7 @@ const Installation: FC<InstallationProp> = () => {
 
 			<Table<InstalledApp>
 				dataSource={data}
-				columns={getColumn(dispatch)}
+				columns={getColumn(dispatch, mobileList)}
 				pagination={false}
 				// pagination={{
 				// 	total: data.length,

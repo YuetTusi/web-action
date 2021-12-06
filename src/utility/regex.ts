@@ -8,3 +8,5 @@ export const PoliceNumber = /\d{6}/;
 export const ChineseIdNumber = /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/
 //数字
 export const OnlyNumber = /^\d+$/;
+//换行符
+export const Br = /(\n)|(\r)/g;

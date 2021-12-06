@@ -8,7 +8,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { versions } from 'process';
 import { writeFile } from 'fs/promises';
-import { OnlyNumber, BankCardNumber } from './regex';
+import { OnlyNumber, BankCardNumber, Br } from './regex';
 import { Conf } from '@/schema/conf';
 import log from './log';
 
@@ -62,7 +62,7 @@ const helper = {
 
         for (let i = 0; i < list.length; i++) {
             if (OnlyNumber.test(list[i].trim())) {
-                mobileList.push({ md5: md5(list[i]), value: list[i] });
+                mobileList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
             } else {
                 errorList.push(list[i]);
             }
@@ -80,7 +80,7 @@ const helper = {
 
         for (let i = 0; i < list.length; i++) {
             if (BankCardNumber.test(list[i].trim())) {
-                cardList.push({ md5: md5(list[i]), value: list[i] });
+                cardList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
             } else {
                 errorList.push(list[i]);
             }

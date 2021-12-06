@@ -7,12 +7,18 @@ import { InstalledApp } from '@/model/installation';
  * 表头
  * @returns 列头定义
  */
-const getColumn = (dispatch: Dispatch): ColumnsType<InstalledApp> => {
+const getColumn = (
+	dispatch: Dispatch,
+	mobileList: { md5: string; value: string }[] = []
+): ColumnsType<InstalledApp> => {
 	return [
 		{
 			title: '手机号',
 			dataIndex: 'pid',
-			key: 'pid'
+			key: 'pid',
+			render(value: string) {
+				return mobileList.find((i) => i.md5 === value)?.value ?? '';
+			}
 		},
 		{
 			title: 'IMEI',
