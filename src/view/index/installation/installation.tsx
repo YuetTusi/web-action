@@ -72,49 +72,25 @@ const Installation: FC<InstallationProp> = () => {
 							msg: { list: mobileList, type }
 						});
 						//legacy: Mock数据
-						// dispatch({
-						// 	type: 'installation/setData',
-						// 	payload: [
-						// 		{
-						// 			ieid: null,
-						// 			pid: null,
-						// 			isid: null,
-						// 			oiid: null,
-						// 			appList: '',
-						// 			lastUpdateTimeList: '',
-						// 			apppkgList: 'com.tencent.news,com.kuaiduizuoye.scan',
-						// 			appNameList: '腾讯新闻,快对作业',
-						// 			lastActiveTime30List: ',',
-						// 			activeDay30List: ','
-						// 		},
-						// 		{
-						// 			ieid: null,
-						// 			pid: null,
-						// 			isid: null,
-						// 			oiid: null,
-						// 			appList: '',
-						// 			lastUpdateTimeList: '',
-						// 			apppkgList: 'com.tencent.news',
-						// 			appNameList: '腾讯新闻',
-						// 			lastActiveTime30List: ',',
-						// 			activeDay30List: ','
-						// 		},
-						// 		{
-						// 			ieid: null,
-						// 			pid: null,
-						// 			isid: null,
-						// 			oiid: null,
-						// 			appList: '',
-						// 			lastUpdateTimeList: '',
-						// 			apppkgList:
-						// 				'com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan,com.tencent.news,com.kuaiduizuoye.scan',
-						// 			appNameList: '腾讯新闻',
-						// 			lastActiveTime30List: ',',
-						// 			activeDay30List: ','
-						// 		}
-						// 	]
-						// });
-						// dispatch({ type: 'reading/setReading', payload: false });
+						dispatch({
+							type: 'installation/setData',
+							payload: [
+								{
+									activeDay30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+									appNameList:
+										'迷你世界,腾讯新闻,电子邮件,WiFi万能钥匙,视频,作业帮,便签,视频,天气,华为主题动态引擎,指南针,游戏中心,纳米盒,计算器,15日天气预报,QQ,和平精英,爱奇艺,我要学,钱包,抖音,快对作业,多彩引擎,保卫萝卜3,酷狗音乐,汤姆猫跑酷,腾讯视频,阅读,百度,墨迹天气,阅达教育,快游戏,小游戏',
+									apppkgList:
+										'com.minitech.miniworld,com.tencent.news,com.android.email,com.snda.wifilocating,com.tencent.tvoem,com.baidu.homework,com.nearme.note,com.coloros.yoli,com.coloros.weather,com.ibimuyu.lockscreen,com.coloros.compass,com.nearme.gamecenter,com.jinxin.namibox,com.android.calculator2,com.tianqiyubao2345,com.tencent.mobileqq,com.tencent.tmgp.pubgmhd,com.qiyi.video,com.sh.iwantstudy,com.coloros.wallet,com.ss.android.ugc.aweme,com.kuaiduizuoye.scan,com.heytap.colorfulengine,com.feiyu.carrot3,com.kugou.android,com.outfit7.talkingtomgoldrun,com.tencent.qqlive,com.oppo.reader,com.baidu.searchbox,com.moji.mjweather,com.k12n,com.heytap.xgame,com.nearme.play',
+									ieid: '13d6aaaa46515135fd92f019b7e8e84a',
+									isid: '09a88ec4e59071a4dafa3ac82604a4dd',
+									lastActiveTime30List: ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+									lastUpdateTime: '',
+									oiid: '',
+									pid: ''
+								}
+							]
+						});
+						dispatch({ type: 'reading/setReading', payload: false });
 					},
 					title: '查询提示',
 					content: (

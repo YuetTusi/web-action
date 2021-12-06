@@ -11,6 +11,7 @@ import Watermark from '@/component/watermark';
 import { InstalledApp } from '@/model/installation';
 import { DetailModalProp } from './prop';
 import { DetailBox, DetailPanel } from './styled/DetailBox';
+import { helper } from '@/utility/helper';
 
 const username = sessionStorage.getItem('username');
 const { Item } = Descriptions;
@@ -19,7 +20,7 @@ const { Item } = Descriptions;
  * 渲染li
  */
 const renderList = (list: string[], prefix = 'L') =>
-	list.map((item, index) => <li key={`${prefix}_${index}`}>{item}</li>);
+	list.map((item, index) => (item === '' ? null : <li key={`${prefix}_${index}`}>{item}</li>));
 
 const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 	if (data === null) {
@@ -38,6 +39,7 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 		} = data;
 		return (
 			<DetailPanel>
+				<Watermark mark={username ?? ''} />
 				<Row gutter={8}>
 					<Col span={24}>
 						<Descriptions bordered={true} size="small">
@@ -45,9 +47,39 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 							<Item label="IMEI">{ieid ?? ''}</Item>
 							<Item label="IMSI">{isid ?? ''}</Item>
 							<Item label="OAID">{oiid ?? ''}</Item>
-							<Item label="30天内最近活跃时间">{lastActiveTime30List ?? ''}</Item>
-							<Item label="30天内活跃天数">{activeDay30List ?? ''}</Item>
+							{/* <Item label="30天内最近活跃时间">{lastActiveTime30List ?? ''}</Item>
+							<Item label="30天内活跃天数">{activeDay30List ?? ''}</Item> */}
 						</Descriptions>
+					</Col>
+				</Row>
+				<Row gutter={8}>
+					<Col span={12}>
+						<DetailBox>
+							<div className="caption">30天内最近活跃时间</div>
+							<div className="list">
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(lastActiveTime30List)
+											? []
+											: lastActiveTime30List.split(',')
+									)}
+								</ul>
+							</div>
+						</DetailBox>
+					</Col>
+					<Col span={12}>
+						<DetailBox>
+							<div className="caption">30天内活跃天数</div>
+							<div className="list">
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(activeDay30List)
+											? []
+											: activeDay30List.split(',')
+									)}
+								</ul>
+							</div>
+						</DetailBox>
 					</Col>
 				</Row>
 				<Row gutter={8}>
@@ -55,7 +87,11 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 						<DetailBox>
 							<div className="caption">在装应用</div>
 							<div className="list">
-								<ul>{renderList(appList.split(','))}</ul>
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(appList) ? [] : appList.split(',')
+									)}
+								</ul>
 							</div>
 						</DetailBox>
 					</Col>
@@ -63,7 +99,13 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 						<DetailBox>
 							<div className="caption">最近安装/卸载应用</div>
 							<div className="list">
-								<ul>{renderList(lastUpdateTimeList.split(','))}</ul>
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(lastUpdateTimeList)
+											? []
+											: lastUpdateTimeList.split(',')
+									)}
+								</ul>
 							</div>
 						</DetailBox>
 					</Col>
@@ -73,7 +115,13 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 						<DetailBox>
 							<div className="caption">AppPkg</div>
 							<div className="list">
-								<ul>{renderList(apppkgList.split(','))}</ul>
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(apppkgList)
+											? []
+											: apppkgList.split(',')
+									)}
+								</ul>
 							</div>
 						</DetailBox>
 					</Col>
@@ -81,12 +129,17 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 						<DetailBox>
 							<div className="caption">包名列表</div>
 							<div className="list">
-								<ul>{renderList(appNameList.split(','))}</ul>
+								<ul>
+									{renderList(
+										helper.isNullOrUndefined(appNameList)
+											? []
+											: appNameList.split(',')
+									)}
+								</ul>
 							</div>
 						</DetailBox>
 					</Col>
 				</Row>
-				<Watermark mark={username ?? ''} />
 			</DetailPanel>
 		);
 	}
@@ -111,7 +164,7 @@ const DetailModal: FC<DetailModalProp> = ({ visible, data }) => {
 					<span>取消</span>
 				</Button>
 			]}
-			width={820}
+			width={980}
 			visible={visible}
 			onCancel={onCancel}
 			title={`应用详情 ${data?.pid ?? ''}`}

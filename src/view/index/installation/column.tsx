@@ -49,16 +49,16 @@ const getColumn = (dispatch: Dispatch): ColumnsType<InstalledApp> => {
 		// 	dataIndex: 'appNameList',
 		// 	key: 'appNameList'
 		// },
-		{
-			title: '30天内最近活跃时间',
-			dataIndex: 'lastActiveTime30List',
-			key: 'lastActiveTime30List'
-		},
-		{
-			title: '30天内活跃天数',
-			dataIndex: 'activeDay30List',
-			key: 'activeDay30List'
-		},
+		// {
+		// 	title: '30天内最近活跃时间',
+		// 	dataIndex: 'lastActiveTime30List',
+		// 	key: 'lastActiveTime30List'
+		// },
+		// {
+		// 	title: '30天内活跃天数',
+		// 	dataIndex: 'activeDay30List',
+		// 	key: 'activeDay30List'
+		// },
 		{
 			title: '详情',
 			dataIndex: 'pid',
