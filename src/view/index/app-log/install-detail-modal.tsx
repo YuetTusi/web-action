@@ -1,17 +1,15 @@
-import React, { FC, useCallback } from 'react';
-import { useDispatch } from 'dva';
+import React, { FC } from 'react';
 import Row from 'antd/lib/row';
 import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Empty from 'antd/lib/empty';
-import Descriptions from 'antd/lib/descriptions';
 import Modal from 'antd/lib/modal';
+import Descriptions from 'antd/lib/descriptions';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import Watermark from '@/component/watermark';
-import { InstalledApp } from '@/model/installation';
-import { DetailModalProp } from './prop';
-import { DetailBox, DetailPanel } from './styled/detail-box';
 import { helper } from '@/utility/helper';
+import Watermark from '@/component/watermark';
+import { DetailBox, DetailPanel } from './styled/detail-box';
+import { InstallDetailModalProp } from './prop';
 
 const username = sessionStorage.getItem('username');
 const { Item } = Descriptions;
@@ -22,8 +20,8 @@ const { Item } = Descriptions;
 const renderList = (list: string[], prefix = 'L') =>
 	list.map((item, index) => (item === '' ? null : <li key={`${prefix}_${index}`}>{item}</li>));
 
-const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
-	if (data === null) {
+const Desc: FC<{ data?: Record<string, any> }> = ({ data }) => {
+	if (helper.isNullOrUndefined(data)) {
 		return <Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />;
 	} else {
 		const {
@@ -36,7 +34,7 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 			lastUpdateTimeList,
 			apppkgList,
 			appNameList
-		} = data;
+		} = data!;
 		return (
 			<DetailPanel>
 				<Watermark mark={username ?? ''} />
@@ -146,16 +144,10 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 };
 
 /**
- * 详情框
+ * 安装应用详情框
+ * @returns
  */
-const DetailModal: FC<DetailModalProp> = ({ visible, data }) => {
-	const dispatch = useDispatch();
-
-	const onCancel = useCallback(
-		() => dispatch({ type: 'installation/setDetail', payload: null }),
-		[]
-	);
-
+const InstallDetailModal: FC<InstallDetailModalProp> = ({ visible, keyword, data, onCancel }) => {
 	return (
 		<Modal
 			footer={[
@@ -164,21 +156,16 @@ const DetailModal: FC<DetailModalProp> = ({ visible, data }) => {
 					<span>取消</span>
 				</Button>
 			]}
-			width={1040}
+			onCancel={() => onCancel()}
 			visible={visible}
-			onCancel={onCancel}
-			title={`应用详情 ${data?.pid ?? ''}`}
-			maskClosable={false}
+			width={1040}
+			title={`应用详情 ${helper.isNullOrUndefined(keyword) ? '' : keyword}`}
+			destroyOnClose={true}
 			centered={true}
-			destroyOnClose={true}>
+			maskClosable={false}>
 			<Desc data={data} />
 		</Modal>
 	);
 };
 
-DetailModal.defaultProps = {
-	visible: false,
-	data: null
-};
-
-export default DetailModal;
+export default InstallDetailModal;

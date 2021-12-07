@@ -48,20 +48,21 @@ const Installation: FC<InstallationProp> = () => {
 	useEffect(() => {
 		const { getFieldValue } = formRef;
 		const next: SearchLogEntity[] = [];
+		const type = getFieldValue('type');
 
-		// if (data.length > 0) {
-		// 	next.push({
-		// 		type: Document.AppInstallLog,
-		// 		keyword: cardNo,
-		// 		result: {
-		// 			涉赌: result[cardNo].gambling,
-		// 			传销: result[cardNo].pyramid
-		// 		}
-		// 	});
-		// }
-		// if (next.length > 0) {
-		// 	dispatch({ type: 'searchLog/insert', payload: next });
-		// }
+		if (data.length > 0) {
+			for (let i = 0; i < data.length; i++) {
+				let k = mobileList.find((j) => j.md5 === data[i].pid)?.value ?? '';
+				next.push({
+					type: Document.AppInstallLog,
+					keyword: k,
+					result: { ...data[i], type }
+				});
+			}
+		}
+		if (next.length > 0) {
+			dispatch({ type: 'appLog/insert', payload: next });
+		}
 	}, [data]);
 
 	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
