@@ -1,8 +1,8 @@
 import { Model } from 'dva';
-import effects from './effects';
-import reducers from './reducers';
 import { PAGESIZE } from '@/utility/helper';
 import { SearchLogEntity } from '@/schema/search-log-entity';
+import effects from './effects';
+import reducers from './reducers';
 
 interface AppLogState {
     /**

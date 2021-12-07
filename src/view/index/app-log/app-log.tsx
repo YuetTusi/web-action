@@ -22,6 +22,9 @@ const { Item, useForm } = Form;
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
+/**
+ * 安装应用日志
+ */
 const AppLog: FC<AppLogProp> = () => {
 	const dispatch = useDispatch();
 	const { data, pageIndex, pageSize, total, loading } = useSelector<any, AppLogState>(
@@ -42,6 +45,9 @@ const AppLog: FC<AppLogProp> = () => {
 		});
 	}, []);
 
+	/**
+	 * 查询Click
+	 */
 	const searchClick = (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
 		const { getFieldsValue } = formRef;

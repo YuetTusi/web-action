@@ -74,7 +74,7 @@ function exitApp(platform: string) {
 
 process.on('uncaughtException', (err) => {
     log.error(`Process UncaughtException: ${err.stack ?? ''}`);
-    app.exit();
+    app.exit(1);
 });
 
 app.on('render-process-gone', (event, webContents, details) => {
@@ -141,11 +141,11 @@ app.on('ready', () => {
     // #生产模式屏蔽快捷键（发布把注释放开）
     if (mode !== 'development') {
         helper.writeVersion();
-        // globalShortcut.register('Control+R', () => { });
-        // globalShortcut.register('Control+Shift+R', () => { });
+        globalShortcut.register('Control+R', () => { });
+        globalShortcut.register('Control+Shift+R', () => { });
         // globalShortcut.register('CommandOrControl+Shift+I', () => { });
     }
-    // mainWindow.removeMenu();
+    mainWindow.removeMenu();
 });
 
 ipcMain.handle('select-file', async (event, args) => {
