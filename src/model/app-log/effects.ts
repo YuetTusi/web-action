@@ -34,8 +34,6 @@ export default {
                     $lte: condition.end.toDate()
                 }
             }
-
-            console.log(param);
             const [next, total]: [SearchLogEntity[], number] = yield all([
                 call([db, 'findByPage'], param, pageIndex, pageSize, 'createdAt', -1),
                 call([db, 'count'], param, pageIndex, pageSize)
@@ -53,7 +51,6 @@ export default {
      * @param {SearchLogEntity[]} payload 日志Entity
      */
     *insert({ payload }: AnyAction, { all }: EffectsCommandMap) {
-
         const db = new Db(Document.AppInstallLog);
         try {
             yield all((payload as SearchLogEntity[]).map(i => db.insert(i)));

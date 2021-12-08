@@ -100,6 +100,14 @@ interface Command<T = any> {
      * 消息参数
      */
     msg: T;
+    /**
+     * 表名
+     */
+    table?: string;
+    /**
+     * 其他数据
+     */
+    [extraName: string]: any
 }
 
 /**
@@ -126,7 +134,7 @@ interface Res<T = any> {
     /**
      * 数据
      */
-    data: T
+    data: T,
 }
 
 export { SocketType, CommandType, Command, Result, Res };

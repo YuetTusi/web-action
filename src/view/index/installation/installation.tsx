@@ -21,19 +21,20 @@ import { PadBox } from '@/component/widget/box';
 import ScrollPanel from '@/component/scroll-panel';
 import { CommandType, SocketType } from '@/schema/socket';
 import { Document } from '@/schema/document';
-import { SearchLogEntity } from '@/schema/search-log-entity';
 import DetailModal from './detail-modal';
 import { ValidList } from '../batch/styled/valid-list';
 import { InstallationProp, SearchForm } from './prop';
 import { getColumn } from './column';
 
 let memoValue = '';
-let mobileList: Array<{ md5: string; value: string }> = []; //保存手机号与md5对应表
+let searchType = '';
+let keywordList: Array<{ md5: string; value: string }> = []; //保存查询值与md5对应表
 const { Fetch } = SocketType;
 const { Option } = Select;
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';
 const { useForm, Item } = Form;
+
 
 /**
  * 安装应用查询
@@ -46,30 +47,22 @@ const Installation: FC<InstallationProp> = () => {
 	);
 
 	useEffect(() => {
-		const { getFieldValue } = formRef;
-		const next: SearchLogEntity[] = [];
-		const type = getFieldValue('type');
+		return () => {
+			dispatch({ type: 'installation/setData', payload: [] });
+		};
+	}, []);
 
-		if (data.length > 0) {
-			for (let i = 0; i < data.length; i++) {
-				let k = mobileList.find((j) => j.md5 === data[i].pid)?.value ?? '';
-				next.push({
-					type: Document.AppInstallLog,
-					keyword: k,
-					result: { ...data[i], type }
-				});
-			}
-		}
-		if (next.length > 0) {
-			dispatch({ type: 'appLog/insert', payload: next });
-		}
-	}, [data]);
-
+	/**
+	 * 查询Click
+	 */
 	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
+		// installationResult(dispatch,temp);
 		const { getFieldsValue } = formRef;
 		try {
 			const { tempFilePath, type } = getFieldsValue();
+
+			searchType = type;
 
 			if (helper.isNullOrUndefined(tempFilePath) || tempFilePath === '') {
 				message.destroy();
@@ -81,17 +74,27 @@ const Installation: FC<InstallationProp> = () => {
 			const txt = await readFile(tempFilePath, { encoding: 'utf8' });
 			const [errorList, passList] = helper.validateMobileList(txt.split('\n'));
 			if (errorList.length === 0) {
-				mobileList = passList;
+				keywordList = passList;
 				Modal.confirm({
 					onOk() {
 						dispatch({ type: 'reading/setReading', payload: true });
 						console.log({
 							cmd: CommandType.Installation,
-							msg: { list: mobileList.map((i) => i.md5), type }
+							msg: {
+								list: keywordList.map((i) => i.md5),
+								value: keywordList.map((i) => i.value),
+								type,
+								table: Document.AppInstallLog
+							}
 						});
 						send(Fetch, {
 							cmd: CommandType.Installation,
-							msg: { list: mobileList.map((i) => i.md5), type }
+							msg: {
+								list: keywordList.map((i) => i.md5),
+								value: keywordList.map((i) => i.value),
+								type,
+								table: Document.AppInstallLog
+							}
 						});
 						//legacy: Mock数据
 						// dispatch({
@@ -118,15 +121,15 @@ const Installation: FC<InstallationProp> = () => {
 					content: (
 						<div>
 							<ScrollPanel>
-								{mobileList.map((i, index) => (
+								{keywordList.map((i, index) => (
 									<div key={`L_${index}`}>{i.value}</div>
 								))}
 							</ScrollPanel>
 							<div>
-								共查询{mobileList.length}个手机号，将
+								共查询{keywordList.length}个手机号，将
 								<strong style={{ color: '#ff0000' }}>
 									使用
-									{mobileList.length}次
+									{keywordList.length}次
 								</strong>
 								查询，确定？
 							</div>
@@ -248,7 +251,7 @@ const Installation: FC<InstallationProp> = () => {
 
 			<Table<InstalledApp>
 				dataSource={data}
-				columns={getColumn(dispatch, mobileList)}
+				columns={getColumn(dispatch, keywordList, searchType)}
 				pagination={false}
 				// pagination={{
 				// 	total: data.length,

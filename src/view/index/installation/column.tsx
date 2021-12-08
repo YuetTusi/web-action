@@ -9,7 +9,8 @@ import { InstalledApp } from '@/model/installation';
  */
 const getColumn = (
 	dispatch: Dispatch,
-	mobileList: { md5: string; value: string }[] = []
+	keywordList: { md5: string; value: string }[] = [],
+	searchType: string = ''
 ): ColumnsType<InstalledApp> => {
 	return [
 		{
@@ -17,23 +18,48 @@ const getColumn = (
 			dataIndex: 'pid',
 			key: 'pid',
 			render(value: string) {
-				return mobileList.find((i) => i.md5 === value)?.value ?? '';
+				if (searchType === 'PHONE') {
+					return keywordList.find((i) => i.md5 === value)?.value ?? '';
+				} else {
+					return value;
+				}
 			}
 		},
 		{
 			title: 'IMEI',
 			dataIndex: 'ieid',
-			key: 'ieid'
+			key: 'ieid',
+			render(value: string) {
+				if (searchType === 'IMEI') {
+					return keywordList.find((i) => i.md5 === value)?.value ?? '';
+				} else {
+					return value;
+				}
+			}
 		},
 		{
 			title: 'IMSI',
 			dataIndex: 'isid',
-			key: 'isid'
+			key: 'isid',
+			render(value: string) {
+				if (searchType === 'IMSI') {
+					return keywordList.find((i) => i.md5 === value)?.value ?? '';
+				} else {
+					return value;
+				}
+			}
 		},
 		{
 			title: 'OAID',
 			dataIndex: 'oiid',
-			key: 'oiid'
+			key: 'oiid',
+			render(value: string) {
+				if (searchType === 'OAID') {
+					return keywordList.find((i) => i.md5 === value)?.value ?? '';
+				} else {
+					return value;
+				}
+			}
 		},
 		// {
 		// 	title: '在装应用',

@@ -1,6 +1,6 @@
 import { Dispatch, routerRedux } from "dva";
 import msgBox from 'antd/lib/message';
-import { SocketType, Command, Result, Res } from "@/schema/socket";
+import { Command, Result, Res } from "@/schema/socket";
 import { SingleDataSource } from "../single";
 import { MenuNode } from "../component/web-menu";
 import { BatchDataSource } from "../batch";
@@ -8,7 +8,9 @@ import { BankBatchState } from "../bank-batch";
 import { BankState } from "../bank";
 import { InstalledApp } from "../installation";
 import { helper } from "@/utility/helper";
+import { Document } from '@/schema/document';
 import { UseType } from "@/schema/use-type";
+import { SearchLogEntity } from "@/schema/search-log-entity";
 
 const { useType } = helper.readConf()!;
 
@@ -120,11 +122,53 @@ export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchSt
 /**
  * 安装应用查询结果
  */
-export function installationResult(dispatch: Dispatch, cmd: Command<Res<InstalledApp>>) {
+export function installationResult(dispatch: Dispatch, cmd: Command<Res<InstalledApp[]>>) {
+    const { table, list, value, type } = cmd;
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
         dispatch({ type: 'installation/setData', payload: data });
+        const next: SearchLogEntity[] = [];
+
+        for (let i = 0; i < list.length; i++) {
+            if (helper.isNullOrUndefined(data[i])) {
+                next.push({
+                    type: table as Document,
+                    keyword: '',
+                    result: { type }
+                });
+            } else {
+                let k: string = '';
+                let index: number = -1;
+                switch (type) {
+                    case 'PHONE':
+                        index = (list as string[]).findIndex((j) => j === data[i].pid); //找到md5的索引
+                        break;
+                    case 'IMEI':
+                        index = (list as string[]).findIndex((j) => j === data[i].ieid); //找到md5的索引
+                        break;
+                    case 'IMSI':
+                        index = (list as string[]).findIndex((j) => j === data[i].isid); //找到md5的索引
+                        break;
+                    case 'OAID':
+                        index = (list as string[]).findIndex((j) => j === data[i].oiid); //找到md5的索引
+                        break;
+                    default:
+                        k = '';
+                        break;
+                }
+
+                if (index !== -1) {
+                    k = value[index] ?? '';//取索引对应的值
+                }
+                next.push({
+                    type: table as Document,
+                    keyword: k,
+                    result: { ...data[i], type }
+                });
+            }
+        }
+        dispatch({ type: 'appLog/insert', payload: next });
     } else {
         msgBox.warn(message);
     }
