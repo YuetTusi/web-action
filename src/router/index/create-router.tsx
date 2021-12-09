@@ -170,8 +170,9 @@ const routeCaption = (pathname: string) => {
 		case '/bank-batch':
 			return '银行卡批量查询';
 		case '/inquireJournal':
+			return '手机银行卡日志';
 		case '/appLog':
-			return '查询日志';
+			return '应用日志';
 		case '/installApp':
 			return '安装应用查询';
 		default:

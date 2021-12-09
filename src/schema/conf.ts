@@ -6,7 +6,7 @@ interface Conf {
      */
     title: string,
     /**
-     * 类型（0：评估系统 1：应用查询系统）
+     * 类型（0：评估系统 1：应用查询系统 2:全功能）
      */
     useType: UseType,
     /**

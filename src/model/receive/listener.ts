@@ -25,6 +25,7 @@ export function loginResult(dispatch: Dispatch, cmd: Command<{ success: boolean,
         msgBox.success('登录成功');
         switch (useType) {
             case UseType.WebAction:
+            case UseType.WebAndAppAction:
                 dispatch(routerRedux.push('/targetInquire'));
                 break;
             case UseType.AppAction:

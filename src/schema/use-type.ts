@@ -6,7 +6,11 @@ enum UseType {
     /**
      * 应用查询
      */
-    AppAction
+    AppAction,
+    /**
+     * 全功能
+     */
+    WebAndAppAction
 }
 
 export { UseType };

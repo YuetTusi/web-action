@@ -44,7 +44,7 @@ switch (useType) {
                 "childMenuInfos": []
             },
             {
-                "menu_name": "查询日志",
+                "menu_name": "手机银行卡日志",
                 "menu_url": "/inquireJournal",
                 "childMenuInfos": []
             }]);
@@ -56,10 +56,47 @@ switch (useType) {
             "childMenuInfos": []
         },
         {
-            "menu_name": "查询日志",
+            "menu_name": "应用日志",
             "menu_url": "/appLog",
             "childMenuInfos": []
         }]);
+        break;
+    case UseType.WebAndAppAction:
+        menuData = menuData.concat([
+            {
+                "menu_name": "手机号查询",
+                "menu_url": "/targetInquire",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "手机号批量查询",
+                "menu_url": "/batchInquire",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "银行卡查询",
+                "menu_url": "/bank",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "银行卡批量查询",
+                "menu_url": "/bank-batch",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "手机银行卡日志",
+                "menu_url": "/inquireJournal",
+                "childMenuInfos": []
+            }, {
+                "menu_name": "安装应用查询",
+                "menu_url": "/installApp",
+                "childMenuInfos": []
+            },
+            {
+                "menu_name": "应用日志",
+                "menu_url": "/appLog",
+                "childMenuInfos": []
+            }]);
         break;
 }
 
