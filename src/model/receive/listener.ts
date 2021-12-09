@@ -108,13 +108,13 @@ export function bankResult(dispatch: Dispatch, cmd: Command<Res<BankState>>) {
 /**
  * 银行卡批量查询结果
  */
-export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchState>>) {
+export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<{ result: BankBatchState }>>) {
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
         // dispatch({ type: 'bankBatch/insertHistory', payload: data });
         console.log(data);
-        dispatch({ type: 'bankBatch/setData', payload: data });
+        dispatch({ type: 'bankBatch/setData', payload: data?.result ?? {} });
     } else {
         msgBox.warn(message);
     }
