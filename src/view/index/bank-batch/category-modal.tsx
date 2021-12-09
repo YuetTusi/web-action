@@ -26,18 +26,18 @@ interface CategoryModalProp {
 	onCancel: () => void;
 }
 
-const getTitle = (type: number) => {
-	switch (type) {
-		case CaseSort.Porn:
-			return '涉黄';
-		case CaseSort.PyramidSales:
-			return '传销';
-		case CaseSort.Bet:
-			return '涉赌';
-		default:
-			return '其他';
-	}
-};
+// const getTitle = (type: number) => {
+// 	switch (type) {
+// 		case CaseSort.Porn:
+// 			return '涉黄';
+// 		case CaseSort.PyramidSales:
+// 			return '传销';
+// 		case CaseSort.Bet:
+// 			return '涉赌';
+// 		default:
+// 			return '其他';
+// 	}
+// };
 
 /**
  * 分类查看Modal

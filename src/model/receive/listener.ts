@@ -113,6 +113,7 @@ export function bankBatchResult(dispatch: Dispatch, cmd: Command<Res<BankBatchSt
 
     if (code >= 200 && code < 300) {
         // dispatch({ type: 'bankBatch/insertHistory', payload: data });
+        console.log(data);
         dispatch({ type: 'bankBatch/setData', payload: data });
     } else {
         msgBox.warn(message);
