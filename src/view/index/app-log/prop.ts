@@ -10,7 +10,7 @@ interface InstallDetailModalProp {
     /**
      * 数据
      */
-    data?: Record<string, any>,
+    data: any,
     /**
      * 查询关键字（手机号）
      */

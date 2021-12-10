@@ -151,7 +151,9 @@ const AppLog: FC<AppLogProp> = () => {
 				visible={installDetailModalVisible}
 				keyword={appDetail?.keyword}
 				data={appDetail?.result}
-				onCancel={() => setInstallDetailModalVisible(false)}
+				onCancel={() => {
+					setInstallDetailModalVisible(false);
+				}}
 			/>
 		</RootPanel>
 	);
