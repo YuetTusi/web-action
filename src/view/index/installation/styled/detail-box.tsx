@@ -24,6 +24,7 @@ const DetailBox = styled.div`
 	border: 1px solid #f0f0f0;
 	border-radius: 2px;
 	.list {
+		position: relative;
 		height: 460px;
 		overflow-y: auto;
 		ul,

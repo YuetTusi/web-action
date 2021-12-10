@@ -47,6 +47,8 @@ const menuIcon = (url: string) => {
 			return <SettingOutlined />;
 		case '/installApp':
 			return <AppstoreAddOutlined />;
+		case '/installAppBatch':
+			return <FileSearchOutlined />;
 		case '/inquireJournal':
 		case '/appLog':
 			return <ClockCircleOutlined />;
@@ -90,7 +92,12 @@ const RootMenu: FC<{}> = () => {
 					<Item
 						onClick={() => {
 							dispatch({ type: 'reading/setReading', payload: false });
-							dispatch(routerRedux.push(item.menu_url));
+							console.log(item.menu_url);
+							if (item.menu_url === '/installAppBatch') {
+								dispatch(routerRedux.push(`${item.menu_url}?type=batch`));
+							} else {
+								dispatch(routerRedux.push(item.menu_url));
+							}
 						}}
 						icon={menuIcon(item.menu_url)}
 						key={item.menu_url}>

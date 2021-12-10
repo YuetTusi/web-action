@@ -132,6 +132,21 @@ const createRouter = (api?: RouterAPI) => {
 							}}
 						/>
 						<Route
+							path="/installAppBatch"
+							render={() => {
+								const Next = lazy<FC<any>>(
+									() => import('@/view/index/installation')
+								);
+								return (
+									<Suspense fallback={<Loading />}>
+										<ErrorBoundary>
+											<Next />
+										</ErrorBoundary>
+									</Suspense>
+								);
+							}}
+						/>
+						<Route
 							path="/appLog"
 							render={() => {
 								const Next = lazy<FC<any>>(() => import('@/view/index/app-log'));
@@ -175,6 +190,8 @@ const routeCaption = (pathname: string) => {
 			return '应用日志';
 		case '/installApp':
 			return '安装应用查询';
+		case '/installAppBatch':
+			return '安装应用批量查询';
 		default:
 			return '';
 	}

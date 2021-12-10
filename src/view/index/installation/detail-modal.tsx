@@ -1,28 +1,22 @@
 import React, { FC, useCallback, useState } from 'react';
 import { useDispatch } from 'dva';
-import Row from 'antd/lib/row';
-import Col from 'antd/lib/col';
 import Button from 'antd/lib/button';
 import Empty from 'antd/lib/empty';
-import Descriptions from 'antd/lib/descriptions';
 import Tabs from 'antd/lib/tabs';
 import Modal from 'antd/lib/modal';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
-import Watermark from '@/component/watermark';
 import { InstalledApp } from '@/model/installation';
 import { DetailModalProp } from './prop';
 import { DetailBox, DetailPanel, EmptyBox } from './styled/detail-box';
 import { helper } from '@/utility/helper';
 
 const username = sessionStorage.getItem('username');
-const { Item } = Descriptions;
 const { TabPane } = Tabs;
 
 /**
  * 渲染li
  */
 const renderList = (list: string[], prefix = 'L') => {
-	console.log(list);
 	if (list.length === 0) {
 		return (
 			<EmptyBox>
@@ -61,7 +55,6 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 		} = data;
 		return (
 			<DetailPanel>
-				{/* <Watermark mark={username ?? ''} /> */}
 				<Tabs defaultActiveKey={activeKey} onChange={onTabChange}>
 					<TabPane tab="30天内最近活跃时间" key="1">
 						<DetailBox>

@@ -13,7 +13,11 @@ interface SearchForm {
     /**
      * 类型
      */
-    type: 'PHONE' | 'IMEI' | 'IMSI' | 'OAID'
+    type: 'PHONE' | 'IMEI' | 'IMSI' | 'OAID',
+    /**
+     * 手机号
+     */
+    mobile: string
 }
 
 interface DetailModalProp {

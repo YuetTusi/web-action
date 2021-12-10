@@ -54,6 +54,10 @@ switch (useType) {
             "menu_name": "安装应用查询",
             "menu_url": "/installApp",
             "childMenuInfos": []
+        }, {
+            "menu_name": "安装应用批量查询",
+            "menu_url": "/installAppBatch",
+            "childMenuInfos": []
         },
         {
             "menu_name": "应用日志",
@@ -90,6 +94,10 @@ switch (useType) {
             }, {
                 "menu_name": "安装应用查询",
                 "menu_url": "/installApp",
+                "childMenuInfos": []
+            }, {
+                "menu_name": "安装应用批量查询",
+                "menu_url": "/installAppBatch",
                 "childMenuInfos": []
             },
             {

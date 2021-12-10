@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const WaterMark = styled.div`
-	color: rgba(177, 177, 177, 0.33333);
+	color: rgba(177, 177, 177, 0.333333);
 	position: absolute;
 	top: 0;
 	left: 0;
