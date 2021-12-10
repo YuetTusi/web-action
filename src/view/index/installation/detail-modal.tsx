@@ -55,6 +55,9 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 		} = data;
 		return (
 			<DetailPanel>
+				<div className="water-mark">{username}</div>
+				<div className="water-mark">{username}</div>
+				<div className="water-mark">{username}</div>
 				<Tabs defaultActiveKey={activeKey} onChange={onTabChange}>
 					<TabPane tab="30天内最近活跃时间" key="1">
 						<DetailBox>

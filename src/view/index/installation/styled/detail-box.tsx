@@ -2,6 +2,23 @@ import styled from 'styled-components';
 
 const DetailPanel = styled.div`
 	position: relative;
+	.water-mark {
+		position: absolute;
+		color: rgba(177, 177, 177, 0.333333);
+		z-index: 1;
+		font-size: 20px;
+		top: 55%;
+		transform: rotate(-50deg);
+		&:nth-child(1) {
+			left: 15%;
+		}
+		&:nth-child(2) {
+			left: 45%;
+		}
+		&:nth-child(3) {
+			left: 75%;
+		}
+	}
 	.ant-row {
 		margin-bottom: 10px;
 	}
@@ -36,16 +53,8 @@ const DetailBox = styled.div`
 			padding: 5px 10px;
 			border-bottom: 1px solid #f0f0f0;
 			list-style-type: none;
-			&:hover {
-				background-color: #1890ff;
-				color: #fff;
-			}
 			&:nth-child(odd) {
 				background-color: #fbfbfb;
-				&:hover {
-					background-color: #1890ff;
-					color: #fff;
-				}
 			}
 		}
 	}
