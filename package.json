@@ -7,6 +7,7 @@
 	"author": "cuiyue <cuiyue.msn@hotmail.com>",
 	"license": "MIT",
 	"scripts": {
+		"prebuild": "rimraf dist/**/*",
 		"build": "webpack --config webpack.dev.js",
 		"build:prod": "webpack --config webpack.prod.js",
 		"prego": "tsc",
@@ -15,7 +16,7 @@
 		"start": "cross-env NODE_ENV=development concurrently \"yarn run build\" \"yarn run serve\" \"yarn run go\"",
 		"prepack": "yarn run build:prod",
 		"pack": "electron-builder --dir",
-		"predist": "tsc && yarn run build:prod",
+		"predist": "rimraf dist/**/* && tsc && yarn run build:prod",
 		"dist": "electron-builder"
 	},
 	"build": {
@@ -71,7 +72,6 @@
 		"@ztree/ztree_v3": "^3.5.46",
 		"antd": "^4.16.13",
 		"antd-dayjs-webpack-plugin": "^1.0.6",
-		"clean-webpack-plugin": "^4.0.0",
 		"concurrently": "^6.2.1",
 		"cross-env": "^7.0.3",
 		"css-loader": "^6.3.0",
@@ -101,8 +101,8 @@
 		"yaml-loader": "^0.6.0"
 	},
 	"dependencies": {
-		"lodash": "^4.17.21",
 		"js-yaml": "^4.1.0",
+		"lodash": "^4.17.21",
 		"md5": "^2.3.0",
 		"uuid": "^8.3.2",
 		"winston": "^3.3.3"

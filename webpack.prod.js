@@ -1,6 +1,5 @@
 const path = require('path');
 const AntdDayjsWebpackPlugin = require('antd-dayjs-webpack-plugin');
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -34,18 +33,18 @@ let config = {
 	module: {
 		rules: [
 			{
-				test: /\.(ts|tsx)$/,
+				test: /\.tsx?$/,
 				use: [{ loader: 'ts-loader' }]
 			},
 			{
-				test: /\.(png|jpg|jpeg|gif|ico)$/,
+				test: /\.(png|jpe?g|gif|ico)$/,
 				type: 'asset/resource',
 				generator: {
 					filename: 'images/[hash:16][ext]'
 				}
 			},
 			{
-				test: /\.(woff|woff2|ttf|otf|eot|svg)$/,
+				test: /\.(woff2?|ttf|otf|eot|svg)$/,
 				type: 'asset/resource',
 				generator: {
 					filename: 'fonts/[hash:16][ext]'
@@ -78,9 +77,6 @@ let config = {
 		]
 	},
 	plugins: [
-		new CleanWebpackPlugin({
-			verbose: true
-		}),
 		new AntdDayjsWebpackPlugin(),
 		new HtmlWebpackPlugin({
 			template: path.join(__dirname, './src/renderer/index/index.html'),
