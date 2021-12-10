@@ -23,12 +23,12 @@ let config = {
 		static: {
 			directory: path.join(__dirname, './dist')
 		},
-		port: 8084,
-		compress: true,
-		open: false,
 		client: {
 			overlay: { errors: true }
-		}
+		},
+		port: 8084,
+		open: false,
+		compress: true
 	},
 	module: {
 		rules: [

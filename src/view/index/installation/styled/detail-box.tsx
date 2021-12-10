@@ -10,19 +10,21 @@ const DetailPanel = styled.div`
 	}
 `;
 
+const EmptyBox = styled.div`
+	width: 100%;
+	height: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+`;
+
 const DetailBox = styled.div`
 	width: 100%;
-	height: auto;
-
 	border: 1px solid #f0f0f0;
 	border-radius: 2px;
-	.caption {
-		padding: 5px 10px;
-		font-weight: bold;
-		border-bottom: 1px solid #f0f0f0;
-	}
 	.list {
-		height: 120px;
+		height: 460px;
 		overflow-y: auto;
 		ul,
 		li {
@@ -33,8 +35,19 @@ const DetailBox = styled.div`
 			padding: 5px 10px;
 			border-bottom: 1px solid #f0f0f0;
 			list-style-type: none;
+			&:hover {
+				background-color: #1890ff;
+				color: #fff;
+			}
+			&:nth-child(odd) {
+				background-color: #fbfbfb;
+				&:hover {
+					background-color: #1890ff;
+					color: #fff;
+				}
+			}
 		}
 	}
 `;
 
-export { DetailPanel, DetailBox };
+export { DetailPanel, EmptyBox, DetailBox };
