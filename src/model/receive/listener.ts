@@ -129,12 +129,14 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        dispatch({ type: 'installation/setData', payload: data });
-        const next: SearchLogEntity[] = [];
+        const nextData: InstalledApp[] = [];
+        const nextLogs: SearchLogEntity[] = [];
 
         for (let i = 0; i < list.length; i++) {
             if (helper.isNullOrUndefined(data[i])) {
-                next.push({
+
+                nextData.push({ pid: '', oiid: '', isid: '', ieid: '' } as InstalledApp);
+                nextLogs.push({
                     type: table as Document,
                     keyword: '',
                     result: { type }
@@ -163,14 +165,16 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
                 if (index !== -1) {
                     k = value[index] ?? '';//取索引对应的值
                 }
-                next.push({
+                nextData.push(data[i]);
+                nextLogs.push({
                     type: table as Document,
                     keyword: k,
                     result: { ...data[i], type }
                 });
             }
         }
-        dispatch({ type: 'appLog/insert', payload: next });
+        dispatch({ type: 'installation/setData', payload: nextData });
+        dispatch({ type: 'appLog/insert', payload: nextLogs });
     } else {
         msgBox.warn(message);
     }

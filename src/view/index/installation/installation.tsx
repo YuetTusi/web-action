@@ -25,6 +25,7 @@ import DetailModal from './detail-modal';
 import { ValidList } from '../batch/styled/valid-list';
 import { InstallationProp, SearchForm } from './prop';
 import { getColumn } from './column';
+// import { installationResult } from '@/model/receive/listener';
 
 let memoValue = '';
 let searchType = '';
@@ -36,6 +37,14 @@ const isDev = process.env['NODE_ENV'] === 'development';
 const { useForm, Item } = Form;
 let isBatch = false;
 
+// const temp: any = {
+// 	cmd: 'installation-result',
+// 	list: ['bb0be01b6f5e0c78dc3219322d781a86'],
+// 	msg: { code: '200', data: [], msg: 'success', status: null },
+// 	table: 'app-install-log',
+// 	type: 'PHONE',
+// 	value: ['13661027699']
+// };
 /**
  * 安装应用查询
  */
@@ -80,7 +89,7 @@ const Installation: FC<InstallationProp> = () => {
 	 */
 	const searchClick = async (event: MouseEvent<HTMLButtonElement>) => {
 		event.preventDefault();
-		// installationResult(dispatch,temp);
+		// installationResult(dispatch, temp);
 		const { getFieldsValue } = formRef;
 		try {
 			const { tempFilePath, mobile, type } = getFieldsValue();
