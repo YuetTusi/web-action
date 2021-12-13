@@ -88,7 +88,11 @@ const BankBatch: FC<{}> = () => {
 				next.push({
 					type: Document.BankBatch,
 					keyword: k,
-					result: v
+					result: {
+						...v,
+						['涉赌']: v.gambling,
+						['传销']: v.pyramid
+					}
 				});
 			}
 		}
