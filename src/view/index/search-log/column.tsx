@@ -92,13 +92,13 @@ const getColumn = (
 									<Tag
 										onClick={() => {
 											setType(CaseSort.PyramidSales);
-											setResult(data['传销']);
+											setResult(data['pyramid']);
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
 										color={
-											helper.isNullOrUndefined(data['传销']?.isReg) ||
-											data['传销']?.isReg === 0
+											helper.isNullOrUndefined(data['pyramid']?.isReg) ||
+											data['pyramid']?.isReg === 0
 												? 'default'
 												: '#389e0d'
 										}
@@ -120,13 +120,13 @@ const getColumn = (
 									<Tag
 										onClick={() => {
 											setType(CaseSort.Bet);
-											setResult(data['涉赌']);
+											setResult(data['gambling']);
 											setRecord(record);
 											setResultModalVisible(true);
 										}}
 										color={
-											helper.isNullOrUndefined(data['涉赌']?.isReg) ||
-											data['涉赌']?.isReg === 0
+											helper.isNullOrUndefined(data['gambling']?.isReg) ||
+											data['gambling']?.isReg === 0
 												? 'default'
 												: '#1d39c4'
 										}

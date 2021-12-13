@@ -75,35 +75,27 @@ const CategoryModal: FC<CategoryModalProp> = ({ specialData, onCancel, type, mob
 					</li>
 					<li>
 						<label>账号个数</label>
-						<span>{specialData?.participatingWebsiteCount ?? '--'}</span>
+						<span>
+							{helper.getParticipatingWebsiteCountText(
+								specialData?.participatingWebsiteCount
+							)}
+						</span>
 					</li>
 					<li>
 						<label>登录信息</label>
-						<span>{specialData?.lastLogin ?? '--'}</span>
+						<span>{helper.getLastLoginText(specialData?.lastLogin)}</span>
 					</li>
 					<li>
 						<label>是否绑定银行卡</label>
-						<span>
-							{helper.isNullOrUndefined(specialData?.haveBindBankCard)
-								? '--'
-								: specialData?.haveBindBankCard === 'N'
-								? '否'
-								: '是'}
-						</span>
+						<span>{helper.getHaveBindBankCardText(specialData?.haveBindBankCard)}</span>
 					</li>
 					<li>
 						<label>涉及资金</label>
-						<span>{specialData?.participatingFunds ?? '--'}</span>
+						<span>{helper.getParticipatingFunds(specialData?.participatingFunds)}</span>
 					</li>
 					<li>
 						<label>是否代理</label>
-						<span>
-							{helper.isNullOrUndefined(specialData?.isAgent)
-								? '--'
-								: specialData?.isAgent === 'N'
-								? '否'
-								: '是'}
-						</span>
+						<span>{helper.getIsAgentText(specialData?.isAgent)}</span>
 					</li>
 					<li>
 						<label>查询时间</label>

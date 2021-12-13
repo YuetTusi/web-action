@@ -18,6 +18,7 @@ import { PadBox } from '@/component/widget/box';
 import { helper } from '@/utility/helper';
 import { send } from '@/utility/tcp-server';
 import { Document } from '@/schema/document';
+import ScrollPanel from '@/component/scroll-panel';
 import { CommandType, SocketType } from '@/schema/socket';
 import { CaseSort } from '@/schema/common';
 import { SearchLogEntity } from '@/schema/search-log-entity';
@@ -27,7 +28,6 @@ import ChartModal from './chart-modal';
 import { getColumn } from './column';
 import { BatchProp } from './prop';
 import { ValidList } from './styled/valid-list';
-import ScrollPanel from '@/component/scroll-panel';
 
 const cwd = process.cwd();
 const isDev = process.env['NODE_ENV'] === 'development';

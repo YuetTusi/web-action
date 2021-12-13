@@ -61,7 +61,9 @@ const helper = {
         let mobileList: Array<{ md5: string; value: string }> = [];
 
         for (let i = 0; i < list.length; i++) {
-            if (OnlyNumber.test(list[i].trim())) {
+            if (list[i].trim() === '') {
+                continue;
+            } else if (OnlyNumber.test(list[i].trim())) {
                 mobileList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
             } else {
                 errorList.push(list[i]);
@@ -79,7 +81,9 @@ const helper = {
         let cardList: Array<{ md5: string, value: string }> = [];
 
         for (let i = 0; i < list.length; i++) {
-            if (BankCardNumber.test(list[i].trim())) {
+            if (list[i].trim() === '') {
+                continue;
+            } else if (BankCardNumber.test(list[i].trim())) {
                 cardList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
             } else {
                 errorList.push(list[i]);
@@ -114,6 +118,197 @@ const helper = {
     }),
     isWin7() {
         return process.platform === 'win32' && os.release().startsWith('6.1');
+    },
+    /**
+     * 是否注册文本
+     * @param val 
+     */
+    getIsRegText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 0:
+            case '0':
+                text = '未注册'
+                break;
+            case 1:
+            case '1':
+                text = '已注册'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 是否代理文本
+     * @param val 值
+     */
+    getIsAgentText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 'N':
+                text = '否'
+                break;
+            case 'Y':
+                text = '是'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 得到登录信息文本
+     * @param val 值
+     */
+    getLastLoginText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 0:
+            case '0':
+                text = '一年内未登录'
+                break;
+            case 1:
+            case '1':
+                text = '一年内登录过'
+                break;
+            case 2:
+            case '2':
+                text = '半年内登录过'
+                break;
+            case 3:
+            case '3':
+                text = '四个月内登录过'
+                break;
+            case 4:
+            case '4':
+                text = '一个月内登录过'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 注册数量文本
+     * @param val 值
+     */
+    getParticipatingWebsiteCountText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 'N':
+                text = '未注册'
+                break;
+            case 1:
+            case '1':
+                text = '注册1个'
+                break;
+            case 2:
+            case '2':
+                text = '注册1个以上'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 绑定银行卡文本
+     * @param val 值
+     */
+    getHaveBindBankCardText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 'N':
+                text = '否'
+                break;
+            case 'Y':
+                text = '是'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 注册时间文本
+     * @param val 值
+     */
+    getRegTimeText(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 1:
+            case '1':
+                text = '一年外注册过'
+                break;
+            case 2:
+            case '2':
+                text = '四个月内注册过'
+                break;
+            case 3:
+            case '3':
+                text = '一年内注册过'
+                break;
+            default:
+                text = val;
+        }
+        return text;
+    },
+    /**
+     * 涉级资金文本
+     * @param val 值
+     */
+    getParticipatingFunds(val: any) {
+        let text: string = '';
+        if (this.isNullOrUndefined(val)) {
+            text = '--';
+            return text;
+        }
+        switch (val) {
+            case 0:
+            case '0':
+                text = '无参赌资金';
+                break;
+            case 1:
+            case '1':
+                text = '0-5000'
+                break;
+            case 2:
+            case '2':
+                text = '5000-10000'
+                break;
+            case 3:
+            case '3':
+                text = '10000以上'
+                break;
+            default:
+                text = val;
+        }
+        return text;
     }
 };
 

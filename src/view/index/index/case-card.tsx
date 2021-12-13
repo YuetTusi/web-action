@@ -44,35 +44,35 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 								</li>
 								<li>
 									<label>账号个数</label>
-									<span>{data['涉黄']?.participatingWebsiteCount ?? '--'}</span>
+									<span>
+										{helper.getParticipatingWebsiteCountText(
+											data['涉黄']?.participatingWebsiteCount
+										)}
+									</span>
 								</li>
 								<li>
 									<label>登录信息</label>
-									<span>{data['涉黄']?.lastLogin ?? '--'}</span>
+									<span>{helper.getLastLoginText(data['涉黄']?.lastLogin)}</span>
 								</li>
 								<li>
 									<label>是否绑定银行卡</label>
 									<span>
-										{helper.isNullOrUndefined(data['涉黄']?.haveBindBankCard)
-											? '--'
-											: data['涉黄']?.haveBindBankCard === 'N'
-											? '否'
-											: '是'}
+										{helper.getHaveBindBankCardText(
+											data['涉黄']?.haveBindBankCard
+										)}
 									</span>
 								</li>
 								<li>
 									<label>涉及资金</label>
-									<span>{data['涉黄']?.participatingFunds ?? '--'}</span>
+									<span>
+										{helper.getParticipatingFunds(
+											data['涉黄']?.participatingFunds
+										)}
+									</span>
 								</li>
 								<li>
 									<label>是否代理</label>
-									<span>
-										{helper.isNullOrUndefined(data['涉黄']?.isAgent)
-											? '--'
-											: data['涉黄']?.isAgent === 'N'
-											? '否'
-											: '是'}
-									</span>
+									<span>{helper.getIsAgentText(data['涉黄']?.isAgent)}</span>
 								</li>
 								<li>
 									<label>查询时间</label>
@@ -109,35 +109,35 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 								</li>
 								<li>
 									<label>账号个数</label>
-									<span>{data['传销']?.participatingWebsiteCount ?? '--'}</span>
+									<span>
+										{helper.getParticipatingWebsiteCountText(
+											data['传销']?.participatingWebsiteCount
+										)}
+									</span>
 								</li>
 								<li>
 									<label>登录信息</label>
-									<span>{data['传销']?.lastLogin ?? '--'}</span>
+									<span>{helper.getLastLoginText(data['传销']?.lastLogin)}</span>
 								</li>
 								<li>
 									<label>是否绑定银行卡</label>
 									<span>
-										{helper.isNullOrUndefined(data['传销']?.haveBindBankCard)
-											? '--'
-											: data['传销']?.haveBindBankCard === 'N'
-											? '否'
-											: '是'}
+										{helper.getHaveBindBankCardText(
+											data['传销']?.haveBindBankCard
+										)}
 									</span>
 								</li>
 								<li>
 									<label>涉及资金</label>
-									<span>{data['传销']?.participatingFunds ?? '--'}</span>
+									<span>
+										{helper.getParticipatingFunds(
+											data['传销']?.participatingFunds
+										)}
+									</span>
 								</li>
 								<li>
 									<label>是否代理</label>
-									<span>
-										{helper.isNullOrUndefined(data['传销']?.isAgent)
-											? '--'
-											: data['传销']?.isAgent === 'N'
-											? '否'
-											: '是'}
-									</span>
+									<span>{helper.getIsAgentText(data['传销']?.isAgent)}</span>
 								</li>
 								<li>
 									<label>查询时间</label>
@@ -174,35 +174,35 @@ const CaseCard: FC<CaseCardProp> = ({ data, mobile, actionTime }) => {
 								</li>
 								<li>
 									<label>账号个数</label>
-									<span>{data['涉赌']?.participatingWebsiteCount ?? '--'}</span>
+									<span>
+										{helper.getParticipatingWebsiteCountText(
+											data['涉赌']?.participatingWebsiteCount
+										)}
+									</span>
 								</li>
 								<li>
 									<label>登录信息</label>
-									<span>{data['涉赌']?.lastLogin ?? '--'}</span>
+									<span>{helper.getLastLoginText(data['涉赌']?.lastLogin)}</span>
 								</li>
 								<li>
 									<label>是否绑定银行卡</label>
 									<span>
-										{helper.isNullOrUndefined(data['涉赌']?.haveBindBankCard)
-											? '--'
-											: data['涉赌']?.haveBindBankCard === 'N'
-											? '否'
-											: '是'}
+										{helper.getHaveBindBankCardText(
+											data['涉赌']?.haveBindBankCard
+										)}
 									</span>
 								</li>
 								<li>
 									<label>涉及资金</label>
-									<span>{data['涉赌']?.participatingFunds ?? '--'}</span>
+									<span>
+										{helper.getParticipatingFunds(
+											data['涉赌']?.participatingFunds
+										)}
+									</span>
 								</li>
 								<li>
 									<label>是否代理</label>
-									<span>
-										{helper.isNullOrUndefined(data['涉赌']?.isAgent)
-											? '--'
-											: data['涉赌']?.isAgent === 'N'
-											? '否'
-											: '是'}
-									</span>
+									<span>{helper.getIsAgentText(data['涉赌']?.isAgent)}</span>
 								</li>
 								<li>
 									<label>查询时间</label>

@@ -39,6 +39,7 @@ const renderRibbon = (type: CaseSort) => {
  * 结果展示弹框
  */
 const ResultModal: FC<ResultModalProp> = ({ visbile, type, data, record, onCancel }) => {
+
 	return (
 		<Modal
 			footer={[

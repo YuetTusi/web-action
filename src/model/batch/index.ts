@@ -34,23 +34,23 @@ interface BatchDataSource {
      */
     lastLogin: number,
     /**
-     * "participatingFunds": "0",
+     * "涉及资金
      */
     participatingFunds: string,
     /** 
-     * 是否代理"isAgent": "N",
+     * 是否代理(Y/N)
      */
     isAgent: string,
     /**
-     * 是否注册 "isReg": 1,
+     * 是否注册
      */
     isReg: number,
     /**
-     * "participatingWebsiteCount": "2",
+     * "账号个数,
      */
     participatingWebsiteCount: string,
     /**
-     * haveBindBankCard "Y"
+     * 是否绑定银行卡(Y/N)
      */
     haveBindBankCard: string,
     [others: string]: any

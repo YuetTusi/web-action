@@ -205,7 +205,9 @@ const Bank: FC<{}> = () => {
 									</li>
 									<li>
 										<label>注册时间</label>
-										<span>{card[0]?.gambling?.reg_time ?? '--'}</span>
+										<span>
+											{helper.getRegTimeText(card[0]?.gambling?.reg_time)}
+										</span>
 									</li>
 									<li>
 										<label>登录时间</label>
@@ -218,11 +220,7 @@ const Bank: FC<{}> = () => {
 									<li>
 										<label>是否代理</label>
 										<span>
-											{helper.isNullOrUndefined(card[0]?.gambling?.is_agent)
-												? '--'
-												: card[0]?.gambling?.is_agent === 0
-												? '否'
-												: '是'}
+											{helper.getIsAgentText(card[0]?.gambling?.is_agent)}
 										</span>
 									</li>
 									<li>
