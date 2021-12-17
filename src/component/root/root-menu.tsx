@@ -92,7 +92,6 @@ const RootMenu: FC<{}> = () => {
 					<Item
 						onClick={() => {
 							dispatch({ type: 'reading/setReading', payload: false });
-							console.log(item.menu_url);
 							if (item.menu_url === '/installAppBatch') {
 								dispatch(routerRedux.push(`${item.menu_url}?type=batch`));
 							} else {

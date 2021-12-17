@@ -2,10 +2,10 @@ import { AnyAction } from 'redux';
 import { EffectsCommandMap } from "dva";
 import message from 'antd/lib/message';
 import { Document } from '@/schema/document';
+import { SearchLogEntity } from '@/schema/search-log-entity';
 import { Db } from '@/utility/db';
 import logger from '@/utility/log';
 import { PAGESIZE } from '@/utility/helper';
-import { SearchLogEntity } from '@/schema/search-log-entity';
 
 export default {
 

@@ -10,6 +10,7 @@ import log from './src/utility/log';
 let useHardwareAcceleration = true; //是否使用硬件加速
 const mode = process.env['NODE_ENV'];
 const cwd = process.cwd();
+const { resourcesPath } = process;
 const config = helper.readConf();
 let serveProc: ChildProcessWithoutNullStreams | null = null; //后台进程
 let mainWindow: BrowserWindow | null = null;
@@ -136,7 +137,7 @@ app.on('ready', () => {
         mainWindow.webContents.openDevTools();
         mainWindow.loadURL('http://localhost:8084/index.html');
     } else {
-        mainWindow.loadFile(path.join(__dirname, './renderer/index.html'));
+        mainWindow.loadFile(path.join(resourcesPath, 'app.asar.unpacked/dist/renderer/index.html'));
     }
     // #生产模式屏蔽快捷键（发布把注释放开）
     if (mode !== 'development') {

@@ -27,12 +27,12 @@
 			"buildResources": "static"
 		},
 		"asar": true,
-		"files": [
-			"dist/**/*",
-			"icon.png",
-			"package.json"
-		],
 		"asarUnpack": [
+			"**/*",
+			"!node_modules/**/*",
+			"!dist/src/**/*"
+		],
+		"files": [
 			"dist/**/*",
 			"icon.png",
 			"package.json"
