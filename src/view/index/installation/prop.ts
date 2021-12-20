@@ -29,7 +29,11 @@ interface DetailModalProp {
     /**
      * 详情数据
      */
-    data: InstalledApp | null
+    data: InstalledApp | null,
+    /**
+     * value-MD5列表
+     */
+    keywordList?: { md5: string; value: string }[]
 }
 
 export { InstallationProp, SearchForm, DetailModalProp };

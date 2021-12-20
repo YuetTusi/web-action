@@ -27,6 +27,14 @@ const ChangeDesc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 		);
 	}
 
+	if (changePkgList.trim() === '') {
+		return (
+			<EmptyBox>
+				<Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+			</EmptyBox>
+		);
+	}
+
 	const pkgList = changePkgList.split(',');
 	const len = pkgList.length;
 

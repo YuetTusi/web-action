@@ -141,7 +141,7 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 /**
  * 详情框
  */
-const DetailModal: FC<DetailModalProp> = ({ visible, data }) => {
+const DetailModal: FC<DetailModalProp> = ({ visible, data, keywordList }) => {
 	const dispatch = useDispatch();
 
 	const onCancel = useCallback(
@@ -160,7 +160,7 @@ const DetailModal: FC<DetailModalProp> = ({ visible, data }) => {
 			width={1040}
 			visible={visible}
 			onCancel={onCancel}
-			title={`应用详情 ${data?.pid ?? ''}`}
+			title={`应用详情 ${keywordList!.find((i) => i.md5 === data?.pid)?.value ?? ''}`}
 			maskClosable={false}
 			centered={true}
 			destroyOnClose={true}>

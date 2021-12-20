@@ -367,7 +367,7 @@ const Installation: FC<InstallationProp> = () => {
 				scroll={{ x: 'max-content' }}
 				loading={loading}
 			/>
-			<DetailModal visible={detail !== null} data={detail} />
+			<DetailModal visible={detail !== null} data={detail} keywordList={keywordList} />
 		</RootPanel>
 	);
 };
