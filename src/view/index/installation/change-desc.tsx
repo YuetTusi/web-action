@@ -3,26 +3,39 @@ import Empty from 'antd/lib/empty';
 import Tag from 'antd/lib/tag';
 import { InstalledApp } from '@/model/installation';
 import { helper } from '@/utility/helper';
+import { EmptyBox } from './styled/detail-box';
 
 /**
  * 应用变化展示
  */
 const ChangeDesc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 	if (helper.isNullOrUndefined(data)) {
-		return <Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+		return (
+			<EmptyBox>
+				<Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+			</EmptyBox>
+		);
 	}
 
 	const { changePkgList, changePkgStatusList, changePkgTimeList, model } = data!;
 
 	if (helper.isNullOrUndefined(changePkgList)) {
-		return <Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+		return (
+			<EmptyBox>
+				<Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+			</EmptyBox>
+		);
 	}
 
 	const pkgList = changePkgList.split(',');
 	const len = pkgList.length;
 
 	if (len === 0) {
-		return <Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />;
+		return (
+			<EmptyBox>
+				<Empty description="暂无数据" image={Empty.PRESENTED_IMAGE_SIMPLE} />
+			</EmptyBox>
+		);
 	}
 
 	const statusList = helper.isNullOrUndefined(changePkgStatusList)
