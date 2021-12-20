@@ -6,8 +6,10 @@ import Tabs from 'antd/lib/tabs';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
 import { helper } from '@/utility/helper';
 import { DetailBox, DetailPanel, EmptyBox } from './styled/detail-box';
-import { InstallDetailModalProp } from './prop';
 import { InstalledApp } from '@/model/installation';
+import AppNameDesc from './app-name-desc';
+import ChangeDesc from './change-desc';
+import { InstallDetailModalProp } from './prop';
 
 const username = sessionStorage.getItem('username');
 const { TabPane } = Tabs;
@@ -15,7 +17,7 @@ const { TabPane } = Tabs;
 /**
  * 渲染li
  */
- const renderList = (list: string[], prefix = 'L') => {
+const renderList = (list: string[], prefix = 'L') => {
 	if (list.length === 0) {
 		return (
 			<EmptyBox>
@@ -114,11 +116,14 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 					<TabPane tab="应用名称" key="6">
 						<DetailBox>
 							<div className="list">
-								{renderList(
-									helper.isNullOrUndefined(appNameList)
-										? []
-										: appNameList.split(',')
-								)}
+								<AppNameDesc data={data} />
+							</div>
+						</DetailBox>
+					</TabPane>
+					<TabPane tab="应用变化信息" key="7">
+						<DetailBox>
+							<div className="list">
+								<ChangeDesc data={data} />
 							</div>
 						</DetailBox>
 					</TabPane>

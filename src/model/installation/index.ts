@@ -49,6 +49,10 @@ interface InstalledApp {
      */
     apppkgList: string,
     /**
+     * 应用分类
+     */
+    cateNameList: string,
+    /**
      * 包名列表
      */
     appNameList: string,
@@ -59,7 +63,23 @@ interface InstalledApp {
     /**
      * 30天内活跃数
      */
-    activeDay30List: string
+    activeDay30List: string,
+    /**
+     * 变化更新的APP
+     */
+    changePkgList: string,
+    /**
+     * 变化更新的APP 对应状态 (-1：卸载)
+     */
+    changePkgStatusList: string,
+    /**
+     * 变化更新的APP 状态变化时间，到秒
+     */
+    changePkgTimeList: string,
+    /**
+     * 型号
+     */
+    model: string
 }
 
 const model: Model = {
