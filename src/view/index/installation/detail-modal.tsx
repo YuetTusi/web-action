@@ -160,7 +160,7 @@ const DetailModal: FC<DetailModalProp> = ({ visible, data, keywordList }) => {
 			width={1040}
 			visible={visible}
 			onCancel={onCancel}
-			title={`应用详情 ${keywordList!.find((i) => i.md5 === data?.pid)?.value ?? ''}`}
+			title={`应用详情 ${data?.model ?? ''} ${keywordList!.find((i) => i.md5 === data?.pid)?.value ?? ''}`}
 			maskClosable={false}
 			centered={true}
 			destroyOnClose={true}>
