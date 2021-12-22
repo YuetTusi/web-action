@@ -138,6 +138,7 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
  * @returns
  */
 const InstallDetailModal: FC<InstallDetailModalProp> = ({ visible, keyword, data, onCancel }) => {
+
 	return (
 		<Modal
 			footer={[
@@ -149,7 +150,7 @@ const InstallDetailModal: FC<InstallDetailModalProp> = ({ visible, keyword, data
 			onCancel={() => onCancel()}
 			visible={visible}
 			width={1040}
-			title={`应用详情 ${helper.isNullOrUndefined(keyword) ? '' : keyword}`}
+			title={`应用详情 ${data?.model ?? ''} ${helper.isNullOrUndefined(keyword) ? '' : keyword}`}
 			destroyOnClose={true}
 			centered={true}
 			maskClosable={false}>
