@@ -8,7 +8,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { versions } from 'process';
 import { writeFile } from 'fs/promises';
-import { OnlyNumber, BankCardNumber, Br } from './regex';
+import { OnlyNumber, BankCardNumber, IMEI, IMSI, OAID, Br } from './regex';
 import { Conf } from '@/schema/conf';
 import log from './log';
 
@@ -92,6 +92,69 @@ const helper = {
             }
         }
         return [errorList, cardList];
+    },
+    /**
+     * 验证IMEI列表格式
+     * @param list 列表
+     * @returns 返回[errorList,mobileList]，若errorList长度为0则验证通过
+     */
+    validateIMEIList(list: string[]): [string[], Array<{ md5: string; value: string }>] {
+        let unique = [...new Set(list)]; //去重
+        let errorList: string[] = [];
+        let numberList: Array<{ md5: string, value: string }> = [];
+
+        for (let i = 0; i < unique.length; i++) {
+            if (unique[i].trim() === '') {
+                continue;
+            } else if (IMEI.test(unique[i].trim())) {
+                numberList.push({ md5: md5(unique[i].replace(Br, '')), value: unique[i].replace(Br, '') });
+            } else {
+                errorList.push(unique[i]);
+            }
+        }
+        return [errorList, numberList];
+    },
+    /**
+     * 验证IMSI列表格式
+     * @param list 列表
+     * @returns 返回[errorList,mobileList]，若errorList长度为0则验证通过
+     */
+    validateIMSIList(list: string[]): [string[], Array<{ md5: string; value: string }>] {
+        let unique = [...new Set(list)]; //去重
+        let errorList: string[] = [];
+        let numberList: Array<{ md5: string, value: string }> = [];
+
+        for (let i = 0; i < unique.length; i++) {
+            if (unique[i].trim() === '') {
+                continue;
+            } else if (IMSI.test(unique[i].trim())) {
+                numberList.push({ md5: md5(unique[i].replace(Br, '')), value: unique[i].replace(Br, '') });
+            } else {
+                errorList.push(unique[i]);
+            }
+        }
+        return [errorList, numberList];
+    },
+    /**
+     * 验证OAID列表格式
+     * @param list 列表
+     * @returns 返回[errorList,mobileList]，若errorList长度为0则验证通过
+     */
+    validateOAIDList(list: string[]): [string[], Array<{ md5: string; value: string }>] {
+        let unique = [...new Set(list)]; //去重
+        let errorList: string[] = [];
+        let numberList: Array<{ md5: string, value: string }> = [];
+
+        for (let i = 0; i < unique.length; i++) {
+            if (unique[i].trim() === '') {
+                continue;
+            } else if (OAID.test(unique[i].trim())) {
+                numberList.push({ md5: md5(unique[i].replace(Br, '')), value: unique[i].replace(Br, '') });
+            } else {
+                errorList.push(unique[i]);
+            }
+        }
+        return [errorList, numberList];
     },
     /**
      * 读取配置文件

@@ -145,7 +145,23 @@ const Installation: FC<InstallationProp> = () => {
 
 				memoValue = tempFilePath;
 				const txt = await readFile(tempFilePath, { encoding: 'utf8' });
-				const [errorList, passList] = helper.validateMobileList(txt.split('\n'));
+				let errorList: string[] = [];
+				let passList: { md5: string; value: string }[] = [];
+				switch (searchType) {
+					case 'PHONE':
+						[errorList, passList] = helper.validateMobileList(txt.split('\n'));
+						break;
+					case 'IMEI':
+						[errorList, passList] = helper.validateIMEIList(txt.split('\n'));
+						break;
+					case 'IMSI':
+						[errorList, passList] = helper.validateIMSIList(txt.split('\n'));
+						break;
+					case 'OAID':
+						[errorList, passList] = helper.validateOAIDList(txt.split('\n'));
+						break;
+				}
+
 				if (errorList.length === 0) {
 					keywordList = passList;
 					Modal.confirm({
@@ -179,7 +195,7 @@ const Installation: FC<InstallationProp> = () => {
 									))}
 								</ScrollPanel>
 								<div>
-									共查询{keywordList.length}个手机号，将
+									共查询{keywordList.length}条数据，将
 									<strong style={{ color: '#ff0000' }}>
 										使用
 										{keywordList.length}次
@@ -193,7 +209,7 @@ const Installation: FC<InstallationProp> = () => {
 					});
 				} else {
 					Modal.warn({
-						title: '手机号格式有误，请修正',
+						title: '数据格式有误，请修正',
 						content: (
 							<>
 								<ValidList>
@@ -214,10 +230,27 @@ const Installation: FC<InstallationProp> = () => {
 				//非批量
 				if (helper.isNullOrUndefined(mobile) || mobile === '') {
 					message.destroy();
-					message.warn('请选填写手机号');
+					message.warn('请选填写查询内容');
 					return;
 				}
-				const [errorList, passList] = helper.validateMobileList([mobile]);
+				let errorList: string[] = [];
+				let passList: { md5: string; value: string }[] = [];
+
+				switch (searchType) {
+					case 'PHONE':
+						[errorList, passList] = helper.validateMobileList([mobile]);
+						break;
+					case 'IMEI':
+						[errorList, passList] = helper.validateIMEIList([mobile]);
+						break;
+					case 'IMSI':
+						[errorList, passList] = helper.validateIMSIList([mobile]);
+						break;
+					case 'OAID':
+						[errorList, passList] = helper.validateOAIDList([mobile]);
+						break;
+				}
+
 				if (errorList.length === 0) {
 					keywordList = passList;
 					Modal.confirm({
@@ -251,7 +284,7 @@ const Installation: FC<InstallationProp> = () => {
 									))}
 								</ScrollPanel>
 								<div>
-									共查询{keywordList.length}个手机号，将
+									共查询{keywordList.length}条数据，将
 									<strong style={{ color: '#ff0000' }}>
 										使用
 										{keywordList.length}次
@@ -265,7 +298,7 @@ const Installation: FC<InstallationProp> = () => {
 					});
 				} else {
 					Modal.warn({
-						title: '手机号格式有误，请修正',
+						title: '数据格式有误，请修正',
 						content: (
 							<>
 								<ValidList>

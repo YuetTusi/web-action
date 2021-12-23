@@ -2,6 +2,12 @@
 export const MobileNumber = /^(0|86|17951)?(13[0-9]|15[012356789]|166|17[3678]|18[0-9]|14[57]|19[0267])[0-9]{8}$/;
 //银行卡号
 export const BankCardNumber = /^\d{13,19}$/;
+//IMEI（数字15-17位）
+export const IMEI=/^[0-9]{15,17}$/;
+//IMSI（数字15位）
+export const IMSI=/^[0-9]{15}$/;
+//OAID（数字，字母，中划线，不限位数）
+export const OAID=/([0-9]|[a-z]|[A-Z]|-)+/;
 //警员编号
 export const PoliceNumber = /\d{6}/;
 //身份证号
