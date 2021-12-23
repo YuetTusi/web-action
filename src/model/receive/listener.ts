@@ -139,7 +139,7 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
             let index: number = -1;
             if (helper.isNullOrUndefined(data[i])) {
                 //若返回结果少于list，那么补全记录
-                data.push({ pid: diff[diff_index++].pid, oiid: '', isid: '', ieid: '' } as InstalledApp);
+                data.push({ pid: diff[diff_index++]?.pid ?? '', oiid: '', isid: '', ieid: '' } as InstalledApp);
             }
 
             let k: string = '';

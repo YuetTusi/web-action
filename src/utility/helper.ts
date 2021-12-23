@@ -57,10 +57,11 @@ const helper = {
      * @returns 返回[errorList,mobileList]，若errorList长度为0则验证通过
      */
     validateMobileList(list: string[]): [string[], Array<{ md5: string; value: string }>] {
+        let unique = [...new Set(list)]; //去重
         let errorList: string[] = [];
         let mobileList: Array<{ md5: string; value: string }> = [];
 
-        for (let i = 0; i < list.length; i++) {
+        for (let i = 0; i < unique.length; i++) {
             if (list[i].trim() === '') {
                 continue;
             } else if (OnlyNumber.test(list[i].trim())) {
