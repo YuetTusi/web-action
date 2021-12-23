@@ -1,3 +1,4 @@
+import differenceBy from 'lodash/differenceBy';
 import { Dispatch, routerRedux } from "dva";
 import msgBox from 'antd/lib/message';
 import { Command, Result, Res } from "@/schema/socket";
@@ -128,51 +129,49 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
     const { code, data, message } = cmd.msg;
 
     if (code >= 200 && code < 300) {
-        const nextData: InstalledApp[] = [];
         const nextLogs: SearchLogEntity[] = [];
+        const diff = differenceBy<{ pid: string }, InstalledApp>(
+            list.map((item: string) => ({ pid: item })), data, 'pid');//求差值
+
+        let diff_index = 0;
 
         for (let i = 0; i < list.length; i++) {
+            let index: number = -1;
             if (helper.isNullOrUndefined(data[i])) {
-
-                nextData.push({ pid: '', oiid: '', isid: '', ieid: '' } as InstalledApp);
-                nextLogs.push({
-                    type: table as Document,
-                    keyword: '',
-                    result: { type }
-                });
-            } else {
-                let k: string = '';
-                let index: number = -1;
-                switch (type) {
-                    case 'PHONE':
-                        index = (list as string[]).findIndex((j) => j === data[i].pid); //找到md5的索引
-                        break;
-                    case 'IMEI':
-                        index = (list as string[]).findIndex((j) => j === data[i].ieid); //找到md5的索引
-                        break;
-                    case 'IMSI':
-                        index = (list as string[]).findIndex((j) => j === data[i].isid); //找到md5的索引
-                        break;
-                    case 'OAID':
-                        index = (list as string[]).findIndex((j) => j === data[i].oiid); //找到md5的索引
-                        break;
-                    default:
-                        k = '';
-                        break;
-                }
-
-                if (index !== -1) {
-                    k = value[index] ?? '';//取索引对应的值
-                }
-                nextData.push(data[i]);
-                nextLogs.push({
-                    type: table as Document,
-                    keyword: k,
-                    result: { ...data[i], type }
-                });
+                //若返回结果少于list，那么补全记录
+                data.push({ pid: diff[diff_index++].pid, oiid: '', isid: '', ieid: '' } as InstalledApp);
             }
+
+            let k: string = '';
+            switch (type) {
+                case 'PHONE':
+                    index = (list as string[]).findIndex((j) => j === data[i].pid); //找到md5的索引
+                    break;
+                case 'IMEI':
+                    index = (list as string[]).findIndex((j) => j === data[i].ieid); //找到md5的索引
+                    break;
+                case 'IMSI':
+                    index = (list as string[]).findIndex((j) => j === data[i].isid); //找到md5的索引
+                    break;
+                case 'OAID':
+                    index = (list as string[]).findIndex((j) => j === data[i].oiid); //找到md5的索引
+                    break;
+                default:
+                    k = '';
+                    break;
+            }
+
+            if (index !== -1) {
+                k = value[index] ?? '';//取索引对应的值
+            }
+            nextLogs.push({
+                type: table as Document,
+                keyword: k,
+                result: { ...data[i], type }
+            });
         }
-        dispatch({ type: 'installation/setData', payload: nextData });
+        console.log(data);
+        dispatch({ type: 'installation/setData', payload: data });
         dispatch({ type: 'appLog/insert', payload: nextLogs });
     } else {
         msgBox.warn(message);

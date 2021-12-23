@@ -39,16 +39,40 @@ let isBatch = false;
 
 // const temp: any = {
 // 	cmd: 'installation-result',
-// 	list: ['bb0be01b6f5e0c78dc3219322d781a86'],
+// 	list: ['77cead680b92491deb51e1830d30bb78', 'bb0be01b6f5e0c78dc3219322d781a86'],
 // 	msg: {
 // 		code: '200',
-// 		data: [],
+// 		data: [
+// 			{
+// 				activeDay30List:
+// 					',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+// 				appNameList:
+// 					'小米换机,江西师大,夸克,PU口袋校园,酷狗音乐,小米运动,天气,WPS Office,屏幕录制,王者营地,艾希,快视频,米家授权,钉钉,阅读,扇贝单词英语版,支付宝,中国银行,扫一扫,掌上英雄联盟,小米商城,星火英语,爱奇艺播放器,菜鸟,微信,健康,拼多多,王者荣耀,知乎,小米金服安全组件,哔哩哔哩,云闪付,抖音,Keep,米家,和我信,批改网,计算器,中国大学MOOC,中国建设银行,智能出行,指南针,QQ邮箱,看个球,手机淘宝,便签,学小易,百度输入法小米版,学习通,全球上网工具插件,识货,小米金服安全组件,电子邮件,相册冲印组件,百度网盘,垃圾清理,小米画报,用户手册,WiFi万能钥匙,小米文档查看器（WPS定制）,拷貝漫畫,学习强国,ZzzFun,小米搜狐视频播放器插件,收音机,全球上网,高德地图,微博,QQ,手机知网,京东,瑞达法考,富贵论坛,luckin coffee,深蓝法考,游戏中心,QQ浏览器,得物(毒),网易云音乐,百度,英雄联盟手游,铁路12306,网易有道词典,系统语音引擎,小米卡包,万能遥控,小米云盘,腾讯会议,金山文档,腾讯视频,学信网,讯飞输入法小米版,驾车场景',
+// 				apppkgList:
+// 					'com.miui.huanji,com.supwisdom.jxnu,com.quark.browser,com.xyhui,com.kugou.android,com.xiaomi.hm.health,com.miui.weather2,cn.wps.moffice_eng,com.miui.screenrecorder,com.tencent.gamehelper.smoba,com.fantablade.icey,com.xiaomi.apps.videodaily,com.miui.mihome,com.alibaba.android.rimet,com.duokan.reader,com.shanbay.sentence,com.eg.android.AlipayGphone,com.chinamworld.bocmbci,com.xiaomi.scanner,com.tencent.qt.qtl,com.xiaomi.shop,tuoyan.com.xinghuo_daying,com.qiyi.video.sdkplayer,com.cainiao.wireless,com.tencent.mm,com.mi.health,com.xunmeng.pinduoduo,com.tencent.tmgp.sgame,com.zhihu.android,com.xiaomi.jr.security,tv.danmaku,com.unionpay,com.ss.android.ugc.aweme,com.gotokeep.keep,com.xiaomi.smarthome,com.jx.cmcc.ict.ibelieve,org.pigai.allround,com.miui.calculator,com.netease.edu.ucmooc,com.chinamworld.main,com.miui.smarttravel,com.miui.compass,com.tencent.androidqqmail,com.qqc.kangeqiu,com.taobao.taobao,com.miui.notes,com.xuexiaoyi.xxy,com.baidu.input,com.chaoxing.mobile,com.xiaomi.mimobile.noti,com.hupu.shihuo,com.xiaomi.mifisecurity,com.android.email,com.mimoprint,com.baidu.netdisk,com.miui.cleanmaster,com.mfashiongallery.emag,com.miui.userguide,com.snda.wifilocating,cn.wps.moffice_eng.xiaomi.lite,com.copymanga.app,cn.xuexi.android,org.daimhim.zzzfun,com.sohu.sohuvideo.miplayer,com.miui.fm,com.miui.virtualsim,com.autonavi.minimap,com.sina.weibo,com.tencent.mobileqq,com.cnki.client,com.jingdong.app.mall,com.yizhilu.ruida,net.fglt.app,com.lucky.luckyclient,com.neoteched.shenlancity,com.xiaomi,com.tencent.mtt,com.shizhuang.duapp,com.netease.cloudmusic,com.baidu.searchbox,com.tencent.lolm,com.MobileTicket,com.youdao.dict,com.xiaomi.mibrain.speech,com.xiaomi.pass,com.duokan.phone.remotecontroller,com.miui.newmidrive,com.tencent.wemeet,cn.wps.yun,com.tencent.qqlive,cn.com.chsi.chsiapp,com.iflytek.inputmethod.miui,com.xiaomi.drivemode',
+// 				cateNameList:
+// 					'其他类,,其他类,社交软件,媒体,其他类,电商,网络共享,,游戏类,游戏类,媒体,其他类,社交软件,学习类,学习类,其他类,其他类,其他类,游戏类,电商,学习类,媒体,快递类,社交软件,电商,电商,游戏类,社交软件,其他类,媒体,其他类,媒体,电商,其他类,电商,学习类,其他类,学习类,其他类,其他类,社交软件,邮箱,媒体,电商,其他类,学习类,其他类,学习类,其他类,电商,其他类,邮箱,其他类,网络共享,其他类,其他类,其他类,其他类,网络共享,,媒体,媒体,媒体,媒体,,出行,社交软件,社交软件,学习类,电商,学习类,,电商,学习类,其他类,其他类,电商,媒体,其他类,游戏类,出行,学习类,其他类,电商,其他类,网络共享,网络共享,网络共享,媒体,学习类,其他类,其他类',
+// 				changePkgList:
+// 					'com.tal.kaoyan,com.xiaomi.router,com.zhaozhao.zhang.chinalaw,com.taptap,com.tencent.mp,com.eusoft.ting.en,com.tmri.app.main',
+// 				changePkgStatusList: '-1,-1,-1,-1,-1,-1,-1',
+// 				changePkgTimeList:
+// 					'20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11',
+// 				ieid: null,
+// 				isid: null,
+// 				lastActiveTime30List:
+// 					',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,',
+// 				lastUpdateTime: '20210930',
+// 				model: 'REDMI K20',
+// 				oiid: null,
+// 				pid: '77cead680b92491deb51e1830d30bb78'
+// 			}
+// 		],
 // 		msg: 'success',
 // 		status: null
 // 	},
 // 	table: 'app-install-log',
 // 	type: 'PHONE',
-// 	value: ['13661027699']
+// 	value: ['15901113258', '13661027699']
 // };
 /**
  * 安装应用查询
@@ -363,7 +387,7 @@ const Installation: FC<InstallationProp> = () => {
 				// 	current: pageIndex,
 				// 	onChange: onPageChange
 				// }}
-				rowKey={'apppkgList'}
+				rowKey={'pid'}
 				scroll={{ x: 'max-content' }}
 				loading={loading}
 			/>
