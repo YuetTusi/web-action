@@ -377,7 +377,7 @@ const Installation: FC<InstallationProp> = () => {
 							/>
 						</Item>
 					) : (
-						<Item label="手机号" name="mobile">
+						<Item label="手机号/值" name="mobile">
 							<Input style={{ width: '260px' }} />
 						</Item>
 					)}

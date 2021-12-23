@@ -107,25 +107,14 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 							</div>
 						</DetailBox>
 					</TabPane>
-					<TabPane tab="App包名" key="5">
-						<DetailBox>
-							<div className="list">
-								{renderList(
-									helper.isNullOrUndefined(apppkgList)
-										? []
-										: apppkgList.split(',')
-								)}
-							</div>
-						</DetailBox>
-					</TabPane>
-					<TabPane tab="应用名称" key="6">
+					<TabPane tab="应用名称（包名）" key="5">
 						<DetailBox>
 							<div className="list">
 								<AppNameDesc data={data} />
 							</div>
 						</DetailBox>
 					</TabPane>
-					<TabPane tab="应用变化信息" key="7">
+					<TabPane tab="应用变化信息" key="6">
 						<DetailBox>
 							<div className="list">
 								<ChangeDesc data={data} />
