@@ -62,12 +62,12 @@ const helper = {
         let mobileList: Array<{ md5: string; value: string }> = [];
 
         for (let i = 0; i < unique.length; i++) {
-            if (list[i].trim() === '') {
+            if (unique[i].trim() === '') {
                 continue;
-            } else if (OnlyNumber.test(list[i].trim())) {
-                mobileList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
+            } else if (OnlyNumber.test(unique[i].trim())) {
+                mobileList.push({ md5: md5(unique[i].replace(Br, '')), value: unique[i].replace(Br, '') });
             } else {
-                errorList.push(list[i]);
+                errorList.push(unique[i]);
             }
         }
         return [errorList, mobileList];
@@ -78,16 +78,17 @@ const helper = {
      * @returns 返回[errorList,mobileList]，若errorList长度为0则验证通过
      */
     validateCardList(list: string[]): [string[], Array<{ md5: string; value: string }>] {
+        let unique = [...new Set(list)]; //去重
         let errorList: string[] = [];
         let cardList: Array<{ md5: string, value: string }> = [];
 
-        for (let i = 0; i < list.length; i++) {
-            if (list[i].trim() === '') {
+        for (let i = 0; i < unique.length; i++) {
+            if (unique[i].trim() === '') {
                 continue;
-            } else if (BankCardNumber.test(list[i].trim())) {
-                cardList.push({ md5: md5(list[i].replace(Br, '')), value: list[i].replace(Br, '') });
+            } else if (BankCardNumber.test(unique[i].trim())) {
+                cardList.push({ md5: md5(unique[i].replace(Br, '')), value: unique[i].replace(Br, '') });
             } else {
-                errorList.push(list[i]);
+                errorList.push(unique[i]);
             }
         }
         return [errorList, cardList];
