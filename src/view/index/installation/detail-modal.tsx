@@ -7,6 +7,7 @@ import Modal from 'antd/lib/modal';
 import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
 import { InstalledApp } from '@/model/installation';
 import { helper } from '@/utility/helper';
+import AppCategoryChart from '@/component/app-category-chart';
 import { DetailBox, DetailPanel, EmptyBox } from './styled/detail-box';
 import ChangeDesc from './change-desc';
 import AppNameDesc from './app-name-desc';
@@ -121,6 +122,9 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 							</div>
 						</DetailBox>
 					</TabPane>
+					<TabPane tab="分类统计" key="7">
+						<AppCategoryChart data={data} />
+					</TabPane>
 				</Tabs>
 			</DetailPanel>
 		);
@@ -149,7 +153,9 @@ const DetailModal: FC<DetailModalProp> = ({ visible, data, keywordList }) => {
 			width={1040}
 			visible={visible}
 			onCancel={onCancel}
-			title={`应用详情 ${data?.model ?? ''} ${keywordList!.find((i) => i.md5 === data?.pid)?.value ?? ''}`}
+			title={`应用详情 ${data?.model ?? ''} ${
+				keywordList!.find((i) => i.md5 === data?.pid)?.value ?? ''
+			}`}
 			maskClosable={false}
 			centered={true}
 			destroyOnClose={true}>

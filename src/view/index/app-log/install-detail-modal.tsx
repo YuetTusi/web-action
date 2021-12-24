@@ -10,6 +10,7 @@ import { InstalledApp } from '@/model/installation';
 import AppNameDesc from './app-name-desc';
 import ChangeDesc from './change-desc';
 import { InstallDetailModalProp } from './prop';
+import AppCategoryChart from '@/component/app-category-chart/app-category-chart';
 
 const username = sessionStorage.getItem('username');
 const { TabPane } = Tabs;
@@ -102,30 +103,22 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 							</div>
 						</DetailBox>
 					</TabPane>
-					<TabPane tab="App包名" key="5">
-						<DetailBox>
-							<div className="list">
-								{renderList(
-									helper.isNullOrUndefined(apppkgList)
-										? []
-										: apppkgList.split(',')
-								)}
-							</div>
-						</DetailBox>
-					</TabPane>
-					<TabPane tab="应用名称" key="6">
+					<TabPane tab="应用名称（包名）" key="5">
 						<DetailBox>
 							<div className="list">
 								<AppNameDesc data={data} />
 							</div>
 						</DetailBox>
 					</TabPane>
-					<TabPane tab="应用变化信息" key="7">
+					<TabPane tab="应用变化信息" key="6">
 						<DetailBox>
 							<div className="list">
 								<ChangeDesc data={data} />
 							</div>
 						</DetailBox>
+					</TabPane>
+					<TabPane tab="分类统计" key="7">
+						<AppCategoryChart data={data} />
 					</TabPane>
 				</Tabs>
 			</DetailPanel>
@@ -138,7 +131,6 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
  * @returns
  */
 const InstallDetailModal: FC<InstallDetailModalProp> = ({ visible, keyword, data, onCancel }) => {
-
 	return (
 		<Modal
 			footer={[
@@ -150,7 +142,9 @@ const InstallDetailModal: FC<InstallDetailModalProp> = ({ visible, keyword, data
 			onCancel={() => onCancel()}
 			visible={visible}
 			width={1040}
-			title={`应用详情 ${data?.model ?? ''} ${helper.isNullOrUndefined(keyword) ? '' : keyword}`}
+			title={`应用详情 ${data?.model ?? ''} ${
+				helper.isNullOrUndefined(keyword) ? '' : keyword
+			}`}
 			destroyOnClose={true}
 			centered={true}
 			maskClosable={false}>

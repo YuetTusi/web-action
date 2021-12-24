@@ -102,7 +102,7 @@ const Installation: FC<InstallationProp> = () => {
 		// 			cateNameList:
 		// 				'其他类,,其他类,社交软件,媒体,其他类,电商,网络共享,,游戏类,游戏类,媒体,其他类,社交软件,学习类,学习类,其他类,其他类,其他类,游戏类,电商,学习类,媒体,快递类,社交软件,电商,电商,游戏类,社交软件,其他类,媒体,其他类,媒体,电商,其他类,电商,学习类,其他类,学习类,其他类,其他类,社交软件,邮箱,媒体,电商,其他类,学习类,其他类,学习类,其他类,电商,其他类,邮箱,其他类,网络共享,其他类,其他类,其他类,其他类,网络共享,,媒体,媒体,媒体,媒体,,出行,社交软件,社交软件,学习类,电商,学习类,,电商,学习类,其他类,其他类,电商,媒体,其他类,游戏类,出行,学习类,其他类,电商,其他类,网络共享,网络共享,网络共享,媒体,学习类,其他类,其他类',
 		// 			changePkgList:
-		// 				'com.tal.kaoyan,com.xiaomi.router,com.zhaozhao.zhang.chinalaw,com.taptap,com.tencent.mp,com.eusoft.ting.en,com.tmri.app.main',
+		// 				'com.tal.kaoyan,com.xiaomi.router,com  .zhaozhao.zhang.chinalaw,com.taptap,com.tencent.mp,com.eusoft.ting.en,com.tmri.app.main',
 		// 			changePkgStatusList: '-1,-1,-1,-1,-1,-1,-1',
 		// 			changePkgTimeList:
 		// 				'20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11,20210930 11:43:11',

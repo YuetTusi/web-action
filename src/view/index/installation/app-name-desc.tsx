@@ -19,7 +19,6 @@ const AppNameDesc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 
 	const { appNameList, cateNameList, apppkgList } = data!;
 
-	console.log(apppkgList);
 	if (helper.isNullOrUndefined(appNameList)) {
 		return (
 			<EmptyBox>
