@@ -8,7 +8,7 @@ const getColumn = (...handles: Function[]): ColumnsType<SearchLogEntity> => {
 
 	let columns: ColumnsType<SearchLogEntity> = [
 		{
-			title: '查询内容（手机号）',
+			title: '查询内容（手机号/值）',
 			dataIndex: 'keyword',
 			key: 'keyword'
 		},

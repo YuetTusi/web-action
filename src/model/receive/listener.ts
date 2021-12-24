@@ -130,8 +130,29 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
 
     if (code >= 200 && code < 300) {
         const nextLogs: SearchLogEntity[] = [];
-        const diff = differenceBy<{ pid: string }, InstalledApp>(
-            list.map((item: string) => ({ pid: item })), data, 'pid');//求差值
+        let diff: { md5: string }[] = []
+        switch (type) {
+            case 'PHONE':
+                diff = differenceBy<{ md5: string }, InstalledApp>(
+                    list.map((item: string) => ({ md5: item })), data, 'pid');//求差值
+                break;
+            case 'IMEI':
+                diff = differenceBy<{ md5: string }, InstalledApp>(
+                    list.map((item: string) => ({ md5: item })), data, 'ieid');//求差值
+                break;
+            case 'IMSI':
+                diff = differenceBy<{ md5: string }, InstalledApp>(
+                    list.map((item: string) => ({ md5: item })), data, 'isid');//求差值
+                break;
+            case 'OAID':
+                diff = differenceBy<{ md5: string }, InstalledApp>(
+                    list.map((item: string) => ({ md5: item })), data, 'oiid');//求差值
+                break;
+            default:
+                diff = [];
+                break;
+        }
+
 
         let diff_index = 0;
 
@@ -139,7 +160,24 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
             let index: number = -1;
             if (helper.isNullOrUndefined(data[i])) {
                 //若返回结果少于list，那么补全记录
-                data.push({ pid: diff[diff_index++]?.pid ?? '', oiid: '', isid: '', ieid: '' } as InstalledApp);
+                switch (type) {
+                    case 'PHONE':
+                        data.push({ pid: diff[diff_index++]?.md5 ?? '', oiid: '', isid: '', ieid: '' } as InstalledApp);
+                        break;
+                    case 'IMEI':
+                        data.push({ pid: '', oiid: '', isid: '', ieid: diff[diff_index++]?.md5 ?? '' } as InstalledApp);
+                        break;
+                    case 'IMSI':
+                        data.push({ pid: '', oiid: '', isid: diff[diff_index++]?.md5 ?? '', ieid: '' } as InstalledApp);
+                        break;
+                    case 'OAID':
+                        data.push({ pid: '', oiid: diff[diff_index++]?.md5 ?? '', isid: '', ieid: '' } as InstalledApp);
+                        break;
+                    default:
+                        data.push({ pid: '', oiid: '', isid: '', ieid: '' } as InstalledApp);
+                        break;
+                }
+
             }
 
             let k: string = '';
@@ -170,7 +208,6 @@ export function installationResult(dispatch: Dispatch, cmd: Command<Res<Installe
                 result: { ...data[i], type }
             });
         }
-        console.log(data);
         dispatch({ type: 'installation/setData', payload: data });
         dispatch({ type: 'appLog/insert', payload: nextLogs });
     } else {
