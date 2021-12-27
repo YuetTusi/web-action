@@ -97,6 +97,7 @@ const AppStatusChart: FC<AppStatusChartProp> = ({ data }) => {
 				},
 				dataZoom: {
 					show: true,
+					showDetail: false,
 					type: 'slider',
 					start: 0,
 					end: 50
