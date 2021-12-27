@@ -9,8 +9,9 @@ import { LabelLayout } from 'echarts/features';
 import { CanvasRenderer } from 'echarts/renderers';
 import Empty from 'antd/lib/empty';
 import { helper } from '@/utility/helper';
-import { AppCategoryChartProp } from './props';
+import { AppCategoryChartProp } from './prop';
 import { InstalledApp } from '@/model/installation';
+import { ChartRoot, EmptyListBox } from './styled/pie';
 
 echarts.use([
 	TitleComponent,
@@ -20,55 +21,6 @@ echarts.use([
 	CanvasRenderer,
 	LabelLayout
 ]);
-
-const ChartRoot = styled.div`
-	width: 100%;
-	height: 460px;
-	display: flex;
-	flex-direction: row;
-	.chart-box {
-		flex: 3;
-		width: auto;
-		height: 460px;
-	}
-	.list-box {
-		flex: 2;
-		width: auto;
-
-		.list-panel {
-			height: 460px;
-			border: 1px solid #f0f0f0;
-			border-radius: 2px;
-			position: relative;
-			.caption {
-				padding: 8px;
-				background-color: #fbfbfb;
-				border-bottom: 1px solid #f0f0f0;
-			}
-			.list {
-				position: absolute;
-				top: 40px;
-				left: 0;
-				right: 0;
-				bottom: 0;
-				overflow-y: auto;
-				ul,
-				li {
-					margin: 0;
-					padding: 0;
-				}
-				li {
-					padding: 5px 10px;
-					border-bottom: 1px solid #f0f0f0;
-					list-style-type: none;
-					&:nth-child(even) {
-						background-color: #fbfbfb;
-					}
-				}
-			}
-		}
-	}
-`;
 
 const option: Record<string, any> = {
 	tooltip: {
@@ -130,6 +82,9 @@ const combine = (data: InstalledApp | null) => {
 	return next;
 };
 
+/**
+ * 应用分类统计图
+ */
 const AppCategoryChart: FC<AppCategoryChartProp> = ({ data }) => {
 	const [category, setCategory] = useState<string>(); //当前分类
 	const [detailList, setDetailList] = useState<{ pkg: string; name: string; category: string }[]>(
@@ -167,18 +122,17 @@ const AppCategoryChart: FC<AppCategoryChartProp> = ({ data }) => {
 	const renderLi = (data: { pkg: string; name: string; category: string }[]) => {
 		if (data.length === 0) {
 			return (
-				<Empty
-					image={Empty.PRESENTED_IMAGE_SIMPLE}
-					style={{ paddingTop: '40%' }}
-					description="暂无统计数据"
-				/>
+				<EmptyListBox>
+					<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="暂无统计数据" />
+				</EmptyListBox>
 			);
 		} else {
 			return (
 				<ul>
-					{data.map(({ name, pkg }, i) => {
-						return <li key={`K_${i}`}>{`${name}（${pkg}）`}</li>;
-					})}
+					{data
+						.map(({ name, pkg }, i) => {
+							return <li key={`K_${i}`}>{`${name}（${pkg}）`}</li>;
+						})}
 				</ul>
 			);
 		}

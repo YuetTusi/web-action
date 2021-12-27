@@ -8,6 +8,7 @@ import CloseCircleOutlined from '@ant-design/icons/CloseCircleOutlined';
 import { InstalledApp } from '@/model/installation';
 import { helper } from '@/utility/helper';
 import AppCategoryChart from '@/component/app-category-chart';
+import AppStatusChart from '@/component/app-status-chart';
 import { DetailBox, DetailPanel, EmptyBox } from './styled/detail-box';
 import ChangeDesc from './change-desc';
 import AppNameDesc from './app-name-desc';
@@ -52,13 +53,13 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 			appList,
 			lastActiveTime30List,
 			activeDay30List,
-			lastUpdateTimeList,
-			apppkgList,
-			appNameList,
-			changePkgList,
-			changePkgStatusList,
-			changePkgTimeList,
-			model
+			lastUpdateTimeList
+			// apppkgList,
+			// appNameList,
+			// changePkgList,
+			// changePkgStatusList,
+			// changePkgTimeList,
+			// model
 		} = data;
 		return (
 			<DetailPanel>
@@ -124,6 +125,9 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 					</TabPane>
 					<TabPane tab="分类统计" key="7">
 						<AppCategoryChart data={data} />
+					</TabPane>
+					<TabPane tab="变化统计" key="8">
+						<AppStatusChart data={data} />
 					</TabPane>
 				</Tabs>
 			</DetailPanel>

@@ -11,6 +11,7 @@ import AppNameDesc from './app-name-desc';
 import ChangeDesc from './change-desc';
 import { InstallDetailModalProp } from './prop';
 import AppCategoryChart from '@/component/app-category-chart/app-category-chart';
+import AppStatusChart from '@/component/app-status-chart/app-status-chart';
 
 const username = sessionStorage.getItem('username');
 const { TabPane } = Tabs;
@@ -119,6 +120,9 @@ const Desc: FC<{ data: InstalledApp | null }> = ({ data }) => {
 					</TabPane>
 					<TabPane tab="分类统计" key="7">
 						<AppCategoryChart data={data} />
+					</TabPane>
+					<TabPane tab="变化统计" key="8">
+						<AppStatusChart data={data} />
 					</TabPane>
 				</Tabs>
 			</DetailPanel>
